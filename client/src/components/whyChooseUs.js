@@ -80,7 +80,7 @@ export default function WhyChooseUs() {
           <div className="w-24 h-1 bg-gradient-to-r from-[#bda985] to-[#4b8178] mx-auto mb-8"></div>
           
           <p className="text-xl text-[#4b8178] max-w-3xl mx-auto leading-relaxed">
-            Experience the difference of working with the Middle East's most trusted legal and financial licensing specialists
+            Experience the difference of working with the Middle East&apos;s most trusted legal and financial licensing specialists
           </p>
         </div>
 
