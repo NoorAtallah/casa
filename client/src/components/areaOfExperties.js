@@ -1,4 +1,4 @@
-import { Scale, TrendingUp, Smartphone, ArrowRight, MapPin, Users, Shield } from 'lucide-react';
+import { Scale, TrendingUp, Smartphone, ArrowRight, MapPin, Users, Shield, Star, Award } from 'lucide-react';
 
 export default function ExpertiseSection() {
   const expertiseAreas = [
@@ -23,92 +23,164 @@ export default function ExpertiseSection() {
   ];
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative py-32 bg-gradient-to-br from-zinc-950 via-slate-900 to-zinc-950 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        {/* Dynamic Grid */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `linear-gradient(rgba(189, 169, 133, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(189, 169, 133, 0.3) 1px, transparent 1px)`,
+          backgroundSize: '80px 80px'
+        }}></div>
+        
+        {/* Floating Elements */}
+        <div className="absolute top-1/4 left-1/6 w-2 h-2 bg-[#BDA985] rounded-full animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/5 w-1 h-1 bg-[#BDA985] rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-[#BDA985] rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+        
+        {/* Geometric Shapes */}
+        <div className="absolute -top-48 right-32 w-96 h-96 border border-[#BDA985] border-opacity-5 rotate-45"></div>
+        <div className="absolute bottom-32 -left-48 w-96 h-96 border border-[#BDA985] border-opacity-10 rotate-12"></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-[#c3fcf2] rounded-full text-[#005b4c] text-sm font-medium mb-4">
-            <Shield className="w-4 h-4 mr-2" />
-            Professional Excellence
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-zinc-900 to-zinc-800 backdrop-blur-xl rounded-full border border-[#BDA985] border-opacity-20 mb-8 shadow-2xl">
+            <div className="w-2 h-2 bg-[#BDA985] rounded-full mr-3 animate-pulse"></div>
+            <span className="text-[#BDA985] font-semibold tracking-wide text-sm uppercase">Professional Excellence</span>
+            <div className="ml-4 px-3 py-1 bg-[#BDA985] bg-opacity-10 rounded-full">
+              <span className="text-white text-xs font-bold">ELITE</span>
+            </div>
           </div>
           
-          <h2 className="text-4xl md:text-5xl font-bold text-[#005b4c] mb-6">
-            WE ARE EXPERT IN
+          <h2 className="mb-8">
+            <div className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.9] mb-4">
+              <span className="block text-white">WE ARE</span>
+              <span className="block bg-gradient-to-r from-[#BDA985] via-[#d4c4a0] to-[#BDA985] bg-clip-text text-transparent">EXPERT IN</span>
+            </div>
           </h2>
           
-          <div className="w-24 h-1 bg-gradient-to-r from-[#bda985] to-[#4b8178] mx-auto mb-6"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#BDA985] to-transparent mx-auto mb-8 opacity-60"></div>
           
-          <p className="text-xl text-[#4b8178] max-w-3xl mx-auto leading-relaxed">
-            Areas Of Legal Practice
+          <p className="text-xl md:text-2xl text-zinc-300 font-light leading-relaxed max-w-3xl mx-auto">
+            Areas Of <span className="text-[#BDA985]">Legal Practice</span> & Strategic Excellence
           </p>
         </div>
 
         {/* Expertise Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {expertiseAreas.map((area, index) => {
             const IconComponent = area.icon;
             return (
               <div
                 key={index}
-                className="group bg-white rounded-2xl p-8 shadow-lg border border-[#c3fcf2] border-opacity-30 hover:shadow-2xl hover:border-[#bda985] transition-all duration-300 hover:-translate-y-2"
+                className="group relative bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl p-8 border border-zinc-800 hover:border-[#BDA985] hover:border-opacity-50 shadow-2xl hover:shadow-[#BDA985]/10 transition-all duration-500 hover:-translate-y-3"
               >
+                {/* Premium Badge */}
+                <div className="absolute top-4 right-4 flex items-center text-[#BDA985] text-xs">
+                  <Star className="w-3 h-3 mr-1 fill-current" />
+                  <span className="font-semibold">Premium</span>
+                </div>
+
                 {/* Icon */}
-                <div className="w-16 h-16 bg-gradient-to-br from-[#bda985] to-[#4b8178] rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <IconComponent className="w-8 h-8 text-white" />
+                <div className="relative mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-br from-[#BDA985] to-[#d4c4a0] bg-opacity-10 rounded-2xl flex items-center justify-center group-hover:bg-opacity-20 transition-all duration-500 group-hover:scale-110">
+                    <IconComponent className="w-10 h-10 text-white" />
+                  </div>
+                  <div className="absolute -inset-2 bg-gradient-to-r from-[#BDA985] to-transparent opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-2xl font-bold text-[#005b4c] mb-4 group-hover:text-[#4b8178] transition-colors duration-300">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 group-hover:text-[#BDA985] transition-colors duration-300">
                   {area.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-[#4b8178] mb-6 leading-relaxed text-sm">
+                <p className="text-zinc-400 mb-8 leading-relaxed">
                   {area.description}
                 </p>
 
                 {/* Features */}
-                <div className="space-y-2 mb-6">
+                <div className="space-y-3 mb-8">
                   {area.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#bda985] rounded-full mr-3"></div>
-                      <span className="text-[#005b4c]">{feature}</span>
+                    <div key={featureIndex} className="flex items-center group/feature">
+                      <div className="w-2 h-2 bg-[#BDA985] rounded-full mr-4 group-hover/feature:scale-150 transition-transform duration-300"></div>
+                      <span className="text-zinc-300 font-medium group-hover/feature:text-white transition-colors duration-300">{feature}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Connect Button */}
-                <button className="w-full bg-[#005b4c] text-[#c3fcf2] py-3 px-6 rounded-lg font-semibold hover:bg-[#bda985] hover:text-[#005b4c] transition-all duration-300 flex items-center justify-center group">
-                  Connect to me
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                <button className="group/btn relative overflow-hidden w-full bg-[#BDA985] text-zinc-900 py-4 px-6 rounded-lg font-bold text-sm uppercase tracking-wide hover:shadow-lg hover:shadow-[#BDA985]/25 transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#d4c4a0] to-[#BDA985] translate-x-[-100%] group-hover/btn:translate-x-0 transition-transform duration-300"></div>
+                  <div className="relative flex items-center justify-center">
+                    Connect to me
+                    <ArrowRight className="ml-3 w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" />
+                  </div>
                 </button>
+
+                {/* Decorative Elements */}
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-[#BDA985] bg-opacity-5 rotate-45"></div>
+                <div className="absolute -top-2 -left-2 w-4 h-4 bg-[#BDA985] bg-opacity-10 rotate-45"></div>
               </div>
             );
           })}
         </div>
 
-        {/* Bottom Statistics */}
-        <div className="mt-20 bg-gradient-to-r from-[#005b4c] to-[#4b8178] rounded-2xl p-8 md:p-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center">
-              <MapPin className="w-12 h-12 text-[#bda985] mb-4" />
-              <h4 className="text-3xl font-bold text-[#c3fcf2] mb-2">4 Countries</h4>
-              <p className="text-[#c3fcf2] opacity-80">UAE, Bahrain, Egypt, Iraq</p>
-            </div>
-            
-            <div className="flex flex-col items-center">
-              <Users className="w-12 h-12 text-[#bda985] mb-4" />
-              <h4 className="text-3xl font-bold text-[#c3fcf2] mb-2">Expert Team</h4>
-              <p className="text-[#c3fcf2] opacity-80">Qualified Legal & Financial Professionals</p>
-            </div>
-            
-            <div className="flex flex-col items-center">
-              <Shield className="w-12 h-12 text-[#bda985] mb-4" />
-              <h4 className="text-3xl font-bold text-[#c3fcf2] mb-2">Full Compliance</h4>
-              <p className="text-[#c3fcf2] opacity-80">Regulatory Standards Met</p>
+        {/* Premium Statistics Section */}
+        <div className="relative bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-900 rounded-3xl p-12 md:p-16 border border-zinc-800 shadow-2xl overflow-hidden">
+          {/* Background Elements */}
+          <div className="absolute inset-0">
+            <div className="absolute top-8 right-8 w-32 h-32 bg-gradient-radial from-[#BDA985] to-transparent opacity-5 rounded-full blur-xl"></div>
+            <div className="absolute bottom-8 left-8 w-24 h-24 bg-gradient-radial from-[#BDA985] to-transparent opacity-10 rounded-full blur-lg"></div>
+          </div>
+
+          {/* Elite Badge */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#BDA985] to-[#d4c4a0] bg-opacity-10 rounded-full border border-[#BDA985] border-opacity-30">
+              <Award className="w-5 h-5 text-white mr-3" />
+              <span className="text-white font-bold text-sm uppercase tracking-wider">Global Excellence</span>
             </div>
           </div>
+
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+            <div className="group flex flex-col items-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#BDA985] to-[#d4c4a0] bg-opacity-10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-opacity-20 transition-all duration-300 group-hover:scale-110">
+                <MapPin className="w-10 h-10 text-white" />
+              </div>
+              <h4 className="text-4xl md:text-5xl font-black text-white mb-3 group-hover:text-[#BDA985] transition-colors duration-300">4</h4>
+              <h5 className="text-xl font-bold text-[#BDA985] mb-2 uppercase tracking-wide">Countries</h5>
+              <p className="text-zinc-400 font-light">UAE, Bahrain, Egypt, Iraq</p>
+            </div>
+            
+            <div className="group flex flex-col items-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#BDA985] to-[#d4c4a0] bg-opacity-10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-opacity-20 transition-all duration-300 group-hover:scale-110">
+                <Users className="w-10 h-10 text-white" />
+              </div>
+              <h4 className="text-4xl md:text-5xl font-black text-white mb-3 group-hover:text-[#BDA985] transition-colors duration-300">15+</h4>
+              <h5 className="text-xl font-bold text-[#BDA985] mb-2 uppercase tracking-wide">Expert Team</h5>
+              <p className="text-zinc-400 font-light">Qualified Legal & Financial Professionals</p>
+            </div>
+            
+            <div className="group flex flex-col items-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#BDA985] to-[#d4c4a0] bg-opacity-10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-opacity-20 transition-all duration-300 group-hover:scale-110">
+                <Shield className="w-10 h-10 text-white" />
+              </div>
+              <h4 className="text-4xl md:text-5xl font-black text-white mb-3 group-hover:text-[#BDA985] transition-colors duration-300">100%</h4>
+              <h5 className="text-xl font-bold text-[#BDA985] mb-2 uppercase tracking-wide">Compliance</h5>
+              <p className="text-zinc-400 font-light">Regulatory Standards Met</p>
+            </div>
+          </div>
+
+          {/* Decorative Elements */}
+          <div className="absolute -top-4 -left-4 w-8 h-8 bg-[#BDA985] bg-opacity-5 rotate-45"></div>
+          <div className="absolute -bottom-4 -right-4 w-6 h-6 bg-[#BDA985] bg-opacity-10 rotate-45"></div>
         </div>
+      </div>
+
+      {/* Bottom Accent */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <div className="h-1 bg-gradient-to-r from-transparent via-[#BDA985] to-transparent opacity-40"></div>
       </div>
     </section>
   );
