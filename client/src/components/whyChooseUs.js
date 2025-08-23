@@ -107,7 +107,7 @@ export default function WhyChooseUs() {
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#BDA985] to-transparent mx-auto mb-8 opacity-60"></div>
           
           <p className="text-xl md:text-2xl text-zinc-300 font-light leading-relaxed max-w-4xl mx-auto">
-            Experience the difference of working with the Middle East's most 
+            Experience the difference of working with the Middle East&apos;s most
             <span className="text-[#BDA985]"> trusted legal and financial</span> licensing specialists
           </p>
         </div>
