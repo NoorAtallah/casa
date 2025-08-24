@@ -40,6 +40,7 @@ const LawyerHeroSection = () => {
     }
   ];
 
+
   const testimonials = [
     {
       name: "Alessandro Romano",
@@ -469,11 +470,11 @@ const LawyerHeroSection = () => {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          background: rgba(255,255,255,0.2);
+          background: rgba(255,255,255,0.9);
           backdrop-filter: blur(10px);
           border: 1px solid rgba(255,255,255,0.3);
-          width: 50px;
-          height: 50px;
+          width: 45px;
+          height: 45px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -481,19 +482,21 @@ const LawyerHeroSection = () => {
           cursor: pointer;
           transition: all 0.3s ease;
           z-index: 20;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .slider-nav:hover {
-          background: rgba(255,255,255,0.3);
-          transform: translateY(-50%) scale(1.1);
+          background: rgba(255,255,255,1);
+          transform: translateY(-50%) scale(1.05);
+          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
         .nav-prev {
-          left: 20px;
+          left: 15px;
         }
 
         .nav-next {
-          right: 20px;
+          right: 15px;
         }
 
         .progress-bar {
@@ -585,7 +588,7 @@ const LawyerHeroSection = () => {
 
             <div className="testimonial-card">
               <Quote size={20} color="#bda985" style={{marginBottom: '10px'}} />
-              <p className="testimonial-text">"{currentTestimonial.text}"</p>
+              <p className="testimonial-text">&ldquo;{currentTestimonial.text}&rdquo;</p>
               <div className="testimonial-author">
                 <div>
                   <div className="author-info">{currentTestimonial.name}</div>
@@ -616,20 +619,17 @@ const LawyerHeroSection = () => {
                     <h3 className="slide-title">{slide.title}</h3>
                     <p className="slide-subtitle">{slide.subtitle}</p>
                     <p className="slide-description">{slide.description}</p>
-                    {/* <div className="slide-stat">
-                      <div className="stat-value">{slide.stats.value}</div>
-                      <div className="stat-label">{slide.stats.label}</div>
-                    </div> */}
+                  
                   </div>
                 </div>
               ))}
 
               <button className="slider-nav nav-prev" onClick={prevSlide}>
-                <ChevronLeft size={24} color="#ffffff" />
+                <ChevronLeft size={20} color="#333333" />
               </button>
               
               <button className="slider-nav nav-next" onClick={nextSlide}>
-                <ChevronRight size={24} color="#ffffff" />
+                <ChevronRight size={20} color="#333333" />
               </button>
 
               <div className="slider-controls">
