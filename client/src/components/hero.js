@@ -40,7 +40,6 @@ const LawyerHeroSection = () => {
     }
   ];
 
-
   const testimonials = [
     {
       name: "Alessandro Romano",
@@ -76,7 +75,6 @@ const LawyerHeroSection = () => {
     };
     document.head.appendChild(script);
 
-    // Auto-play slider
     const interval = setInterval(() => {
       if (isAutoPlaying) {
         setCurrentSlide(prev => (prev + 1) % slides.length);
@@ -99,9 +97,7 @@ const LawyerHeroSection = () => {
 
   const initAnimations = () => {
     if (!window.gsap) return;
-
     const { gsap } = window;
-
     gsap.fromTo(textRef.current, 
       { x: -50, opacity: 0 },
       { x: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 0.3 }
@@ -110,7 +106,6 @@ const LawyerHeroSection = () => {
 
   const animateSlideChange = () => {
     if (!window.gsap) return;
-
     const { gsap } = window;
     const slideContent = sliderRef.current?.querySelector('.slide-content');
     const slideImage = sliderRef.current?.querySelector('.slide-image');
@@ -146,511 +141,183 @@ const LawyerHeroSection = () => {
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
-  const currentSlideData = slides[currentSlide];
   const currentTestimonial = testimonials[currentSlide % testimonials.length];
 
   return (
-    <>
-      <style jsx>{`
-        .hero-container {
-          min-height: 100vh;
-          background: #ffffff;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .background-pattern {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: 
-            linear-gradient(90deg, rgba(189,169,133,0.03) 1px, transparent 1px),
-            linear-gradient(rgba(189,169,133,0.03) 1px, transparent 1px);
-          background-size: 50px 50px;
-          animation: patternMove 30s linear infinite;
-          opacity: 0.5;
-        }
-
-        @keyframes patternMove {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(50px, 50px); }
-        }
-
-        .main-layout {
-          position: relative;
-          z-index: 10;
-          min-height: 100vh;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 0 2rem;
-        }
-
-        .content-section {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          padding: 4rem 3rem 4rem 0;
-        }
-
-        .slider-section {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(135deg, rgba(248,249,250,0.8) 0%, rgba(255,255,255,0.9) 100%);
-          backdrop-filter: blur(10px);
-        }
-
-        .brand-badge {
-          display: inline-block;
-          background: rgba(189,169,133,0.1);
-          color: #000000;
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 0.8rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          margin-bottom: 2rem;
-          border: 1px solid rgba(189,169,133,0.3);
-        }
-
-        .main-title {
-          font-size: 3rem;
-          font-weight: 800;
-          line-height: 1.1;
-          color: #000000;
-          margin-bottom: 1.5rem;
-          letter-spacing: -0.01em;
-        }
-
-        .title-highlight {
-          color: #bda985;
-          position: relative;
-        }
-
-        .main-description {
-          font-size: 1.1rem;
-          font-weight: 400;
-          color: #000000;
-          line-height: 1.6;
-          margin-bottom: 2.5rem;
-          opacity: 0.85;
-          max-width: 480px;
-        }
-
-        .action-row {
-          display: flex;
-          gap: 1.5rem;
-          margin-bottom: 3rem;
-          flex-wrap: wrap;
-        }
-
-        .btn-primary {
-          background: #000000;
-          color: #ffffff;
-          border: none;
-          padding: 16px 32px;
-          font-size: 1rem;
-          font-weight: 600;
-          cursor: pointer;
-          border-radius: 8px;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .btn-primary:hover {
-          background: #bda985;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(189,169,133,0.3);
-        }
-
-        .btn-secondary {
-          background: transparent;
-          color: #000000;
-          border: 2px solid #000000;
-          padding: 14px 30px;
-          font-size: 1rem;
-          font-weight: 600;
-          cursor: pointer;
-          border-radius: 8px;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .btn-secondary:hover {
-          background: #000000;
-          color: #ffffff;
-        }
-
-        .testimonial-card {
-          background: rgba(255,255,255,0.9);
-          backdrop-filter: blur(10px);
-          padding: 1.5rem;
-          border-radius: 12px;
-          border: 1px solid rgba(189,169,133,0.2);
-          box-shadow: 0 8px 25px rgba(189,169,133,0.1);
-          margin-top: 2rem;
-        }
-
-        .testimonial-text {
-          font-size: 0.95rem;
-          color: #000000;
-          line-height: 1.5;
-          margin-bottom: 1rem;
-          font-style: italic;
-        }
-
-        .testimonial-author {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .author-info {
-          font-size: 0.85rem;
-          color: #000000;
-          font-weight: 600;
-        }
-
-        .author-company {
-          font-size: 0.75rem;
-          color: #000000;
-          opacity: 0.7;
-        }
-
-        .rating {
-          display: flex;
-          gap: 2px;
-        }
-
-        .slider-container {
-          position: relative;
-          width: 100%;
-          max-width: 500px;
-          height: 600px;
-          overflow: hidden;
-          border-radius: 16px;
-          box-shadow: 0 20px 60px rgba(189,169,133,0.2);
-        }
-
-        .slide {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          opacity: 0;
-          transform: translateX(100%);
-          transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .slide.active {
-          opacity: 1;
-          transform: translateX(0);
-        }
-
-        .slide.prev {
-          transform: translateX(-100%);
-        }
-
-        .slide-background {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-        }
-
-        .slide-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(135deg, 
-            rgba(0,0,0,0.7) 0%, 
-            rgba(0,0,0,0.4) 50%, 
-            rgba(189,169,133,0.3) 100%
-          );
-        }
-
-        .slide-content {
-          position: relative;
-          z-index: 10;
-          padding: 3rem 2rem;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          color: #ffffff;
-        }
-
-        .slide-title {
-          font-size: 2rem;
-          font-weight: 700;
-          margin-bottom: 1rem;
-          line-height: 1.2;
-        }
-
-        .slide-subtitle {
-          font-size: 1rem;
-          font-weight: 500;
-          margin-bottom: 1rem;
-          opacity: 0.9;
-        }
-
-        .slide-description {
-          font-size: 0.9rem;
-          line-height: 1.5;
-          margin-bottom: 2rem;
-          opacity: 0.85;
-        }
-
-        .slide-stat {
-          background: rgba(255,255,255,0.15);
-          backdrop-filter: blur(10px);
-          padding: 1rem;
-          border-radius: 8px;
-          text-align: center;
-          border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .stat-value {
-          font-size: 1.8rem;
-          font-weight: 700;
-          line-height: 1;
-        }
-
-        .stat-label {
-          font-size: 0.75rem;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          opacity: 0.8;
-        }
-
-        .slider-controls {
-          position: absolute;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 12px;
-          z-index: 20;
-        }
-
-        .control-dot {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: rgba(255,255,255,0.4);
-          cursor: pointer;
-          transition: all 0.3s ease;
-          border: 2px solid transparent;
-        }
-
-        .control-dot.active {
-          background: #ffffff;
-          border-color: #bda985;
-        }
-
-        .slider-nav {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          background: rgba(255,255,255,0.9);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,255,255,0.3);
-          width: 45px;
-          height: 45px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          z-index: 20;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .slider-nav:hover {
-          background: rgba(255,255,255,1);
-          transform: translateY(-50%) scale(1.05);
-          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-
-        .nav-prev {
-          left: 15px;
-        }
-
-        .nav-next {
-          right: 15px;
-        }
-
-        .progress-bar {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          height: 3px;
-          background: #bda985;
-          transition: width 0.1s ease;
-          z-index: 30;
-        }
-
-        @media (max-width: 1024px) {
-          .main-layout {
-            grid-template-columns: 1fr;
-            gap: 3rem;
-          }
-          
-          .slider-section {
-            order: -1;
-            min-height: 60vh;
-          }
-          
-          .content-section {
-            padding: 2rem 0;
-          }
-          
-          .main-title {
-            font-size: 2.5rem;
-          }
-          
-          .slider-container {
-            height: 500px;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .main-layout {
-            padding: 0 1.5rem;
-          }
-          
-          .action-row {
-            flex-direction: column;
-          }
-          
-          .slider-container {
-            height: 400px;
-          }
-          
-          .slide-content {
-            padding: 2rem 1.5rem;
-          }
-          
-          .slide-title {
-            font-size: 1.5rem;
-          }
-        }
-      `}</style>
-
-      <div ref={containerRef} className="hero-container">
-        <div className="background-pattern"></div>
-        
-        <div className="main-layout">
-          <div ref={textRef} className="content-section">
-            <div className="brand-badge">Casa Di Consiglio</div>
-
-            <h1 className="main-title">
-              Boutique Legal 
-              <span className="title-highlight"> Counseling Excellence</span>
-            </h1>
-
-            <p className="main-description">
-              Personalized and tailored legal advice for corporates, legal firms, and individuals. 
-              Our boutique approach ensures every client receives dedicated attention and 
-              strategic counsel across all practice areas.
-            </p>
-
-            <div className="action-row">
-              <button className="btn-primary">
-                Schedule Consultation
-                <ArrowRight size={18} />
-              </button>
-              
-              <button className="btn-secondary">
-                <Phone size={18} />
-                Contact Us
-              </button>
-            </div>
-
-            <div className="testimonial-card">
-              <Quote size={20} color="#bda985" style={{marginBottom: '10px'}} />
-              <p className="testimonial-text">&ldquo;{currentTestimonial.text}&rdquo;</p>
-              <div className="testimonial-author">
-                <div>
-                  <div className="author-info">{currentTestimonial.name}</div>
-                  <div className="author-company">{currentTestimonial.company}</div>
-                </div>
-                <div className="rating">
-                  {[...Array(currentTestimonial.rating)].map((_, i) => (
-                    <Star key={i} size={14} fill="#bda985" color="#bda985" />
-                  ))}
-                </div>
-              </div>
-            </div>
+    <div ref={containerRef} className="min-h-screen bg-white font-sans relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div 
+          className="w-full h-full animate-pulse"
+          style={{
+            background: `
+              linear-gradient(90deg, rgba(189,169,133,0.03) 1px, transparent 1px),
+              linear-gradient(rgba(189,169,133,0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px'
+          }}
+        />
+      </div>
+      
+      <div className="relative z-10 min-h-screen grid lg:grid-cols-2 max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Content Section */}
+        <div ref={textRef} className="flex flex-col justify-center py-16 lg:py-20 lg:pr-12">
+          {/* Brand Badge */}
+          <div className="inline-block px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider mb-8 shadow-sm"
+               style={{
+                 background: 'rgba(189,169,133,0.1)',
+                 border: '1px solid rgba(189,169,133,0.3)',
+                 color: '#000000'
+               }}>
+            Casa Di Consiglio
           </div>
 
-          <div className="slider-section">
-            <div ref={sliderRef} className="slider-container">
-              {slides.map((slide, index) => (
-                <div 
-                  key={index}
-                  className={`slide ${index === currentSlide ? 'active' : index === currentSlide - 1 ? 'prev' : ''}`}
-                >
-                  <div 
-                    className="slide-background slide-image"
-                    style={{backgroundImage: `url(${slide.image})`}}
-                  ></div>
-                  <div className="slide-overlay"></div>
-                  <div className="slide-content">
-                    <h3 className="slide-title">{slide.title}</h3>
-                    <p className="slide-subtitle">{slide.subtitle}</p>
-                    <p className="slide-description">{slide.description}</p>
-                  
-                  </div>
-                </div>
-              ))}
+          {/* Main Title */}
+          <h1 className="text-4xl lg:text-5xl xl:text-5xl font-black leading-tight text-black mb-6 tracking-tight">
+            Boutique Legal 
+            <span className="block lg:inline" style={{color: '#000000'}}> Counseling Excellence</span>
+          </h1>
 
-              <button className="slider-nav nav-prev" onClick={prevSlide}>
-                <ChevronLeft size={20} color="#333333" />
-              </button>
-              
-              <button className="slider-nav nav-next" onClick={nextSlide}>
-                <ChevronRight size={20} color="#333333" />
-              </button>
+          {/* Description */}
+          <p className="text-lg text-gray-800 leading-relaxed mb-10 max-w-lg opacity-90">
+            Personalized and tailored legal advice for corporates, legal firms, and individuals. 
+            Our boutique approach ensures every client receives dedicated attention and 
+            strategic counsel across all practice areas.
+          </p>
 
-              <div className="slider-controls">
-                {slides.map((_, index) => (
-                  <div 
-                    key={index}
-                    className={`control-dot ${index === currentSlide ? 'active' : ''}`}
-                    onClick={() => goToSlide(index)}
-                  ></div>
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-12">
+            <button className="bg-black text-white px-8 py-4 text-base font-semibold rounded-lg 
+                             transition-all duration-300 flex items-center justify-center gap-3
+                             active:scale-95 group hover:-translate-y-1 hover:shadow-2xl"
+                    style={{'--hover-bg': '#bda985'}}
+                    onMouseEnter={(e) => e.target.style.background = '#bda985'}
+                    onMouseLeave={(e) => e.target.style.background = '#000000'}>
+              Schedule Consultation
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            
+            <button className="bg-transparent text-black border-2 border-black px-8 py-4 text-base font-semibold 
+                             rounded-lg transition-all duration-300 flex items-center justify-center gap-3
+                             hover:bg-black hover:text-white hover:shadow-lg active:scale-95">
+              <Phone size={18} />
+              Contact Us
+            </button>
+          </div>
+
+          {/* Testimonial Card */}
+          <div className="p-6 rounded-2xl shadow-xl transition-all duration-300"
+               style={{
+                 background: 'rgba(255,255,255,0.9)',
+                 backdropFilter: 'blur(10px)',
+                 border: '1px solid rgba(189,169,133,0.2)',
+                 boxShadow: '0 8px 25px rgba(189,169,133,0.1)'
+               }}>
+            <Quote size={20} style={{color: '#bda985'}} className="mb-3" />
+            <p className="text-gray-800 leading-relaxed mb-4 italic">
+              "{currentTestimonial.text}"
+            </p>
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="text-sm font-semibold text-black">{currentTestimonial.name}</div>
+                <div className="text-xs text-gray-600">{currentTestimonial.company}</div>
+              </div>
+              <div className="flex gap-1">
+                {[...Array(currentTestimonial.rating)].map((_, i) => (
+                  <Star key={i} size={14} fill="#bda985" style={{color: '#bda985'}} />
                 ))}
               </div>
-
-              <div 
-                className="progress-bar"
-                style={{width: `${((currentSlide + 1) / slides.length) * 100}%`}}
-              ></div>
             </div>
           </div>
         </div>
+
+        {/* Slider Section */}
+        <div className="flex items-center justify-center bg-gradient-to-br from-gray-50/80 to-white/90 
+                        backdrop-blur-sm order-first lg:order-last min-h-[60vh] lg:min-h-full">
+          <div ref={sliderRef} className="relative w-full max-w-lg h-96 lg:h-[600px] overflow-hidden 
+                                         rounded-2xl shadow-2xl shadow-black/20">
+            {/* Slides */}
+            {slides.map((slide, index) => (
+              <div 
+                key={index}
+                className={`absolute inset-0 transition-all duration-700 ease-out slide-content
+                  ${index === currentSlide 
+                    ? 'opacity-100 translate-x-0' 
+                    : index < currentSlide 
+                      ? 'opacity-0 -translate-x-full' 
+                      : 'opacity-0 translate-x-full'
+                  }`}
+              >
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat slide-image"
+                  style={{backgroundImage: `url(${slide.image})`}}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" 
+                     style={{background: 'linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(189,169,133,0.3) 100%)'}} />
+                
+                <div className="relative z-10 p-8 lg:p-12 h-full flex flex-col justify-end text-white">
+                  <h3 className="text-2xl lg:text-3xl font-bold mb-4 leading-tight">
+                    {slide.title}
+                  </h3>
+                  <p className="text-base font-medium mb-4 opacity-90">
+                    {slide.subtitle}
+                  </p>
+                  <p className="text-sm leading-relaxed mb-8 opacity-85">
+                    {slide.description}
+                  </p>
+                  
+           
+                </div>
+              </div>
+            ))}
+
+            {/* Navigation Buttons */}
+            <button 
+              onClick={prevSlide}
+              className="absolute left-4 top-8 bg-white/90 backdrop-blur-md 
+                         border border-white/30 w-10 h-10 rounded-full flex items-center justify-center
+                         hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg z-20"
+            >
+              <div className="w-0 h-0 border-r-[8px] border-r-gray-800 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent -ml-1" />
+            </button>
+            
+            <button 
+              onClick={nextSlide}
+              className="absolute right-4 top-8 bg-white/90 backdrop-blur-md 
+                         border border-white/30 w-10 h-10 rounded-full flex items-center justify-center
+                         hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg z-20"
+            >
+              <div className="w-0 h-0 border-l-[8px] border-l-gray-800 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent -mr-1" />
+            </button>
+
+            {/* Slide Indicators */}
+            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+              {slides.map((_, index) => (
+                                  <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentSlide 
+                      ? 'bg-white' 
+                      : 'bg-white/40 hover:bg-white/70'
+                  }`}
+                  style={index === currentSlide ? {border: '2px solid #bda985'} : {}}
+                />
+              ))}
+            </div>
+
+            {/* Progress Bar */}
+            <div 
+              className="absolute bottom-0 left-0 h-1 transition-all duration-150 z-30"
+              style={{
+                width: `${((currentSlide + 1) / slides.length) * 100}%`,
+                background: '#bda985'
+              }}
+            />
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
