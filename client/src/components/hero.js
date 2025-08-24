@@ -315,7 +315,7 @@ const ParallaxLawyerHero = () => {
             >
               <Quote size={20} style={{color: '#bda985'}} className="mb-3" />
               <p className="text-gray-800 leading-relaxed mb-4 italic transition-opacity duration-500">
-                "{currentTestimonial.text}"
+                &ldquo;{currentTestimonial.text}&rdquo;
               </p>
               <div className="flex justify-between items-center">
                 <div>
