@@ -1,487 +1,481 @@
 'use client';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { ArrowRight, Phone, Quote, Star, Scale, Building, Users, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Building, TrendingUp, Scale, Users, ArrowRight, Award, Shield, Briefcase, Home, Heart, Gavel } from 'lucide-react';
 
-const ParallaxLawyerHero = () => {
-  const containerRef = useRef(null);
-  const parallaxRef = useRef(null);
-  const contentRef = useRef(null);
-  const [scrollY, setScrollY] = useState(0);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const rafRef = useRef();
+const LawFirmHero = () => {
+  const [isVisible, setIsVisible] = useState(false);
 
-  const slides = [
+  const practiceAreas = [
     {
       title: "Corporate & Commercial Law",
-      subtitle: "Strategic business solutions and corporate structuring",
-      description: "Comprehensive corporate advice including mergers, acquisitions, commercial contracts, and business structuring. We guide corporates and legal firms through complex commercial transactions.",
+      subtitle: "Comprehensive business legal solutions",
+      description: "Corporate structuring, commercial contracts, mergers & acquisitions, and employment law guidance for businesses of all sizes.",
       stats: { value: "200+", label: "Corporate Clients" },
       icon: Building,
-      image: "https://dawoudlaw.com/wp-content/uploads/2020/10/service-4.jpg"
+      areas: ["Corporate", "Commercial", "Employment", "Construction"]
     },
     {
       title: "Banking & Finance",
-      subtitle: "Expert financial legal advisory services", 
-      description: "Specialized counsel in banking regulations, financial instruments, investment structuring, and compliance. Our expertise spans traditional banking and modern fintech solutions.",
+      subtitle: "Expert financial and investment counsel",
+      description: "Banking regulations, investment structuring, financial compliance, and specialized advice for financial institutions.",
       stats: { value: "$500M+", label: "Deals Advised" },
       icon: TrendingUp,
-      image: "https://www.gunesgunes.com/wp-content/uploads/2022/01/bankacilik-ve-finans-hukuku.jpeg"
+      areas: ["Banking & Finance", "Investments"]
     },
     {
       title: "Dispute Resolution & Litigation",
-      subtitle: "Effective resolution of complex disputes",
-      description: "From arbitration to court litigation, we provide strategic dispute resolution services. Our approach combines negotiation skills with robust legal representation.",
+      subtitle: "Strategic dispute resolution services",
+      description: "Arbitration, litigation, white collar crime defense, and criminal law representation with proven track record.",
       stats: { value: "95%", label: "Success Rate" },
       icon: Scale,
-      image: "https://www.dajani-associates.com/wp-content/uploads/2024/06/dispute-resolution.png"
+      areas: ["Arbitration", "Litigation", "Dispute Resolution", "Criminal", "White Collar Crime"]
     },
     {
-      title: "Tax & Private Client Services", 
+      title: "Private Client & Family Services",
       subtitle: "Personalized legal and tax advisory",
-      description: "Comprehensive tax planning, private client services, and family business structuring. We provide tailored solutions for high-net-worth individuals and family enterprises.",
+      description: "Family business structuring, private client services, tax planning, and healthcare law for individuals and families.",
       stats: { value: "150+", label: "Private Clients" },
       icon: Users,
-      image: "https://cdn.neamb.com/-/media/images/seiumb/benefits/seiu-legal-services-program/seiu_legal_services_program_1152811687_624x426.jpg?h=426&iar=0&w=624&hash=C6E2610001F2AEC07A8F42469352C1FF"
+      areas: ["Family Business", "Private Client", "Tax", "Healthcare"]
     }
   ];
-
-  const testimonials = [
-    {
-      name: "Alessandro Romano",
-      company: "Romano Industries Ltd.",
-      text: "Casa Di Consiglio provided exceptional corporate restructuring advice. Their personalized approach made all the difference in our complex merger.",
-      rating: 5
-    },
-    {
-      name: "Maria Fernandez", 
-      company: "Fernandez & Partners Law Firm",
-      text: "Outstanding banking law expertise. They guided us through regulatory compliance with precision and professionalism.",
-      rating: 5
-    },
-    {
-      name: "David Mitchell",
-      company: "Private Client", 
-      text: "Their dispute resolution team exceeded expectations. The arbitration process was handled with remarkable skill and efficiency.",
-      rating: 5
-    },
-    {
-      name: "Sophie Laurent",
-      company: "Laurent Family Business",
-      text: "Excellent tax planning and private client services. Casa Di Consiglio truly understands the needs of family enterprises.",
-      rating: 5
-    }
-  ];
-
-  // Optimized scroll handler with requestAnimationFrame
-  const handleScroll = useCallback(() => {
-    if (rafRef.current) return;
-    
-    rafRef.current = requestAnimationFrame(() => {
-      setScrollY(window.scrollY);
-      rafRef.current = null;
-    });
-  }, []);
-
-  // Smooth mouse tracking with lerp interpolation
-  const handleMouseMove = useCallback((e) => {
-    const targetX = (e.clientX / window.innerWidth - 0.5) * 15;
-    const targetY = (e.clientY / window.innerHeight - 0.5) * 15;
-    
-    setMousePosition(prev => ({
-      x: prev.x + (targetX - prev.x) * 0.1,
-      y: prev.y + (targetY - prev.y) * 0.1
-    }));
-  }, []);
-
-  // Smooth slide transitions
-  const changeSlide = useCallback((newIndex) => {
-    if (isTransitioning || newIndex === currentSlide) return;
-    
-    setIsTransitioning(true);
-    setCurrentSlide(newIndex);
-    
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 800);
-  }, [currentSlide, isTransitioning]);
-
-  const nextSlide = useCallback(() => {
-    changeSlide((currentSlide + 1) % slides.length);
-  }, [currentSlide, slides.length, changeSlide]);
-
-  const prevSlide = useCallback(() => {
-    changeSlide((currentSlide - 1 + slides.length) % slides.length);
-  }, [currentSlide, slides.length, changeSlide]);
 
   useEffect(() => {
-    let mouseTimer;
-    
-    const smoothMouseMove = (e) => {
-      clearTimeout(mouseTimer);
-      mouseTimer = setTimeout(() => handleMouseMove(e), 8);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('mousemove', smoothMouseMove, { passive: true });
-
-    const interval = setInterval(() => {
-      if (!isTransitioning) {
-        setCurrentSlide(prev => (prev + 1) % slides.length);
-      }
-    }, 6000);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', smoothMouseMove);
-      clearInterval(interval);
-      clearTimeout(mouseTimer);
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, [handleScroll, handleMouseMove, slides.length, isTransitioning]);
-
-  const currentTestimonial = testimonials[currentSlide];
-  const currentSlideData = slides[currentSlide];
-  const IconComponent = currentSlideData.icon;
+    setIsVisible(true);
+  }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-screen overflow-hidden bg-gray-50">
-      {/* Optimized Parallax Background Layers */}
-      <div className="absolute inset-0 will-change-transform">
-        {/* Subtle pattern overlay with GPU acceleration */}
-        <div 
-          className="absolute inset-0 opacity-20 transition-transform duration-300 ease-out"
-          style={{
-            transform: `translate3d(${mousePosition.x * 0.3}px, ${scrollY * 0.15}px, 0)`,
-            background: `
-              linear-gradient(45deg, rgba(189,169,133,0.05) 25%, transparent 25%),
-              linear-gradient(-45deg, rgba(189,169,133,0.05) 25%, transparent 25%),
-              linear-gradient(45deg, transparent 75%, rgba(189,169,133,0.05) 75%),
-              linear-gradient(-45deg, transparent 75%, rgba(189,169,133,0.05) 75%)
-            `,
-            backgroundSize: '60px 60px',
-            backgroundPosition: '0 0, 0 30px, 30px -30px, -30px 0px'
-          }}
-        />
-
-        {/* Optimized floating decorative elements */}
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute opacity-8 transition-all duration-500 ease-out will-change-transform"
-            style={{
-              left: `${15 + (i * 14)}%`,
-              top: `${20 + (i * 10)}%`,
-              width: `${25 + i * 8}px`,
-              height: `${25 + i * 8}px`,
-              background: '#bda985',
-              borderRadius: i % 2 === 0 ? '50%' : '20%',
-              transform: `
-                translate3d(
-                  ${mousePosition.x * (0.4 + i * 0.08)}px, 
-                  ${mousePosition.y * (0.2 + i * 0.04) + scrollY * (0.08 + i * 0.015)}px, 
-                  0
-                ) 
-                rotate(${scrollY * 0.03 + i * 10}deg)
-              `,
-              filter: `blur(${i * 0.5}px)`
-            }}
-          />
-        ))}
+    <div className="min-h-screen bg-gradient-to-br from-stone-100 via-stone-50 to-amber-50/20 relative overflow-hidden">
+      {/* Elegant floating particles */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-20 w-2 h-2 bg-[#BDA985]/40 rounded-full animate-elegant-float"></div>
+        <div className="absolute top-40 right-32 w-1 h-1 bg-[#BDA985]/60 rounded-full animate-elegant-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-40 left-40 w-3 h-3 bg-[#BDA985]/30 rounded-full animate-elegant-float" style={{animationDelay: '4s'}}></div>
+        <div className="absolute bottom-60 right-20 w-1.5 h-1.5 bg-[#BDA985]/50 rounded-full animate-elegant-float" style={{animationDelay: '1s'}}></div>
       </div>
 
-      {/* Main Content with GPU acceleration */}
-      <div ref={parallaxRef} className="relative z-10 min-h-screen">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center min-h-screen">
+      {/* Subtle geometric lines */}
+      <div className="absolute inset-0">
+        <div className="absolute top-32 left-16 w-24 h-px bg-gradient-to-r from-[#BDA985]/30 to-transparent animate-line-grow"></div>
+        <div className="absolute top-32 left-16 w-px h-24 bg-gradient-to-b from-[#BDA985]/30 to-transparent animate-line-grow" style={{animationDelay: '0.5s'}}></div>
+        <div className="absolute bottom-32 right-16 w-24 h-px bg-gradient-to-l from-[#BDA985]/30 to-transparent animate-line-grow" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-32 right-16 w-px h-24 bg-gradient-to-t from-[#BDA985]/30 to-transparent animate-line-grow" style={{animationDelay: '1.5s'}}></div>
+      </div>
+
+      {/* Boutique credentials */}
+      <div className="absolute top-4 right-4 md:top-8 md:right-8 z-20">
+        <div className={`flex items-center space-x-3 md:space-x-6 ${isVisible ? 'animate-elegant-fade-in' : 'opacity-0'}`} style={{animationDelay: '1s'}}>
+          <div className="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm text-gray-600">
+            <Award className="w-3 h-3 md:w-4 md:h-4 text-[#BDA985]" />
+            <span className="hidden sm:inline">Boutique Firm</span>
+          </div>
+          <div className="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm text-gray-600">
+            <Shield className="w-3 h-3 md:w-4 md:h-4 text-[#BDA985]" />
+            <span className="hidden sm:inline">Personalized Service</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Hero Content */}
+      <div className="relative z-10 pt-16 md:pt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Left Content */}
-          <div 
-            ref={contentRef}
-            className="space-y-8 py-16 will-change-transform"
-            style={{
-              transform: `translate3d(${mousePosition.x * 0.4}px, ${scrollY * -0.12}px, 0)`
-            }}
-          >
-            {/* Brand Badge with enhanced smoothness */}
-            <div 
-              className="relative transition-transform duration-500 ease-out will-change-transform"
-              style={{
-                transform: `translate3d(0, ${scrollY * -0.08}px, 0)`
-              }}
-            >
-              <div 
-                className="inline-block px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider backdrop-blur-sm border-2 transition-all duration-700 ease-out hover:scale-105 shadow-lg"
-                style={{
-                  background: 'rgba(255,255,255,0.95)',
-                  borderColor: '#bda985',
-                  color: '#000000',
-                  boxShadow: '0 8px 25px rgba(189,169,133,0.15)'
-                }}
-              >
-                Casa Di Consiglio
-              </div>
-            </div>
-
-            {/* Dynamic Title with layered parallax */}
-            <div className="space-y-4 relative">
-              <h1 
-                className="text-5xl lg:text-6xl xl:text-7xl font-black leading-none tracking-tight text-black transition-transform duration-500 ease-out will-change-transform"
-                style={{
-                  transform: `translate3d(${mousePosition.x * 0.25}px, ${scrollY * -0.08}px, 0)`
-                }}
-              >
-                Boutique Legal
+          {/* Casa Di Consiglio Brand Title */}
+          <div className="text-center mb-12 md:mb-20">
+            <div className={`${isVisible ? 'animate-elegant-fade-in' : 'opacity-0'}`} style={{animationDelay: '0.8s'}}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-2 tracking-tight">
+                CASA DI
+                <span className="block text-[#BDA985]">CONSIGLIO</span>
               </h1>
-              <h1 
-                className="text-5xl lg:text-6xl xl:text-7xl font-black leading-none tracking-tight transition-transform duration-500 ease-out will-change-transform"
-                style={{
-                  color: '#bda985',
-                  transform: `translate3d(${-mousePosition.x * 0.25}px, ${scrollY * -0.04}px, 0)`
-                }}
-              >
-                Excellence
-              </h1>
-              
-              {/* Decorative line with smooth scaling */}
-              <div 
-                className="w-24 h-1 rounded-full mt-6 transition-transform duration-300 ease-out will-change-transform"
-                style={{
-                  background: 'linear-gradient(90deg, #bda985 0%, transparent 100%)',
-                  transform: `scaleX(${1 + mousePosition.x * 0.008}) translate3d(0, 0, 0)`
-                }}
-              />
-            </div>
-
-            {/* Description with smooth fade */}
-            <p 
-              className="text-xl text-gray-700 leading-relaxed max-w-xl transition-transform duration-500 ease-out will-change-transform"
-              style={{
-                transform: `translate3d(0, ${scrollY * -0.06}px, 0)`
-              }}
-            >
-              Personalized and tailored legal advice for corporates, legal firms, and individuals. 
-              Our boutique approach ensures every client receives dedicated attention and 
-              strategic counsel across all practice areas.
-            </p>
-
-            {/* Interactive Buttons with enhanced hover states */}
-            <div 
-              className="flex flex-col sm:flex-row gap-6 transition-transform duration-500 ease-out will-change-transform"
-              style={{
-                transform: `translate3d(0, ${scrollY * -0.04}px, 0)`
-              }}
-            >
-              <button 
-                className="group relative px-8 py-4 text-lg font-bold rounded-xl overflow-hidden transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-1 shadow-xl will-change-transform"
-                style={{
-                  background: '#000000',
-                  color: 'white'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = '#bda985';
-                  e.target.style.transform = 'scale(1.05) translateY(-4px) translate3d(0, 0, 0)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = '#000000';
-                  e.target.style.transform = 'scale(1) translateY(0) translate3d(0, 0, 0)';
-                }}
-              >
-                <span className="relative flex items-center gap-3">
-                  Schedule Consultation
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300 ease-out" />
-                </span>
-              </button>
-              
-              <button className="group px-8 py-4 text-lg font-bold rounded-xl border-2 border-gray-800 text-gray-800 transition-all duration-500 ease-out hover:bg-gray-800 hover:text-white hover:scale-105">
-                <span className="flex items-center gap-3">
-                  <Phone size={18} className="group-hover:rotate-6 transition-transform duration-300 ease-out" />
-                  Contact Us
-                </span>
-              </button>
-            </div>
-
-            {/* Smooth Testimonial Card */}
-            <div 
-              className="p-6 rounded-2xl backdrop-blur-sm border transition-all duration-700 ease-out hover:scale-105 will-change-transform"
-              style={{
-                background: 'rgba(255,255,255,0.95)',
-                borderColor: 'rgba(189,169,133,0.2)',
-                boxShadow: '0 10px 30px rgba(189,169,133,0.1)',
-                transform: `translate3d(${mousePosition.y * 0.15}px, ${scrollY * -0.02}px, 0)`
-              }}
-            >
-              <Quote size={20} style={{color: '#bda985'}} className="mb-3" />
-              <p className="text-gray-800 leading-relaxed mb-4 italic transition-opacity duration-500">
-                &ldquo;{currentTestimonial.text}&rdquo;
+              <div className="w-20 md:w-32 h-px bg-[#BDA985] mx-auto mb-4 md:mb-6"></div>
+              <p className="text-base md:text-xl text-gray-600 font-light tracking-wide mb-2">BOUTIQUE LEGAL COUNSELING</p>
+              <p className="text-xs md:text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed px-4">
+                Personalized and tailored legal advice and general counseling to corporates, legal firms, and individuals
               </p>
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="text-sm font-semibold text-black transition-opacity duration-500">{currentTestimonial.name}</div>
-                  <div className="text-xs text-gray-600 transition-opacity duration-500">{currentTestimonial.company}</div>
-                </div>
-                <div className="flex gap-1">
-                  {[...Array(currentTestimonial.rating)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      size={14} 
-                      fill="#bda985" 
-                      style={{color: '#bda985'}} 
-                      className={`transition-all duration-300 ease-out delay-${i * 50}`}
-                    />
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Right Side - Enhanced Parallax Image Slider */}
-          <div 
-            className="relative h-[600px] lg:h-[700px] py-16 will-change-transform"
-            style={{
-              transform: `translate3d(${-mousePosition.x * 0.25}px, ${scrollY * 0.08}px, 0)`
-            }}
-          >
-            {/* Main Image Container with enhanced parallax */}
-            <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
-              {slides.map((slide, index) => (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-all duration-1000 ease-in-out will-change-transform ${
-                    index === currentSlide 
-                      ? 'opacity-100 scale-100' 
-                      : 'opacity-0 scale-110'
-                  }`}
-                >
-                  {/* Optimized Parallax Background Image */}
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out will-change-transform"
-                    style={{
-                      backgroundImage: `url(${slide.image})`,
-                      transform: `scale(${1.08 + mousePosition.x * 0.001}) translate3d(0, ${scrollY * -0.03}px, 0)`
-                    }}
-                  />
-                  
-                  {/* Smooth Gradient Overlay */}
-                  <div 
-                    className="absolute inset-0 transition-opacity duration-1000 ease-out"
-                    style={{
-                      background: `linear-gradient(135deg, 
-                        rgba(0,0,0,0.4) 0%, 
-                        rgba(0,0,0,0.1) 40%, 
-                        rgba(189,169,133,0.3) 100%)`
-                    }}
-                  />
-
-                  {/* Content Overlay with smooth animations */}
-                  <div className="relative z-10 p-8 lg:p-12 h-full flex flex-col justify-end text-white">
+          {/* Main Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
+            
+            {/* LEFT TEXT - Hidden on mobile, shows on lg+ */}
+            <div className="hidden lg:block lg:col-span-3 space-y-6 xl:space-y-10">
+              <div className={`${isVisible ? 'animate-elegant-slide-left' : 'opacity-0'}`} style={{animationDelay: '1.2s'}}>
+                <div className="mb-6 xl:mb-8">
+                  <div className="w-8 xl:w-12 h-0.5 bg-[#BDA985] mb-4 xl:mb-6 animate-line-grow"></div>
+                </div>
+              </div>
+              
+              {/* Practice area cards */}
+              <div className="space-y-6 xl:space-y-8">
+                {practiceAreas.slice(0, 2).map((area, index) => {
+                  const IconComponent = area.icon;
+                  return (
                     <div 
-                      className="mb-6 p-4 rounded-2xl backdrop-blur-sm transition-all duration-700 ease-out"
-                      style={{
-                        background: 'rgba(255,255,255,0.1)',
-                        border: '1px solid rgba(255,255,255,0.2)'
-                      }}
+                      key={index}
+                      className={`group cursor-pointer ${
+                        isVisible ? 'animate-elegant-fade-in' : 'opacity-0'
+                      }`}
+                      style={{animationDelay: `${1.6 + index * 0.3}s`}}
                     >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div 
-                          className="p-3 rounded-xl transition-all duration-500 ease-out"
-                          style={{background: 'rgba(189,169,133,0.9)'}}
-                        >
-                          <slide.icon size={24} color="#000000" />
+                      <div className="flex items-start space-x-3 xl:space-x-5 p-4 xl:p-6 rounded-2xl hover:bg-white/40 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-[#BDA985]/20">
+                        <div className="w-10 h-10 xl:w-12 xl:h-12 bg-gradient-to-br from-[#BDA985]/20 to-[#BDA985]/10 rounded-xl flex items-center justify-center group-hover:from-[#BDA985] group-hover:to-[#BDA985]/80 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                          <IconComponent className="w-5 h-5 xl:w-6 xl:h-6 text-[#BDA985] group-hover:text-white transition-colors duration-500" />
                         </div>
-                        <div className="text-xs font-bold uppercase tracking-wider opacity-80 transition-opacity duration-500">
-                          {String(index + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
-                        </div>
-                      </div>
-
-                      <h3 className="text-2xl lg:text-3xl font-bold mb-3 leading-tight transition-all duration-500">
-                        {slide.title}
-                      </h3>
-                      <p className="text-base font-medium mb-4 opacity-90 transition-all duration-500" style={{color: '#bda985'}}>
-                        {slide.subtitle}
-                      </p>
-                      <p className="text-sm leading-relaxed opacity-85 mb-6 transition-all duration-500">
-                        {slide.description}
-                      </p>
-
-                      {/* Stats with smooth counter animation */}
-                      <div className="flex items-center gap-4">
-                        <div>
-                          <div className="text-2xl font-black transition-all duration-500" style={{color: '#bda985'}}>
-                            {slide.stats.value}
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-base xl:text-lg text-gray-900 group-hover:text-[#BDA985] transition-colors duration-300 mb-2">
+                            {area.title}
+                          </h4>
+                          <p className="text-xs xl:text-sm text-gray-600 mb-3 leading-relaxed">{area.subtitle}</p>
+                          <div className="flex flex-wrap gap-1 mb-3">
+                            {area.areas.slice(0, 2).map((specialty, idx) => (
+                              <span key={idx} className="text-xs bg-[#BDA985]/10 text-[#BDA985] px-2 py-1 rounded-full">
+                                {specialty}
+                              </span>
+                            ))}
                           </div>
-                          <div className="text-xs opacity-70 transition-opacity duration-500">
-                            {slide.stats.label}
+                          <div className="flex items-center justify-between">
+                            <span className="text-[#BDA985] font-bold text-base xl:text-lg">{area.stats.value}</span>
+                            <ArrowRight className="w-3 h-3 xl:w-4 xl:h-4 text-gray-400 group-hover:text-[#BDA985] group-hover:translate-x-2 transition-all duration-300" />
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-
-              {/* Enhanced Navigation Controls */}
-              <button 
-                onClick={prevSlide}
-                disabled={isTransitioning}
-                className="absolute left-6 top-6 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 ease-out shadow-lg z-20 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <div className="w-0 h-0 border-r-[10px] border-r-gray-800 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent -ml-1" />
-              </button>
-              
-              <button 
-                onClick={nextSlide}
-                disabled={isTransitioning}
-                className="absolute right-6 top-6 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 ease-out shadow-lg z-20 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <div className="w-0 h-0 border-l-[10px] border-l-gray-800 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent -mr-1" />
-              </button>
-
-              {/* Enhanced Slide Indicators */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-                {slides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => changeSlide(index)}
-                    disabled={isTransitioning}
-                    className={`w-3 h-3 rounded-full transition-all duration-500 ease-out hover:scale-125 disabled:cursor-not-allowed ${
-                      index === currentSlide 
-                        ? 'bg-white shadow-lg scale-125' 
-                        : 'bg-white/40 hover:bg-white/70'
-                    }`}
-                    style={index === currentSlide ? {
-                      boxShadow: '0 0 15px rgba(189,169,133,0.8)'
-                    } : {}}
-                  />
-                ))}
+                  );
+                })}
               </div>
             </div>
 
-            {/* Enhanced Floating Elements */}
-            <div 
-              className="absolute -top-4 -right-4 w-20 h-20 rounded-full opacity-15 transition-all duration-700 ease-out will-change-transform"
-              style={{
-                background: 'linear-gradient(135deg, #bda985 0%, transparent 100%)',
-                transform: `translate3d(0, ${mousePosition.y * 0.4}px, 0) rotate(${scrollY * 0.05}deg)`,
-                animation: 'pulse 3s ease-in-out infinite'
-              }}
-            />
-            <div 
-              className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full opacity-15 transition-all duration-700 ease-out will-change-transform"
-              style={{
-                background: 'linear-gradient(135deg, #bda985 0%, transparent 100%)',
-                transform: `translate3d(0, ${-mousePosition.y * 0.25}px, 0) rotate(${-scrollY * 0.03}deg)`,
-                animation: 'pulse 3s ease-in-out infinite',
-                animationDelay: '1.5s'
-              }}
-            />
+            {/* CENTER - JUSTICE STATUE */}
+            <div className="lg:col-span-6 flex justify-center relative order-first lg:order-none">
+              <div className={`relative ${isVisible ? 'animate-elegant-scale-in' : 'opacity-0'}`} style={{animationDelay: '0.4s'}}>
+                {/* Elegant backdrop glow */}
+                <div className="absolute inset-0 bg-gradient-radial from-[#BDA985]/20 via-[#BDA985]/5 to-transparent rounded-full scale-125 blur-3xl animate-pulse-slow"></div>
+                
+                {/* Justice Statue - Hero Element */}
+                <img 
+                  src="/images/2.png"
+                  alt="Lady Justice 3D Statue"
+                  className="w-[280px] h-[400px] sm:w-[350px] sm:h-[500px] md:w-[420px] md:h-[600px] lg:w-[520px] lg:h-[750px] object-contain mx-auto filter drop-shadow-[0_15px_30px_rgba(189,169,133,0.3)] md:drop-shadow-[0_30px_60px_rgba(189,169,133,0.4)] relative z-10"
+                />
+                
+                {/* Simple orbiting elements */}
+                <div className="absolute inset-0 animate-elegant-orbit">
+                  <div className="absolute top-16 left-16 md:top-32 md:left-32 w-2 h-2 md:w-4 md:h-4 bg-[#BDA985]/30 rounded-full blur-sm"></div>
+                </div>
+                <div className="absolute inset-0 animate-elegant-orbit-reverse" style={{animationDelay: '3s'}}>
+                  <div className="absolute bottom-16 right-16 md:bottom-32 md:right-32 w-1.5 h-1.5 md:w-3 md:h-3 bg-[#BDA985]/40 rounded-full blur-sm"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT TEXT - Hidden on mobile, shows on lg+ */}
+            <div className="hidden lg:block lg:col-span-3 space-y-6 xl:space-y-10">
+              <div className={`${isVisible ? 'animate-elegant-slide-right' : 'opacity-0'}`} style={{animationDelay: '1.4s'}}>
+                <div className="mb-8 xl:mb-10">
+                </div>
+                
+                {/* Boutique advantage badge */}
+                <div className="flex justify-end mb-8 xl:mb-10">
+                  <div className="w-20 h-20 xl:w-28 xl:h-28 border-2 border-[#BDA985] rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-500 hover:rotate-12 animate-elegant-pulse cursor-pointer">
+                    <div className="text-center">
+                      <div className="text-xs xl:text-sm font-bold text-[#BDA985] tracking-widest">BOUTIQUE</div>
+                      <div className="text-xs text-gray-500 mt-1">EXCELLENCE</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Practice area cards */}
+              <div className="space-y-6 xl:space-y-8">
+                {practiceAreas.slice(2, 4).map((area, index) => {
+                  const IconComponent = area.icon;
+                  return (
+                    <div 
+                      key={index}
+                      className={`group cursor-pointer ${
+                        isVisible ? 'animate-elegant-fade-in' : 'opacity-0'
+                      }`}
+                      style={{animationDelay: `${2.2 + index * 0.3}s`}}
+                    >
+                      <div className="flex items-start space-x-3 xl:space-x-5 p-4 xl:p-6 rounded-2xl hover:bg-white/40 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-[#BDA985]/20">
+                        <div className="w-10 h-10 xl:w-12 xl:h-12 bg-gradient-to-br from-[#BDA985]/20 to-[#BDA985]/10 rounded-xl flex items-center justify-center group-hover:from-[#BDA985] group-hover:to-[#BDA985]/80 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                          <IconComponent className="w-5 h-5 xl:w-6 xl:h-6 text-[#BDA985] group-hover:text-white transition-colors duration-500" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-base xl:text-lg text-gray-900 group-hover:text-[#BDA985] transition-colors duration-300 mb-2">
+                            {area.title}
+                          </h4>
+                          <p className="text-xs xl:text-sm text-gray-600 mb-3 leading-relaxed">{area.subtitle}</p>
+                          <div className="flex flex-wrap gap-1 mb-3">
+                            {area.areas.slice(0, 3).map((specialty, idx) => (
+                              <span key={idx} className="text-xs bg-[#BDA985]/10 text-[#BDA985] px-2 py-1 rounded-full">
+                                {specialty}
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[#BDA985] font-bold text-base xl:text-lg">{area.stats.value}</span>
+                            <ArrowRight className="w-3 h-3 xl:w-4 xl:h-4 text-gray-400 group-hover:text-[#BDA985] group-hover:translate-x-2 transition-all duration-300" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Practice Areas Cards - Shows only on mobile/tablet */}
+          <div className={`lg:hidden mt-12 ${isVisible ? 'animate-elegant-fade-in' : 'opacity-0'}`} style={{animationDelay: '1.5s'}}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {practiceAreas.map((area, index) => {
+                const IconComponent = area.icon;
+                return (
+                  <div 
+                    key={index}
+                    className="group cursor-pointer"
+                  >
+                    <div className="flex items-start space-x-4 p-4 md:p-6 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white/80 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-[#BDA985]/20">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#BDA985]/20 to-[#BDA985]/10 rounded-xl flex items-center justify-center group-hover:from-[#BDA985] group-hover:to-[#BDA985]/80 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 flex-shrink-0">
+                        <IconComponent className="w-5 h-5 md:w-6 md:h-6 text-[#BDA985] group-hover:text-white transition-colors duration-500" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-sm md:text-lg text-gray-900 group-hover:text-[#BDA985] transition-colors duration-300 mb-1 md:mb-2">
+                          {area.title}
+                        </h4>
+                        <p className="text-xs md:text-sm text-gray-600 mb-3 leading-relaxed">{area.subtitle}</p>
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {area.areas.slice(0, 2).map((specialty, idx) => (
+                            <span key={idx} className="text-xs bg-[#BDA985]/10 text-[#BDA985] px-2 py-1 rounded-full">
+                              {specialty}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[#BDA985] font-bold text-sm md:text-lg">{area.stats.value}</span>
+                          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#BDA985] group-hover:translate-x-2 transition-all duration-300" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+      
+
+          {/* Client testimonial */}
+          <div className={`mt-16 md:mt-20 ${isVisible ? 'animate-elegant-fade-in' : 'opacity-0'}`} style={{animationDelay: '3s'}}>
+            <div className="text-center max-w-2xl mx-auto">
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg mx-4 md:mx-0">
+                <div className="flex justify-center mb-4">
+                  <div className="flex space-x-1">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="w-4 h-4 md:w-5 md:h-5 text-[#BDA985] text-base md:text-lg">★</div>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm md:text-lg text-gray-700 italic mb-4 leading-relaxed">
+                  "Casa Di Consiglio provided exceptional personalized service for our corporate restructuring. Their boutique approach meant we received dedicated attention and tailored solutions that larger firms simply couldn't match."
+                </p>
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-[#BDA985]/20 rounded-full flex items-center justify-center">
+                    <span className="text-[#BDA985] font-bold text-xs md:text-sm">MR</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm md:text-base text-gray-800">Marco Rodriguez</p>
+                    <p className="text-xs md:text-sm text-gray-500">CEO, TechCorp Solutions</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className={`text-center mt-16 md:mt-20 pb-16 md:pb-20 ${isVisible ? 'animate-elegant-fade-in-up' : 'opacity-0'}`} style={{animationDelay: '3.5s'}}>
+            <div className="space-y-4 md:space-y-6 px-4">
+              <button className="group relative bg-gradient-to-r from-[#BDA985] to-[#BDA985]/90 text-white px-8 md:px-16 py-4 md:py-5 rounded-full text-base md:text-xl font-semibold hover:from-[#BDA985]/90 hover:to-[#BDA985] transition-all duration-700 transform hover:scale-105 shadow-2xl hover:shadow-[#BDA985]/30 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                <span className="relative">Schedule Your Consultation</span>
+              </button>
+              
+              <p className="text-gray-500 text-base md:text-lg font-light">Personalized legal counsel tailored to you</p>
+              
+              <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-6 md:space-x-8 text-xs md:text-sm text-gray-500 mt-4">
+                <span>📞 Personalized Service</span>
+                <span>🏛️ Boutique Excellence</span>
+                <span>⚖️ Complete Legal Coverage</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes elegant-fade-in-up {
+          0% {
+            opacity: 0;
+            transform: translateY(60px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes elegant-fade-in {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+        
+        @keyframes elegant-scale-in {
+          0% {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        @keyframes elegant-slide-left {
+          0% {
+            opacity: 0;
+            transform: translateX(-80px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes elegant-slide-right {
+          0% {
+            opacity: 0;
+            transform: translateX(80px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes elegant-float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+        
+        @keyframes elegant-orbit {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        
+        @keyframes elegant-orbit-reverse {
+          0% {
+            transform: rotate(360deg);
+          }
+          100% {
+            transform: rotate(0deg);
+          }
+        }
+        
+        @keyframes pulse-slow {
+          0%, 100% {
+            opacity: 0.3;
+          }
+          50% {
+            opacity: 0.6;
+          }
+        }
+        
+        @keyframes line-grow {
+          0% {
+            width: 0;
+            height: 0;
+          }
+          100% {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        
+        @keyframes elegant-pulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.9;
+          }
+          50% {
+            transform: scale(1.05);
+            opacity: 1;
+          }
+        }
+        
+        .animate-elegant-fade-in-up {
+          animation: elegant-fade-in-up 1.2s ease-out forwards;
+        }
+        
+        .animate-elegant-fade-in {
+          animation: elegant-fade-in 1s ease-out forwards;
+        }
+        
+        .animate-elegant-scale-in {
+          animation: elegant-scale-in 1.5s ease-out forwards;
+        }
+        
+        .animate-elegant-slide-left {
+          animation: elegant-slide-left 1.2s ease-out forwards;
+        }
+        
+        .animate-elegant-slide-right {
+          animation: elegant-slide-right 1.2s ease-out forwards;
+        }
+        
+        .animate-elegant-float {
+          animation: elegant-float 8s ease-in-out infinite;
+        }
+        
+        .animate-elegant-orbit {
+          animation: elegant-orbit 20s linear infinite;
+        }
+        
+        .animate-elegant-orbit-reverse {
+          animation: elegant-orbit-reverse 25s linear infinite;
+        }
+        
+        .animate-pulse-slow {
+          animation: pulse-slow 4s ease-in-out infinite;
+        }
+        
+        .animate-line-grow {
+          animation: line-grow 2s ease-out forwards;
+        }
+        
+        .animate-elegant-pulse {
+          animation: elegant-pulse 3s ease-in-out infinite;
+        }
+        
+        .bg-gradient-radial {
+          background: radial-gradient(circle, var(--tw-gradient-stops));
+        }
+      `}</style>
     </div>
   );
 };
 
-export default ParallaxLawyerHero;
+export default LawFirmHero;
