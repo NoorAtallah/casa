@@ -86,7 +86,7 @@ const LawFirmHero = () => {
             <div className={`${isVisible ? 'animate-elegant-fade-in' : 'opacity-0'}`} style={{animationDelay: '0.8s'}}>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-2 tracking-tight">
                 CASA DI
-                <span className="block text-[#BDA985]">CONSIGLIO</span>
+                <span className="block text-[#000000]">CONSIGLIO</span>
               </h1>
               <div className="w-20 md:w-32 h-px bg-[#BDA985] mx-auto mb-4 md:mb-6"></div>
               <p className="text-base md:text-xl text-gray-600 font-light tracking-wide mb-2">BOUTIQUE LEGAL COUNSELING</p>
