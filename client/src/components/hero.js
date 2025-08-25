@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Building, TrendingUp, Scale, Users, ArrowRight, Award, Shield, Briefcase, Home, Heart, Gavel } from 'lucide-react';
 
 const LawFirmHero = () => {
@@ -153,9 +154,12 @@ const LawFirmHero = () => {
                 <div className="absolute inset-0 bg-gradient-radial from-[#BDA985]/20 via-[#BDA985]/5 to-transparent rounded-full scale-125 blur-3xl animate-pulse-slow"></div>
                 
                 {/* Justice Statue - Hero Element */}
-                <img 
+                <Image 
                   src="/images/2.png"
                   alt="Lady Justice 3D Statue"
+                  width={520}
+                  height={750}
+                  priority
                   className="w-[280px] h-[400px] sm:w-[350px] sm:h-[500px] md:w-[420px] md:h-[600px] lg:w-[520px] lg:h-[750px] object-contain mx-auto filter drop-shadow-[0_15px_30px_rgba(189,169,133,0.3)] md:drop-shadow-[0_30px_60px_rgba(189,169,133,0.4)] relative z-10"
                 />
                 
@@ -265,7 +269,7 @@ const LawFirmHero = () => {
             </div>
           </div>
 
-      
+
 
           {/* Client testimonial */}
           <div className={`mt-16 md:mt-20 ${isVisible ? 'animate-elegant-fade-in' : 'opacity-0'}`} style={{animationDelay: '3s'}}>
@@ -279,7 +283,7 @@ const LawFirmHero = () => {
                   </div>
                 </div>
                 <p className="text-sm md:text-lg text-gray-700 italic mb-4 leading-relaxed">
-                  "Casa Di Consiglio provided exceptional personalized service for our corporate restructuring. Their boutique approach meant we received dedicated attention and tailored solutions that larger firms simply couldn't match."
+                  &ldquo;Casa Di Consiglio provided exceptional personalized service for our corporate restructuring. Their boutique approach meant we received dedicated attention and tailored solutions that larger firms simply couldn&rsquo;t match.&rdquo;
                 </p>
                 <div className="flex items-center justify-center space-x-3">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-[#BDA985]/20 rounded-full flex items-center justify-center">
