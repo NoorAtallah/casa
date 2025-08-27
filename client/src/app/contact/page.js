@@ -1,395 +1,455 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { MapPin, Phone, Mail, Globe, Clock, Building2, Star, ArrowRight, ExternalLink, Users, Shield } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { MapPin, Phone, Mail, Globe, Clock, Building2, Star, ArrowRight, ExternalLink, Users, Shield, Award, CheckCircle } from 'lucide-react';
 
 export default function ContactUsPage() {
-  const sectionRef = useRef(null);
-  const headerRef = useRef(null);
-  const contactCardsRef = useRef(null);
-  const locationRef = useRef(null);
-  const hoursRef = useRef(null);
-  const ctaRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [hoveredContact, setHoveredContact] = useState(null);
+  const [hoveredHour, setHoveredHour] = useState(null);
 
   const contactMethods = [
     {
       icon: Phone,
       title: "Call Us Directly",
       primary: "+971 56 385 8532",
-      description: "Speak with our legal experts",
+      description: "Speak with our legal experts for immediate consultation and professional guidance",
       action: "tel:+971563858532",
       actionText: "Call Now",
-      color: "#bda985"
+      color: "#bda985",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTjet5BT4TWsObBvaRtaBH9ZHUmezEPdnp4g&s"
     },
     {
       icon: Mail,
       title: "Email Consultation",
       primary: "info@casadiconsiglio.com",
-      description: "Get detailed responses to your inquiries",
+      description: "Get detailed responses to your inquiries with comprehensive legal analysis",
       action: "mailto:info@casadiconsiglio.com",
       actionText: "Send Email",
-      color: "#bda985"
+      color: "#bda985",
+      image: "https://www.findlaw.com/static/c/images/images/c_scale,w_822/f_auto,q_auto/v1629704059/aemwp-prod/content/dam/content/original-images/gavel_on_laptop_legal_tech_GI/gavel_on_laptop_legal_tech_GI.jpg?_i=AA"
     },
     {
       icon: ExternalLink,
       title: "WhatsApp Direct",
       primary: "+971 56 385 8532",
-      description: "Quick consultations and immediate responses",
+      description: "Quick consultations and immediate responses for urgent legal matters",
       action: "https://wa.me/971563858532",
       actionText: "Message Us",
-      color: "#25D366"
+      color: "#25D366",
+      image: "https://cdn.prod.website-files.com/66efa862351a8bef3b48cb70/6836e145141b4ea755448a59_Blog_%20Whatsapp%20Chatbot%20for%20Law%20Firms.webp"
     }
   ];
 
   const coverageAreas = [
-    "United Arab Emirates",
-    "Kingdom of Bahrain", 
-    "Arab Republic of Egypt",
-    "Republic of Iraq"
+    { 
+      country: "United Arab Emirates", 
+      flag: "🇦🇪",
+      description: "Primary headquarters and operations"
+    },
+    { 
+      country: "Kingdom of Bahrain", 
+      flag: "🇧🇭",
+      description: "Regional legal services"
+    },
+    { 
+      country: "Arab Republic of Egypt", 
+      flag: "🇪🇬",
+      description: "International legal support"
+    },
+    { 
+      country: "Republic of Iraq", 
+      flag: "🇮🇶",
+      description: "Cross-border legal solutions"
+    }
   ];
 
   const businessHours = [
-    { days: "Sunday - Thursday", time: "9 AM - 6 PM", status: "Regular Hours" },
-    { days: "Friday", time: "2 PM - 6 PM", status: "Limited Hours" },
-    { days: "Saturday", time: "By Appointment", status: "Appointment Only" }
+    { 
+      days: "Sunday - Thursday", 
+      time: "9 AM - 6 PM", 
+      status: "Regular Hours",
+      icon: Clock,
+      description: "Full consultation services available"
+    },
+    { 
+      days: "Friday", 
+      time: "2 PM - 6 PM", 
+      status: "Limited Hours",
+      icon: Clock,
+      description: "Reduced hours with priority cases"
+    },
+    { 
+      days: "Saturday", 
+      time: "By Appointment", 
+      status: "Appointment Only",
+      icon: Clock,
+      description: "Emergency consultations available"
+    }
   ];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+  const officeFeatures = [
+    "Modern legal facilities",
+    "Private consultation rooms",
+    "Digital documentation systems",
+    "Multilingual support services"
+  ];
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
     }
+  };
 
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
       }
-    };
-  }, []);
+    }
+  };
 
-  useEffect(() => {
-    if (!isVisible) return;
-
-    const loadGSAP = async () => {
-      if (!window.gsap) {
-        const gsapScript = document.createElement('script');
-        gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
-        gsapScript.onload = () => {
-          const scrollTriggerScript = document.createElement('script');
-          scrollTriggerScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js';
-          scrollTriggerScript.onload = initGSAP;
-          document.head.appendChild(scrollTriggerScript);
-        };
-        document.head.appendChild(gsapScript);
-      } else {
-        initGSAP();
+  const cardVariants = {
+    hidden: { y: 40, opacity: 0, scale: 0.95 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
       }
-    };
+    },
+    hover: {
+      y: -8,
+      scale: 1.02,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut"
+      }
+    }
+  };
 
-    const initGSAP = () => {
-      if (!window.gsap) return;
-      
-      const { gsap } = window;
-      gsap.registerPlugin(window.ScrollTrigger);
-
-      gsap.fromTo(headerRef.current, 
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: headerRef.current,
-            start: "top 85%",
-            end: "bottom 20%",
-          }
-        }
-      );
-
-      gsap.fromTo(contactCardsRef.current?.children || [], 
-        { y: 50, opacity: 0, scale: 0.95 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          stagger: 0.2,
-          scrollTrigger: {
-            trigger: contactCardsRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-          }
-        }
-      );
-
-      gsap.fromTo(locationRef.current, 
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: locationRef.current,
-            start: "top 85%",
-            end: "bottom 20%",
-          }
-        }
-      );
-
-      gsap.fromTo(hoursRef.current, 
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: hoursRef.current,
-            start: "top 85%",
-            end: "bottom 20%",
-          }
-        }
-      );
-
-      gsap.fromTo(ctaRef.current, 
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ctaRef.current,
-            start: "top 85%",
-            end: "bottom 20%",
-          }
-        }
-      );
-    };
-
-    loadGSAP();
-  }, [isVisible]);
+  const imageVariants = {
+    hover: {
+      scale: 1.1,
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut"
+      }
+    }
+  };
 
   return (
-    <section 
-      ref={sectionRef}
-      className="relative py-20 bg-gray-50 overflow-hidden"
+    <motion.section 
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="relative py-16 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden"
     >
-      {/* Background Elements */}
+      {/* Advanced Background Elements */}
       <div className="absolute inset-0">
+        {/* Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-50/50 to-transparent" />
+        
+        {/* Geometric Patterns */}
         <div 
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-5"
           style={{
-            background: `
-              linear-gradient(45deg, rgba(189,169,133,0.05) 25%, transparent 25%),
-              linear-gradient(-45deg, rgba(189,169,133,0.05) 25%, transparent 25%),
-              linear-gradient(45deg, transparent 75%, rgba(189,169,133,0.05) 75%),
-              linear-gradient(-45deg, transparent 75%, rgba(189,169,133,0.05) 75%)
-            `,
-            backgroundSize: '60px 60px',
-            backgroundPosition: '0 0, 0 30px, 30px -30px, -30px 0px'
+            background: `radial-gradient(circle at 25% 25%, #bda985 2px, transparent 2px),
+                        radial-gradient(circle at 75% 75%, #bda985 1px, transparent 1px)`,
+            backgroundSize: '50px 50px, 25px 25px'
           }}
         />
 
-        {[...Array(4)].map((_, i) => (
-          <div
+        {/* Floating Elements */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
             key={i}
-            className="absolute opacity-8"
+            className="absolute"
             style={{
-              left: `${15 + (i * 20)}%`,
-              top: `${20 + (i * 15)}%`,
-              width: `${20 + i * 6}px`,
-              height: `${20 + i * 6}px`,
-              background: '#bda985',
-              borderRadius: i % 2 === 0 ? '50%' : '20%',
-              animation: `float ${3 + i}s ease-in-out infinite`,
-              animationDelay: `${i * 0.5}s`
+              left: `${10 + (i * 12)}%`,
+              top: `${15 + (i * 8)}%`,
+              width: `${20 + i * 5}px`,
+              height: `${20 + i * 5}px`,
             }}
-          />
+            animate={{
+              y: [0, -30, 0],
+              rotate: [0, 360],
+              opacity: [0.1, 0.3, 0.1]
+            }}
+            transition={{
+              duration: 6 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.3
+            }}
+          >
+            <div 
+              className="w-full h-full rounded-full"
+              style={{
+                background: `linear-gradient(45deg, rgba(189,169,133,0.2), transparent)`,
+                filter: 'blur(1px)'
+              }}
+            />
+          </motion.div>
         ))}
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Page Header */}
-        <div 
-          ref={headerRef}
-          className="text-center mb-16"
+        {/* Hero Section */}
+        <motion.div 
+          variants={containerVariants}
+          className="text-center mb-20"
         >
-          <div 
-            className="inline-block px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider backdrop-blur-sm border-2 transition-all duration-500 hover:scale-105 shadow-lg mb-8"
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider backdrop-blur-md border-2 transition-all duration-500 hover:scale-105 shadow-xl mb-8"
             style={{
-              background: 'rgba(255,255,255,0.9)',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(189,169,133,0.1))',
               borderColor: '#bda985',
               color: '#000000',
-              boxShadow: '0 8px 25px rgba(189,169,133,0.15)'
+              boxShadow: '0 10px 40px rgba(189,169,133,0.2)'
             }}
           >
             Get In Touch
-          </div>
+          </motion.div>
           
-          <h1 className="mb-8">
-            <div className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.9] mb-4">
-              <span className="block text-black">CONTACT</span>
-              <span className="block" style={{ color: '#bda985' }}>US</span>
-            </div>
-          </h1>
-          
-          <div 
-            className="w-32 h-1 rounded-full mx-auto mb-8"
-            style={{
-              background: 'linear-gradient(90deg, #bda985 0%, transparent 100%)',
-            }}
-          />
-          
-          <p className="text-xl md:text-2xl text-gray-700 font-light leading-relaxed max-w-3xl mx-auto">
-            Ready to discuss your legal needs? Reach out to our <span style={{ color: '#bda985' }}>expert team</span>
-          </p>
-        </div>
-
-        {/* Contact Methods */}
-        <div 
-          ref={contactCardsRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20"
-        >
-          {contactMethods.map((method, index) => {
-            const IconComponent = method.icon;
-            return (
-              <div 
-                key={index}
-                className="group p-8 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-xl text-center"
-                style={{
-                  background: 'rgba(255,255,255,0.9)',
-                  border: '2px solid rgba(189,169,133,0.2)',
-                  boxShadow: '0 8px 25px rgba(189,169,133,0.1)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#bda985';
-                  e.currentTarget.style.boxShadow = '0 12px 40px rgba(189,169,133,0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(189,169,133,0.2)';
-                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(189,169,133,0.1)';
-                }}
-              >
-                <div 
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-300"
-                  style={{ background: 'rgba(189,169,133,0.15)' }}
+          <motion.div className="relative mb-12">
+            {/* Hero Image */}
+            <div className="relative h-64 md:h-80 lg:h-96 mb-8 rounded-3xl overflow-hidden shadow-2xl">
+              <motion.img
+                initial={{ scale: 1.2, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 1.2 }}
+                src="https://curleybusinesslaw.com/wp-content/uploads/2022/09/law-scaled.jpg"
+                alt="Contact Casa Di Consiglio"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 text-white">
+                <motion.div
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.8, duration: 0.6 }}
                 >
-                  <IconComponent className="w-8 h-8" style={{color: method.color}} />
-                </div>
-                
-                <h3 className="text-xl font-bold text-black mb-3 group-hover:text-[#bda985] transition-colors duration-300">
-                  {method.title}
-                </h3>
-                
-                <p className="text-lg font-semibold text-black mb-2">
-                  {method.primary}
-                </p>
-                
-                <p className="text-gray-700 mb-6 leading-relaxed">
-                  {method.description}
-                </p>
-
-                <a
-                  href={method.action}
-                  target={method.action.startsWith('http') ? '_blank' : '_self'}
-                  rel={method.action.startsWith('http') ? 'noopener noreferrer' : ''}
-                  className="inline-flex items-center px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                  style={{
-                    background: method.color,
-                    color: method.color === '#25D366' ? '#ffffff' : '#000000'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (method.color === '#bda985') {
-                      e.target.style.background = '#d4c4a0';
-                    } else {
-                      e.target.style.transform = 'scale(1.05) translateY(-2px)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = method.color;
-                    e.target.style.transform = 'scale(1) translateY(0)';
-                  }}
-                >
-                  {method.actionText}
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </a>
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-4">
+                    <span className="block">CONTACT</span>
+                    <span className="block" style={{ color: '#bda985' }}>US</span>
+                  </h1>
+                  <p className="text-xl md:text-2xl font-light">
+                    Ready to discuss your legal needs?
+                  </p>
+                </motion.div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Location & Coverage Areas */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+        {/* Contact Methods with Images */}
+        <motion.div 
+          variants={containerVariants}
+          className="mb-24"
+        >
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">
+              REACH OUR <span style={{ color: '#bda985' }}>EXPERTS</span>
+            </h2>
+            <p className="text-lg text-gray-700 font-light max-w-2xl mx-auto">
+              Multiple ways to connect with our professional legal team
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {contactMethods.map((method, index) => {
+              const IconComponent = method.icon;
+              return (
+                <motion.div 
+                  key={index}
+                  variants={cardVariants}
+                  whileHover="hover"
+                  onHoverStart={() => setHoveredContact(index)}
+                  onHoverEnd={() => setHoveredContact(null)}
+                  className="group rounded-2xl overflow-hidden shadow-xl"
+                  style={{
+                    background: 'rgba(255,255,255,0.95)',
+                    border: '1px solid rgba(189,169,133,0.2)',
+                    boxShadow: hoveredContact === index 
+                      ? '0 20px 40px rgba(189,169,133,0.2)' 
+                      : '0 10px 30px rgba(189,169,133,0.1)'
+                  }}
+                >
+                  {/* Image Header */}
+                  <div className="relative h-48 overflow-hidden">
+                    <motion.img
+                      variants={imageVariants}
+                      whileHover="hover"
+                      src={method.image}
+                      alt={method.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute bottom-4 left-4">
+                      <div 
+                        className="w-12 h-12 rounded-xl flex items-center justify-center backdrop-blur-sm"
+                        style={{ background: 'rgba(189,169,133,0.9)' }}
+                      >
+                        <IconComponent className="w-6 h-6 text-black" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 text-center">
+                    <h3 className="text-xl font-bold text-black group-hover:text-[#bda985] transition-colors duration-300 mb-3">
+                      {method.title}
+                    </h3>
+                    <p className="text-lg font-semibold text-black mb-3">
+                      {method.primary}
+                    </p>
+                    <p className="text-gray-700 leading-relaxed mb-6 text-sm">
+                      {method.description}
+                    </p>
+
+                    <motion.a
+                      href={method.action}
+                      target={method.action.startsWith('http') ? '_blank' : '_self'}
+                      rel={method.action.startsWith('http') ? 'noopener noreferrer' : ''}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="inline-flex items-center px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wide transition-all duration-300 shadow-lg"
+                      style={{
+                        background: method.color,
+                        color: method.color === '#25D366' ? '#ffffff' : '#000000'
+                      }}
+                    >
+                      {method.actionText}
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </motion.a>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* Office Location & Coverage */}
+        <motion.div 
+          variants={containerVariants}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24"
+        >
           {/* Office Location */}
-          <div 
-            ref={locationRef}
-            className="p-8 rounded-2xl"
+          <motion.div 
+            variants={itemVariants}
+            className="rounded-2xl overflow-hidden shadow-2xl"
             style={{
               background: 'rgba(255,255,255,0.95)',
-              border: '2px solid rgba(189,169,133,0.2)',
-              boxShadow: '0 8px 25px rgba(189,169,133,0.1)'
+              border: '1px solid rgba(189,169,133,0.2)'
             }}
           >
-            <div className="flex items-center mb-6">
-              <div 
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4"
-                style={{ background: 'rgba(189,169,133,0.15)' }}
-              >
-                <MapPin className="w-6 h-6" style={{color: '#bda985'}} />
-              </div>
-              <h2 className="text-2xl font-bold text-black">Our Office</h2>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-bold text-lg text-black mb-2">Casa Di Consiglio FZC-LLC</h3>
-                <div className="text-gray-700 leading-relaxed">
-                  <p>Zone E, First Floor, Office # F13</p>
-                  <p>Sharjah Book Authority Building</p>
-                  <p>Al Zahia, Sharjah, UAE</p>
-                </div>
-              </div>
-
-              <div 
-                className="p-4 rounded-xl"
-                style={{ background: 'rgba(189,169,133,0.1)' }}
-              >
-                <div className="flex items-center mb-2">
-                  <Building2 className="w-4 h-4 mr-2" style={{color: '#bda985'}} />
-                  <span className="font-semibold text-sm" style={{color: '#bda985'}}>Registration Details</span>
-                </div>
-                <p className="text-gray-700 text-sm">Reg. No. 4202724.01 SPC</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Coverage Areas */}
-          <div className="space-y-8">
-            <div 
-              className="p-8 rounded-2xl"
-              style={{
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid rgba(189,169,133,0.2)',
-                boxShadow: '0 8px 25px rgba(189,169,133,0.1)'
-              }}
-            >
+            <div className="p-8">
               <div className="flex items-center mb-6">
                 <div 
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
+                  style={{ background: 'rgba(189,169,133,0.15)' }}
+                >
+                  <MapPin className="w-6 h-6" style={{color: '#bda985'}} />
+                </div>
+                <h2 className="text-2xl font-bold text-black">Our Office</h2>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-bold text-lg text-black mb-3">Casa Di Consiglio FZC-LLC</h3>
+                  <div className="text-gray-700 leading-relaxed mb-6">
+                    <p>Zone E, First Floor, Office # F13</p>
+                    <p>Sharjah Book Authority Building</p>
+                    <p>Al Zahia, Sharjah, UAE</p>
+                  </div>
+                  
+                  <div 
+                    className="p-4 rounded-lg mb-6"
+                    style={{ background: 'rgba(189,169,133,0.1)' }}
+                  >
+                    <div className="flex items-center mb-2">
+                      <Building2 className="w-4 h-4 mr-2" style={{color: '#bda985'}} />
+                      <span className="font-semibold text-sm" style={{color: '#bda985'}}>Registration Details</span>
+                    </div>
+                    <p className="text-gray-700 text-sm">Reg. No. 4202724.01 SPC</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    {officeFeatures.map((feature, index) => (
+                      <motion.div 
+                        key={index}
+                        className="flex items-center"
+                        whileHover={{ x: 4 }}
+                      >
+                        <CheckCircle className="w-3 h-3 mr-2 flex-shrink-0" style={{color: '#bda985'}} />
+                        <span className="text-xs text-gray-700">{feature}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                  
+                  <motion.a
+                    href="https://goo.gl/maps/u8XdabiXNPMapq3L7?g_st=aw"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-flex items-center px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 shadow-lg"
+                    style={{
+                      background: 'linear-gradient(135deg, #bda985, #d4c4a0)',
+                      color: '#000000'
+                    }}
+                  >
+                    <MapPin className="w-4 h-4 mr-2" />
+                    View on Google Maps
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </motion.a>
+                </div>
+              </div>
+            </div>
+
+            {/* Embedded Map */}
+            <div className="h-64">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3609.7234567890123!2d55.5234567890123!3d25.3234567890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDE5JzI0LjQiTiA1NcKwMzEnMjQuNCJF!5e0!3m2!1sen!2sae!4v1234567890123!5m2!1sen!2sae"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Casa Di Consiglio Office Location"
+              ></iframe>
+            </div>
+          </motion.div>
+
+          {/* Coverage Areas */}
+          <motion.div variants={itemVariants} className="space-y-8">
+            <div 
+              className="p-8 rounded-2xl shadow-2xl"
+              style={{
+                background: 'rgba(255,255,255,0.95)',
+                border: '1px solid rgba(189,169,133,0.2)'
+              }}
+            >
+              <div className="flex items-center mb-8">
+                <div 
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
                   style={{ background: 'rgba(189,169,133,0.15)' }}
                 >
                   <Globe className="w-6 h-6" style={{color: '#bda985'}} />
@@ -397,63 +457,85 @@ export default function ContactUsPage() {
                 <h2 className="text-2xl font-bold text-black">Coverage Areas</h2>
               </div>
 
-              <div className="grid grid-cols-1 gap-3">
-                {coverageAreas.map((country, index) => (
-                  <div key={index} className="group flex items-center p-3 rounded-lg transition-all duration-300" style={{
-                    background: 'rgba(189,169,133,0.05)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = 'rgba(189,169,133,0.1)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = 'rgba(189,169,133,0.05)';
-                  }}>
-                    <div className="w-3 h-3 rounded-full mr-3 group-hover:scale-125 transition-transform duration-300" style={{background: '#bda985'}} />
-                    <span className="text-gray-700 font-medium group-hover:text-[#bda985] transition-colors duration-300">{country}</span>
-                  </div>
+              <div className="space-y-4">
+                {coverageAreas.map((area, index) => (
+                  <motion.div 
+                    key={index}
+                    className="group p-4 rounded-xl transition-all duration-300"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(189,169,133,0.1), rgba(255,255,255,0.5))',
+                      border: '1px solid rgba(189,169,133,0.2)'
+                    }}
+                    whileHover={{ 
+                      scale: 1.02,
+                      boxShadow: '0 8px 25px rgba(189,169,133,0.15)'
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <span className="text-2xl mr-3">{area.flag}</span>
+                        <div>
+                          <h3 className="font-bold text-black group-hover:text-[#bda985] transition-colors duration-300">
+                            {area.country}
+                          </h3>
+                          <p className="text-sm text-gray-600">{area.description}</p>
+                        </div>
+                      </div>
+                      <div className="w-3 h-3 rounded-full" style={{background: '#bda985'}} />
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Business Hours */}
-        <div 
-          ref={hoursRef}
+        <motion.div 
+          variants={containerVariants}
           className="mb-20"
         >
-          <div 
-            className="p-8 rounded-2xl max-w-4xl mx-auto"
-            style={{
-              background: 'rgba(255,255,255,0.95)',
-              border: '2px solid rgba(189,169,133,0.2)',
-              boxShadow: '0 8px 25px rgba(189,169,133,0.1)'
-            }}
-          >
-            <div className="flex items-center justify-center mb-8">
-              <div 
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4"
-                style={{ background: 'rgba(189,169,133,0.15)' }}
-              >
-                <Clock className="w-6 h-6" style={{color: '#bda985'}} />
-              </div>
-              <h2 className="text-2xl font-bold text-black">Business Hours</h2>
-            </div>
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black text-black mb-6">
+              BUSINESS <span style={{ color: '#bda985' }}>HOURS</span>
+            </h2>
+            <p className="text-lg text-gray-700 font-light max-w-2xl mx-auto">
+              Our availability for consultations and legal services
+            </p>
+          </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {businessHours.map((schedule, index) => (
-                <div 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {businessHours.map((schedule, index) => {
+              const IconComponent = schedule.icon;
+              return (
+                <motion.div 
                   key={index}
-                  className="text-center p-6 rounded-xl transition-all duration-300 hover:scale-105"
+                  variants={cardVariants}
+                  whileHover="hover"
+                  onHoverStart={() => setHoveredHour(index)}
+                  onHoverEnd={() => setHoveredHour(null)}
+                  className="text-center p-8 rounded-2xl transition-all duration-300 shadow-xl"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(189,169,133,0.1) 0%, rgba(255,255,255,0.5) 100%)',
-                    border: '1px solid rgba(189,169,133,0.2)'
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(189,169,133,0.05))',
+                    border: '2px solid rgba(189,169,133,0.2)',
+                    boxShadow: hoveredHour === index 
+                      ? '0 20px 40px rgba(189,169,133,0.2)' 
+                      : '0 10px 30px rgba(189,169,133,0.1)',
+                    borderColor: hoveredHour === index ? '#bda985' : 'rgba(189,169,133,0.2)'
                   }}
                 >
-                  <h3 className="font-bold text-black mb-2">{schedule.days}</h3>
-                  <p className="text-xl font-bold mb-2" style={{color: '#bda985'}}>{schedule.time}</p>
+                  <div 
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                    style={{ background: 'rgba(189,169,133,0.15)' }}
+                  >
+                    <IconComponent className="w-8 h-8" style={{color: '#bda985'}} />
+                  </div>
+                  
+                  <h3 className="font-bold text-black mb-3 text-lg">{schedule.days}</h3>
+                  <p className="text-2xl font-bold mb-3" style={{color: '#bda985'}}>{schedule.time}</p>
+                  <p className="text-sm text-gray-600 mb-4">{schedule.description}</p>
                   <span 
-                    className="text-xs px-3 py-1 rounded-full font-medium"
+                    className="inline-block text-xs px-4 py-2 rounded-full font-medium"
                     style={{
                       background: 'rgba(189,169,133,0.2)',
                       color: '#000000'
@@ -461,21 +543,13 @@ export default function ContactUsPage() {
                   >
                     {schedule.status}
                   </span>
-                </div>
-              ))}
-            </div>
+                </motion.div>
+              );
+            })}
           </div>
-        </div>
+        </motion.div>
 
- 
       </div>
-
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(180deg); }
-        }
-      `}</style>
-    </section>
+    </motion.section>
   );
 }
