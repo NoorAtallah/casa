@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Building, TrendingUp, Scale, Users, ArrowRight, Award, Shield } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+import Link from 'next/link';
 // Register ScrollTrigger plugin
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -471,7 +471,9 @@ const LawFirmHero = () => {
             <div className="space-y-4 md:space-y-6 px-4">
               <button className="group relative bg-gradient-to-r from-[#6B5B47] to-[#8B7355] text-white px-8 md:px-16 py-4 md:py-5 rounded-full text-base md:text-xl font-bold hover:from-[#5A4A39] hover:to-[#6B5B47] transition-all duration-700 transform hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-[#6B5B47]/40 overflow-hidden border border-[#8B7355]/30">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+               <Link href={"/contact"}>
                 <span className="relative">Schedule Your Consultation</span>
+                </Link>
               </button>
               
               <p className="text-gray-700 text-base md:text-lg font-semibold">Personalized legal counsel tailored to you</p>
