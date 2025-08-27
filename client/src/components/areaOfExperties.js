@@ -9,7 +9,8 @@ export default function ExpertiseSection() {
   const cardsRef = useRef(null);
   const statsRef = useRef(null);
   const sectorsRef = useRef(null);
-  const [activeSlide, setActiveSlide] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(1); // Start with middle slide (index 1)
+  const [isAnimationEnabled, setIsAnimationEnabled] = useState(true);
 
   const expertiseAreas = [
     {
@@ -17,7 +18,7 @@ export default function ExpertiseSection() {
       title: "Financial Institutions",
       description: "Comprehensive legal services for banks, investment firms, and financial institutions. We provide regulatory compliance, risk management, and strategic advisory services to navigate complex financial regulations and market dynamics.",
       features: ["Banking Regulations", "Investment Compliance", "Risk Management", "Financial Structuring"],
-      image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80",
+      image: "https://www.24forextrading.com/wp-content/uploads/2024/06/Settlement-Funding-and-Lawsuit-Loans.jpg",
       stats: { value: "$2B+", label: "Assets Advised" }
     },
     {
@@ -25,7 +26,7 @@ export default function ExpertiseSection() {
       title: "Oil & Gas",
       description: "Specialized legal counsel for the energy sector including upstream, midstream, and downstream operations. From exploration agreements to international joint ventures, we handle complex energy transactions and regulatory matters.",
       features: ["Exploration Rights", "Joint Ventures", "Regulatory Compliance", "International Trade"],
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80",
+      image: "https://www.akmanlegal.com/assets/oil-img1.png",
       stats: { value: "150+", label: "Energy Deals" }
     },
     {
@@ -33,7 +34,7 @@ export default function ExpertiseSection() {
       title: "Real Estate",
       description: "Full-spectrum real estate legal services covering commercial and residential transactions, development projects, and property investments. We ensure seamless property transfers and protect your real estate investments.",
       features: ["Property Transactions", "Development Projects", "Investment Advisory", "Due Diligence"],
-      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80",
+      image: "https://cdn-res.keymedia.com/cms/images/ca/119/0422_638628674961501400.jpg",
       stats: { value: "500+", label: "Properties Handled" }
     }
   ];
@@ -44,8 +45,49 @@ export default function ExpertiseSection() {
     "Oil & Gas", "Pharmaceuticals", "Real Estate", "Shipping", "Trade"
   ];
 
+  // Debounce function for performance
+  const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  };
+
+  // Intersection Observer for better performance
   useEffect(() => {
-    // Load GSAP and ScrollTrigger
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsAnimationEnabled(true);
+          } else {
+            setIsAnimationEnabled(false);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isAnimationEnabled) return;
+
+    // Load GSAP and ScrollTrigger with reduced animations
     const loadGSAP = async () => {
       if (!window.gsap) {
         const gsapScript = document.createElement('script');
@@ -68,17 +110,14 @@ export default function ExpertiseSection() {
       const { gsap } = window;
       gsap.registerPlugin(window.ScrollTrigger);
 
-      // Header Animation
+      // Reduced animations for better performance
       gsap.fromTo(headerRef.current, 
-        { 
-          y: 80, 
-          opacity: 0 
-        },
+        { y: 50, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1.2,
-          ease: "power3.out",
+          duration: 0.8,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: headerRef.current,
             start: "top 85%",
@@ -87,20 +126,15 @@ export default function ExpertiseSection() {
         }
       );
 
-      // Stagger animation for cards
+      // Simpler card animation
       gsap.fromTo(cardsRef.current?.children || [], 
-        { 
-          y: 100, 
-          opacity: 0,
-          scale: 0.9
-        },
+        { y: 40, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          scale: 1,
-          duration: 1,
-          ease: "power3.out",
-          stagger: 0.2,
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.1,
           scrollTrigger: {
             trigger: cardsRef.current,
             start: "top 80%",
@@ -111,16 +145,13 @@ export default function ExpertiseSection() {
 
       // Stats section animation
       gsap.fromTo(statsRef.current?.children || [], 
-        { 
-          y: 60, 
-          opacity: 0 
-        },
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.5,
           ease: "power2.out",
-          stagger: 0.15,
+          stagger: 0.1,
           scrollTrigger: {
             trigger: statsRef.current,
             start: "top 85%",
@@ -131,14 +162,11 @@ export default function ExpertiseSection() {
 
       // Sectors grid animation
       gsap.fromTo(sectorsRef.current, 
-        { 
-          y: 50, 
-          opacity: 0 
-        },
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.6,
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectorsRef.current,
@@ -148,22 +176,21 @@ export default function ExpertiseSection() {
         }
       );
 
-      // Floating elements animation
+      // Reduced floating elements animation
       const floatingElements = document.querySelectorAll('.floating-element');
       floatingElements.forEach((element, index) => {
         gsap.to(element, {
-          y: -20,
-          rotation: 360,
-          duration: 3 + index,
+          y: -10,
+          duration: 2 + index,
           repeat: -1,
           yoyo: true,
-          ease: "power2.inOut",
-          delay: index * 0.5
+          ease: "power1.inOut",
+          delay: index * 0.3
         });
       });
     };
 
-    // Load Swiper.js
+    // Load Swiper.js with optimized settings
     const loadSwiper = async () => {
       if (!window.Swiper) {
         const swiperCSS = document.createElement('link');
@@ -186,18 +213,19 @@ export default function ExpertiseSection() {
           slidesPerView: 1,
           spaceBetween: 30,
           centeredSlides: true,
+          initialSlide: 1, // Start with middle slide (Oil & Gas)
           autoplay: {
-            delay: 5000,
+            delay: 6000, // Increased delay for better UX
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           },
           effect: 'coverflow',
           coverflowEffect: {
-            rotate: 15,
+            rotate: 10, // Reduced rotation for better performance
             stretch: 0,
-            depth: 300,
+            depth: 200, // Reduced depth
             modifier: 1,
-            slideShadows: true,
+            slideShadows: false, // Disabled for performance
           },
           pagination: {
             el: '.swiper-pagination',
@@ -224,6 +252,13 @@ export default function ExpertiseSection() {
               setActiveSlide(this.activeIndex);
             },
           },
+          // Performance optimizations
+          watchSlidesProgress: false,
+          watchSlidesVisibility: false,
+          preloadImages: false,
+          lazy: {
+            loadPrevNext: true,
+          },
         });
       }
     };
@@ -237,7 +272,7 @@ export default function ExpertiseSection() {
         window.ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       }
     };
-  }, []);
+  }, [isAnimationEnabled]);
 
   return (
     <section 
@@ -261,16 +296,16 @@ export default function ExpertiseSection() {
           }}
         />
 
-        {/* Floating decorative elements */}
-        {[...Array(6)].map((_, i) => (
+        {/* Reduced floating decorative elements */}
+        {[...Array(4)].map((_, i) => (
           <div
             key={i}
             className="floating-element absolute opacity-8"
             style={{
-              left: `${15 + (i * 12)}%`,
-              top: `${20 + (i * 8)}%`,
-              width: `${25 + i * 8}px`,
-              height: `${25 + i * 8}px`,
+              left: `${20 + (i * 15)}%`,
+              top: `${25 + (i * 10)}%`,
+              width: `${20 + i * 6}px`,
+              height: `${20 + i * 6}px`,
               background: '#bda985',
               borderRadius: i % 2 === 0 ? '50%' : '20%',
             }}
@@ -285,7 +320,7 @@ export default function ExpertiseSection() {
           className="text-center mb-20"
         >
           <div 
-            className="inline-block px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider backdrop-blur-sm border-2 transition-all duration-500 hover:scale-105 shadow-lg mb-8"
+            className="inline-block px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wider backdrop-blur-sm border-2 transition-all duration-300 hover:scale-105 shadow-lg mb-8"
             style={{
               background: 'rgba(255,255,255,0.9)',
               borderColor: '#bda985',
@@ -326,10 +361,10 @@ export default function ExpertiseSection() {
                 const IconComponent = area.icon;
                 return (
                   <div key={index} className="swiper-slide">
-                    <div className="group relative h-[600px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-[rgba(189,169,133,0.3)] transition-all duration-700 hover:scale-105">
+                    <div className="group relative h-[600px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-[rgba(189,169,133,0.3)] transition-all duration-500 hover:scale-105">
                       {/* Background Image */}
                       <div 
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                         style={{ 
                           backgroundImage: `url(${area.image})`,
                         }}
@@ -352,7 +387,7 @@ export default function ExpertiseSection() {
                         <div className="flex justify-between items-start">
                           {/* Icon */}
                           <div 
-                            className="w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+                            className="w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
                             style={{ background: 'rgba(189,169,133,0.9)' }}
                           >
                             <IconComponent className="w-8 h-8 text-black" />
@@ -402,7 +437,7 @@ export default function ExpertiseSection() {
 
                           {/* Connect Button */}
                           <button 
-                            className="group/btn relative overflow-hidden w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-wide transition-all duration-500 hover:scale-105 hover:shadow-lg"
+                            className="group/btn relative overflow-hidden w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-lg"
                             style={{
                               background: '#bda985',
                               color: '#000000'
@@ -442,48 +477,158 @@ export default function ExpertiseSection() {
           </div>
         </div>
 
-        {/* All Sectors CTA Section */}
+        {/* Horizontal Scrolling Sectors Carousel */}
         <div 
           ref={sectorsRef}
           className="text-center mb-12"
         >
           <div 
-            className="inline-block p-8 rounded-3xl backdrop-blur-sm border-2 transition-all duration-500 hover:scale-105 shadow-lg"
+            className="p-8 rounded-3xl backdrop-blur-sm border-2 shadow-lg"
             style={{
               background: 'rgba(255,255,255,0.9)',
               borderColor: '#bda985',
               boxShadow: '0 8px 25px rgba(189,169,133,0.15)'
             }}
           >
-            <h3 className="text-2xl font-bold text-black mb-6">Complete Sector Coverage</h3>
+            <h3 className="text-2xl font-bold text-black mb-8">Complete Sector Coverage</h3>
             
-            {/* Sectors Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-8 max-w-4xl">
-              {allSectors.map((sector, index) => (
+            {/* Scrolling Container */}
+            <div className="relative overflow-hidden mb-8">
+              {/* Left Gradient Fade */}
+              <div 
+                className="absolute left-0 top-0 w-16 h-full z-10 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to right, rgba(255,255,255,0.9), transparent)'
+                }}
+              />
+              
+              {/* Right Gradient Fade */}
+              <div 
+                className="absolute right-0 top-0 w-16 h-full z-10 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to left, rgba(255,255,255,0.9), transparent)'
+                }}
+              />
+
+              {/* Scrolling Track */}
+              <div 
+                className="flex gap-4 animate-scroll"
+                style={{
+                  width: 'calc(300px * 30)', // Accommodate duplicated items
+                  animation: 'scrollRight 45s linear infinite'
+                }}
+              >
+                {/* First set of sectors */}
+                {allSectors.map((sector, index) => (
+                  <div 
+                    key={`first-${index}`}
+                    className="group flex-shrink-0 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-110 cursor-pointer border-2"
+                    style={{
+                      background: 'rgba(189,169,133,0.1)',
+                      borderColor: 'rgba(189,169,133,0.2)',
+                      color: '#000000',
+                      minWidth: '140px',
+                      textAlign: 'center',
+                      whiteSpace: 'nowrap'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = '#bda985';
+                      e.target.style.borderColor = '#bda985';
+                      e.target.style.color = '#000000';
+                      e.target.style.transform = 'scale(1.1) translateY(-2px)';
+                      e.target.style.boxShadow = '0 8px 20px rgba(189,169,133,0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'rgba(189,169,133,0.1)';
+                      e.target.style.borderColor = 'rgba(189,169,133,0.2)';
+                      e.target.style.color = '#000000';
+                      e.target.style.transform = 'scale(1) translateY(0)';
+                      e.target.style.boxShadow = 'none';
+                    }}
+                  >
+                    {sector}
+                  </div>
+                ))}
+                
+                {/* Second set (for seamless loop) */}
+                {allSectors.map((sector, index) => (
+                  <div 
+                    key={`second-${index}`}
+                    className="group flex-shrink-0 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-110 cursor-pointer border-2"
+                    style={{
+                      background: 'rgba(189,169,133,0.1)',
+                      borderColor: 'rgba(189,169,133,0.2)',
+                      color: '#000000',
+                      minWidth: '140px',
+                      textAlign: 'center',
+                      whiteSpace: 'nowrap'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = '#bda985';
+                      e.target.style.borderColor = '#bda985';
+                      e.target.style.color = '#000000';
+                      e.target.style.transform = 'scale(1.1) translateY(-2px)';
+                      e.target.style.boxShadow = '0 8px 20px rgba(189,169,133,0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'rgba(189,169,133,0.1)';
+                      e.target.style.borderColor = 'rgba(189,169,133,0.2)';
+                      e.target.style.color = '#000000';
+                      e.target.style.transform = 'scale(1) translateY(0)';
+                      e.target.style.boxShadow = 'none';
+                    }}
+                  >
+                    {sector}
+                  </div>
+                ))}
+              </div>
+
+              {/* Pause on Hover Overlay */}
+              <div 
+                className="absolute inset-0 z-5"
+                onMouseEnter={(e) => {
+                  const scrollTrack = e.currentTarget.nextSibling?.querySelector('.animate-scroll') || e.currentTarget.previousSibling?.querySelector('[style*="animation"]');
+                  if (scrollTrack) {
+                    scrollTrack.style.animationPlayState = 'paused';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  const scrollTrack = e.currentTarget.nextSibling?.querySelector('.animate-scroll') || e.currentTarget.previousSibling?.querySelector('[style*="animation"]');
+                  if (scrollTrack) {
+                    scrollTrack.style.animationPlayState = 'running';
+                  }
+                }}
+              />
+            </div>
+
+            {/* Bottom Statistics */}
+            <div className="flex justify-center items-center gap-8 text-sm text-gray-600 mb-6">
+              <div className="flex items-center">
                 <div 
-                  key={index}
-                  className="group px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105"
-                  style={{
-                    background: 'rgba(189,169,133,0.1)',
-                    color: '#000000'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = 'rgba(189,169,133,0.2)';
-                    e.target.style.color = '#bda985';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = 'rgba(189,169,133,0.1)';
-                    e.target.style.color = '#000000';
-                  }}
-                >
-                  {sector}
-                </div>
-              ))}
+                  className="w-3 h-3 rounded-full mr-2"
+                  style={{ background: '#bda985' }}
+                />
+                <span><strong>15</strong> Industries</span>
+              </div>
+              <div className="flex items-center">
+                <div 
+                  className="w-3 h-3 rounded-full mr-2"
+                  style={{ background: '#bda985' }}
+                />
+                <span><strong>4</strong> Countries</span>
+              </div>
+              <div className="flex items-center">
+                <div 
+                  className="w-3 h-3 rounded-full mr-2"
+                  style={{ background: '#bda985' }}
+                />
+                <span><strong>100%</strong> Success Rate</span>
+              </div>
             </div>
 
             {/* View All CTA */}
             <button 
-              className="group/btn relative overflow-hidden px-8 py-4 rounded-xl font-bold text-lg uppercase tracking-wide transition-all duration-500 hover:scale-105 hover:shadow-lg"
+              className="group/btn relative overflow-hidden px-8 py-4 rounded-xl font-bold text-lg uppercase tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-lg"
               style={{
                 background: '#bda985',
                 color: '#000000'
@@ -542,36 +687,36 @@ export default function ExpertiseSection() {
           <div ref={statsRef} className="relative grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div className="group flex flex-col items-center">
               <div 
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg"
+                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg"
                 style={{ background: 'rgba(189,169,133,0.1)' }}
               >
                 <MapPin className="w-10 h-10" style={{color: '#bda985'}} />
               </div>
-              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-500">4</h4>
+              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-300">4</h4>
               <h5 className="text-xl font-bold mb-2 uppercase tracking-wide" style={{color: '#bda985'}}>Countries</h5>
               <p className="text-gray-600 font-light">UAE, Bahrain, Egypt, Iraq</p>
             </div>
             
             <div className="group flex flex-col items-center">
               <div 
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg"
+                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg"
                 style={{ background: 'rgba(189,169,133,0.1)' }}
               >
                 <Users className="w-10 h-10" style={{color: '#bda985'}} />
               </div>
-              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-500">15+</h4>
+              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-300">15+</h4>
               <h5 className="text-xl font-bold mb-2 uppercase tracking-wide" style={{color: '#bda985'}}>Expert Team</h5>
               <p className="text-gray-600 font-light">Qualified Legal & Financial Professionals</p>
             </div>
             
             <div className="group flex flex-col items-center">
               <div 
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg"
+                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg"
                 style={{ background: 'rgba(189,169,133,0.1)' }}
               >
                 <Shield className="w-10 h-10" style={{color: '#bda985'}} />
               </div>
-              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-500">100%</h4>
+              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-300">100%</h4>
               <h5 className="text-xl font-bold mb-2 uppercase tracking-wide" style={{color: '#bda985'}}>Compliance</h5>
               <p className="text-gray-600 font-light">Regulatory Standards Met</p>
             </div>
@@ -613,6 +758,19 @@ export default function ExpertiseSection() {
         .swiper-3d .swiper-slide-shadow-left,
         .swiper-3d .swiper-slide-shadow-right {
           background: linear-gradient(to right, rgba(189,169,133,0.2), transparent);
+        }
+        
+        @keyframes scrollRight {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        
+        .animate-scroll:hover {
+          animation-play-state: paused;
         }
       `}</style>
     </section>

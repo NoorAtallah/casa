@@ -9,9 +9,8 @@ export default function Home() {
    <div>
       <Hero />
       <ExpertiseSection />
-      <CompanyProfile />
-      <WhyChooseUs />
-      <ContactUs />
+      {/* <CompanyProfile /> */}
+
    </div>
   );
 }
