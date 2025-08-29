@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { Scale, TrendingUp, Smartphone, ArrowRight, MapPin, Users, Shield, Star, Award, ChevronLeft, ChevronRight } from 'lucide-react';
-
+import Link from 'next/link';
 export default function ExpertiseSection() {
   const sectionRef = useRef(null);
   const swiperRef = useRef(null);
@@ -436,6 +436,7 @@ export default function ExpertiseSection() {
                           </div>
 
                           {/* Connect Button */}
+                           <Link href={"/contact"}>
                           <button 
                             className="group/btn relative overflow-hidden w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-lg"
                             style={{
@@ -449,11 +450,14 @@ export default function ExpertiseSection() {
                               e.target.style.background = '#bda985';
                             }}
                           >
+                           
                             <span className="flex items-center justify-center">
                               Connect to me
                               <ArrowRight className="ml-3 w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" />
                             </span>
+                           
                           </button>
+                           </Link>
                         </div>
                       </div>
 

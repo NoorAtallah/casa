@@ -37,7 +37,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden bg-[#BDA985]/10 backdrop-blur-sm border border-[#BDA985]/30 p-1">
+              <div className="w-20 h-20 rounded-lg flex items-center justify-center overflow-hidden   p-1">
                 <Image
                   src="/images/1.png"
                   alt="Casa Di Consiglio Logo"

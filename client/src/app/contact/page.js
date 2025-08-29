@@ -234,7 +234,7 @@ export default function ContactUsPage() {
                 initial={{ scale: 1.2, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1.2 }}
-                src="https://curleybusinesslaw.com/wp-content/uploads/2022/09/law-scaled.jpg"
+                src="https://images.squarespace-cdn.com/content/v1/5f99f1a1d69e7061a6cf3a6d/1609187810276-90G1CD3S8HP5XNR10XRJ/CoverImageDubuissonLawOffices.jpg"
                 alt="Contact Casa Di Consiglio"
                 className="w-full h-full object-cover"
               />
