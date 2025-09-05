@@ -49,7 +49,7 @@ export default function Navbar() {
               </div>
               <div className="ml-3">
                 <h1 className="text-gray-900 font-bold text-xl">Casa Di Consiglio</h1>
-                <p className="text-[#BDA985] text-xs">Legal & Financial Solutions</p>
+                <p className="text-[#BDA985] text-xs">Business Consultants & Legal Studies and Research</p>
               </div>
             </Link>
           </div>
@@ -82,13 +82,7 @@ export default function Navbar() {
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
               </Link>
 
-                 <Link
-                href="/expertise"
-                className="text-gray-700 hover:text-[#BDA985] px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group"
-              >
-                Expertise
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
-              </Link> 
+               
               
               {/* <Link
                 href="/kyc"
@@ -153,13 +147,7 @@ export default function Navbar() {
             >
               KYC
             </Link>
-               <Link
-              href="/expertise"
-              className="text-gray-700 hover:text-[#BDA985] hover:bg-[#BDA985]/5 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
-              onClick={() => setIsMenuOpen(false)}
-            >
-             Expertise 
-            </Link>
+     
 
             {/* <Link
               href="/kyc"

@@ -40,17 +40,10 @@ const LawFirmHero = () => {
       icon: TrendingUp,
       areas: ["Banking & Finance", "Investments"]
     },
-    {
-      title: "Dispute Resolution & Litigation",
-      subtitle: "Strategic dispute resolution services",
-      description: "Arbitration, litigation, white collar crime defense, and criminal law representation with proven track record.",
-      stats: { value: "95%", label: "Success Rate" },
-      icon: Scale,
-      areas: ["Arbitration", "Litigation", "Dispute Resolution", "Criminal", "White Collar Crime"]
-    },
+  
     {
       title: "Private Client & Family Services",
-      subtitle: "Personalized legal and tax advisory",
+      subtitle: "Personalized and tailored advice and research ",
       description: "Family business structuring, private client services, tax planning, and healthcare law for individuals and families.",
       stats: { value: "150+", label: "Private Clients" },
       icon: Users,
@@ -322,53 +315,52 @@ const LawFirmHero = () => {
             </div>
           </div>
 
-          {/* Practice Areas Cards - All beside each other */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {practiceAreas.map((area, index) => {
-              const IconComponent = area.icon;
-              return (
-                <div 
-                  key={index}
-                  ref={el => {
-                    if (index < 2) {
-                      leftCardsRef.current[index] = el;
-                    } else {
-                      rightCardsRef.current[index - 2] = el;
-                    }
-                    mobileCardsRef.current[index] = el;
-                  }}
-                  className="group cursor-pointer"
-                >
-                  <div className="flex flex-col p-6 rounded-2xl bg-white/90 backdrop-blur-sm hover:bg-white/98 transition-all duration-500 border border-gray-200/60 hover:border-[#8B7355]/30 shadow-sm hover:shadow-md h-full">
-                    <div className="flex items-center space-x-4 mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#BDA985]/30 to-[#8B7355]/20 rounded-xl flex items-center justify-center group-hover:from-[#8B7355] group-hover:to-[#6B5B47] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm">
-                        <IconComponent className="w-6 h-6 text-[#8B7355] group-hover:text-white transition-colors duration-500" />
+          {/* Practice Areas Cards - Centered Layout */}
+          <div className="flex justify-center w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto justify-items-center">
+              {practiceAreas.map((area, index) => {
+                const IconComponent = area.icon;
+                return (
+                  <div 
+                    key={index}
+                    ref={el => {
+                      if (index < 2) {
+                        leftCardsRef.current[index] = el;
+                      } else {
+                        rightCardsRef.current[index - 2] = el;
+                      }
+                      mobileCardsRef.current[index] = el;
+                    }}
+                    className="group cursor-pointer"
+                  >
+                    <div className="flex flex-col p-6 rounded-2xl bg-white/90 backdrop-blur-sm hover:bg-white/98 transition-all duration-500 border border-gray-200/60 hover:border-[#8B7355]/30 shadow-sm hover:shadow-md h-full">
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#BDA985]/30 to-[#8B7355]/20 rounded-xl flex items-center justify-center group-hover:from-[#8B7355] group-hover:to-[#6B5B47] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm">
+                          <IconComponent className="w-6 h-6 text-[#8B7355] group-hover:text-white transition-colors duration-500" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-lg text-gray-900 group-hover:text-[#6B5B47] transition-colors duration-300">
+                            {area.title}
+                          </h4>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-lg text-gray-900 group-hover:text-[#6B5B47] transition-colors duration-300">
-                          {area.title}
-                        </h4>
+                      
+                      <p className="text-sm text-gray-700 mb-4 leading-relaxed font-medium flex-grow">{area.subtitle}</p>
+                      
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {area.areas.slice(0, 3).map((specialty, idx) => (
+                          <span key={idx} className="text-xs bg-[#BDA985]/20 text-[#6B5B47] px-2 py-1 rounded-full font-medium border border-[#BDA985]/30">
+                            {specialty}
+                          </span>
+                        ))}
                       </div>
-                    </div>
-                    
-                    <p className="text-sm text-gray-700 mb-4 leading-relaxed font-medium flex-grow">{area.subtitle}</p>
-                    
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {area.areas.slice(0, 3).map((specialty, idx) => (
-                        <span key={idx} className="text-xs bg-[#BDA985]/20 text-[#6B5B47] px-2 py-1 rounded-full font-medium border border-[#BDA985]/30">
-                          {specialty}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    <div className="flex items-center justify-between mt-auto pt-2">
-                      <span className="text-[#6B5B47] font-bold text-lg">{area.stats.value}</span>
-                      <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-[#6B5B47] group-hover:translate-x-2 transition-all duration-300" />
+                      
+                     
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
           {/* CTA Section */}

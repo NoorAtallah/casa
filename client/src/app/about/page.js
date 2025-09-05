@@ -10,7 +10,7 @@ export default function AboutUsPage() {
   const coreServices = [
     {
       icon: FileText,
-      title: "Legal Documentation",
+      title: "Assist in preparatin of Documentation",
       description: "Articles of Association, MOA, Shareholding Agreements, and comprehensive corporate documentation",
       features: ["Articles of Association", "MOA Preparation", "Shareholding Agreements", "Corporate Documentation"],
       image: "https://www.bridgelawllp.com/wp-content/uploads/2015/05/bridge_law_llp_diy_legal_documents.jpg"
@@ -31,9 +31,9 @@ export default function AboutUsPage() {
     },
     {
       icon: Scale,
-      title: "Legal Opinions & Advisory",
+      title: "Study, Research and Advice",
       description: "Expert legal opinions, professional advisory services, and strategic legal consulting",
-      features: ["Legal Opinions", "Professional Advisory", "Strategic Consulting", "Expert Analysis"],
+      features: ["Legal Standing Research and Professional Advice", "Strategy and Analysis", "Risk Assessment"],
       image: "https://kassenanankana.com/wp-content/uploads/2024/04/untitled-122-1.jpg"
     }
   ];
@@ -41,41 +41,36 @@ export default function AboutUsPage() {
   const companyValues = [
     {
       icon: Award,
-      title: "Elite Service Quality",
-      description: "We deliver exceptional, high-quality consultancy services that exceed expectations and set industry standards.",
+      title: "Offer Service Quality",
+      description: "We deliver exceptional, high-quality services that exceed expectations and set industry standards.",
       image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop&auto=format"
     },
     {
       icon: Users,
       title: "Personalized Approach", 
-      description: "Tailored solutions designed specifically for your unique needs, ensuring maximum relevance and effectiveness.",
+      description: "Tailored solutions designed specifically for our client's unique needs, ensuring maximum relevance and effectiveness.",
       image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=300&h=200&fit=crop&auto=format"
     },
     {
       icon: TrendingUp,
       title: "Cost-Effective Excellence",
-      description: "Professional services offered at reasonable prices with flexible arrangements that respect your budget.",
+      description: "Professional services offered at reasonable rates with flexible arrangements.",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=200&fit=crop&auto=format"
     },
     {
       icon: Globe,
       title: "Comprehensive Coverage",
-      description: "Complete legal and consultancy services across multiple jurisdictions and practice areas.",
+      description: "Services extending across multiple lines of businesses and industry sectors.",
       image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=300&h=200&fit=crop&auto=format"
     }
   ];
 
-  const stats = [
-    { number: "2024", label: "Founded", icon: Star },
-    { number: "4+", label: "Countries", icon: Globe },
-    { number: "100%", label: "Satisfaction", icon: Award },
-    { number: "24/7", label: "Support", icon: Clock }
-  ];
+
 
   const teamMembers = [
     {
       name: "Dr.Dia",
-      role: "Senior Partner",
+      role: "Founder and Director",
       image: "/images/4.png"
     }
   ];
@@ -198,20 +193,7 @@ export default function AboutUsPage() {
           variants={containerVariants}
           className="text-center mb-20"
         >
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="inline-block px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider backdrop-blur-md border-2 transition-all duration-500 hover:scale-105 shadow-xl mb-8"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(189,169,133,0.1))',
-              borderColor: '#bda985',
-              color: '#000000',
-              boxShadow: '0 10px 40px rgba(189,169,133,0.2)'
-            }}
-          >
-            About Our Elite Firm
-          </motion.div>
+      
           
           <motion.div className="relative mb-12">
             {/* Hero Image */}
@@ -236,7 +218,7 @@ export default function AboutUsPage() {
                     <span className="block" style={{ color: '#bda985' }}>CONSIGLIO</span>
                   </h1>
                   <p className="text-xl md:text-2xl font-light">
-                    Elite Legal & Financial Consulting Services
+                    Business Consulting & Legal Studies and Research Services
                   </p>
                 </motion.div>
               </div>
@@ -244,41 +226,7 @@ export default function AboutUsPage() {
           </motion.div>
         </motion.div>
 
-        {/* Stats Section */}
-        <motion.div 
-          variants={containerVariants}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
-        >
-          {stats.map((stat, index) => {
-            const IconComponent = stat.icon;
-            return (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                whileHover="hover"
-                className="text-center p-6 rounded-2xl backdrop-blur-sm"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(189,169,133,0.05))',
-                  border: '1px solid rgba(189,169,133,0.2)',
-                  boxShadow: '0 8px 32px rgba(189,169,133,0.1)'
-                }}
-              >
-                <div 
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
-                  style={{ background: 'rgba(189,169,133,0.15)' }}
-                >
-                  <IconComponent className="w-6 h-6" style={{ color: '#bda985' }} />
-                </div>
-                <div className="text-2xl font-bold mb-2" style={{ color: '#bda985' }}>
-                  {stat.number}
-                </div>
-                <div className="text-sm text-gray-600 font-medium">
-                  {stat.label}
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+
 
         {/* Company Story with Images */}
         <motion.div 
@@ -324,16 +272,17 @@ export default function AboutUsPage() {
               </div>
 
               <h2 className="text-3xl md:text-4xl font-black text-black">
-                Our <span style={{ color: '#bda985' }}>Journey</span>
+                Expertise
               </h2>
 
               <div className="text-gray-700 space-y-4 leading-relaxed">
+               
                 <p>
-                  Casa Di Consiglio FZC-LLC represents a new era in legal and business consulting, established to deliver elite services that bridge the gap between complex legal requirements and practical business solutions.
-                </p>
-                <p>
-                  We specialize in providing comprehensive consultancy services to law firms and legal entities, enhancing their capabilities with our specialized expertise and innovative approaches.
-                </p>
+We specialise in providing professional personalised service
+to both companies and individuals by conducting thorough
+studies and reasearch unique to every client in order to provide
+a tailored innovative solution to enhance client's business, commercial and
+legal standing                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -366,7 +315,7 @@ export default function AboutUsPage() {
         >
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-black text-black mb-6">
-              OUR <span style={{ color: '#bda985' }}>EXPERTISE</span>
+              OUR <span style={{ color: '#bda985' }}>SERVICES</span>
             </h2>
             <p className="text-lg text-gray-700 font-light max-w-2xl mx-auto">
               Comprehensive legal documentation and advisory services backed by years of experience
@@ -447,10 +396,10 @@ export default function AboutUsPage() {
         >
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-black text-black mb-6">
-              OUR <span style={{ color: '#bda985' }}>TEAM</span>
+              WHO WE <span style={{ color: '#bda985' }}>ARE</span>
             </h2>
             <p className="text-lg text-gray-700 font-light max-w-2xl mx-auto">
-              Expert professionals dedicated to delivering exceptional legal and business solutions
+              Expert  dedicated to delivering exceptional business solutions
             </p>
           </motion.div>
 

@@ -606,29 +606,7 @@ export default function ExpertiseSection() {
             </div>
 
             {/* Bottom Statistics */}
-            <div className="flex justify-center items-center gap-8 text-sm text-gray-600 mb-6">
-              <div className="flex items-center">
-                <div 
-                  className="w-3 h-3 rounded-full mr-2"
-                  style={{ background: '#bda985' }}
-                />
-                <span><strong>15</strong> Industries</span>
-              </div>
-              <div className="flex items-center">
-                <div 
-                  className="w-3 h-3 rounded-full mr-2"
-                  style={{ background: '#bda985' }}
-                />
-                <span><strong>4</strong> Countries</span>
-              </div>
-              <div className="flex items-center">
-                <div 
-                  className="w-3 h-3 rounded-full mr-2"
-                  style={{ background: '#bda985' }}
-                />
-                <span><strong>100%</strong> Success Rate</span>
-              </div>
-            </div>
+  
 
             {/* View All CTA */}
             <button 
@@ -654,78 +632,7 @@ export default function ExpertiseSection() {
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div 
-          className="relative rounded-3xl p-12 md:p-16 shadow-2xl overflow-hidden"
-          style={{
-            background: 'rgba(255,255,255,0.95)',
-            border: '1px solid rgba(189,169,133,0.2)',
-          }}
-        >
-          {/* Background Elements */}
-          <div className="absolute inset-0">
-            <div 
-              className="absolute top-8 right-8 w-32 h-32 rounded-full opacity-10 blur-xl"
-              style={{ background: 'radial-gradient(circle, #bda985 0%, transparent 70%)' }}
-            />
-            <div 
-              className="absolute bottom-8 left-8 w-24 h-24 rounded-full opacity-15 blur-lg"
-              style={{ background: 'radial-gradient(circle, #bda985 0%, transparent 70%)' }}
-            />
-          </div>
-
-          {/* Elite Badge */}
-          <div className="text-center mb-12">
-            <div 
-              className="inline-flex items-center px-6 py-3 rounded-full border backdrop-blur-sm"
-              style={{
-                background: 'rgba(189,169,133,0.1)',
-                borderColor: 'rgba(189,169,133,0.3)'
-              }}
-            >
-              <Award className="w-5 h-5 mr-3" style={{color: '#bda985'}} />
-              <span className="font-bold text-sm uppercase tracking-wider" style={{color: '#000000'}}>Global Excellence</span>
-            </div>
-          </div>
-
-          <div ref={statsRef} className="relative grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-            <div className="group flex flex-col items-center">
-              <div 
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg"
-                style={{ background: 'rgba(189,169,133,0.1)' }}
-              >
-                <MapPin className="w-10 h-10" style={{color: '#bda985'}} />
-              </div>
-              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-300">4</h4>
-              <h5 className="text-xl font-bold mb-2 uppercase tracking-wide" style={{color: '#bda985'}}>Countries</h5>
-              <p className="text-gray-600 font-light">UAE, Bahrain, Egypt, Iraq</p>
-            </div>
-            
-            <div className="group flex flex-col items-center">
-              <div 
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg"
-                style={{ background: 'rgba(189,169,133,0.1)' }}
-              >
-                <Users className="w-10 h-10" style={{color: '#bda985'}} />
-              </div>
-              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-300">15+</h4>
-              <h5 className="text-xl font-bold mb-2 uppercase tracking-wide" style={{color: '#bda985'}}>Expert Team</h5>
-              <p className="text-gray-600 font-light">Qualified Legal & Financial Professionals</p>
-            </div>
-            
-            <div className="group flex flex-col items-center">
-              <div 
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg"
-                style={{ background: 'rgba(189,169,133,0.1)' }}
-              >
-                <Shield className="w-10 h-10" style={{color: '#bda985'}} />
-              </div>
-              <h4 className="text-4xl md:text-5xl font-black text-black mb-3 group-hover:text-[#bda985] transition-colors duration-300">100%</h4>
-              <h5 className="text-xl font-bold mb-2 uppercase tracking-wide" style={{color: '#bda985'}}>Compliance</h5>
-              <p className="text-gray-600 font-light">Regulatory Standards Met</p>
-            </div>
-          </div>
-        </div>
+   
       </div>
 
       {/* Simplified Floating Elements */}

@@ -41,45 +41,33 @@ export default function ContactUsPage() {
   ];
 
   const coverageAreas = [
-    { 
+      { 
       country: "United Arab Emirates", 
       flag: "🇦🇪",
       description: "Primary headquarters and operations"
     },
     { 
-      country: "Kingdom of Bahrain", 
-      flag: "🇧🇭",
-      description: "Regional legal services"
+      country: "Hashemite Kingdom of Jordan", 
+      flag: "🇯🇴",
+      description: "Primary operations and regional headquarters"
     },
     { 
-      country: "Arab Republic of Egypt", 
-      flag: "🇪🇬",
-      description: "International legal support"
-    },
-    { 
-      country: "Republic of Iraq", 
-      flag: "🇮🇶",
-      description: "Cross-border legal solutions"
+      country: "Kingdom of Spain", 
+      flag: "🇪🇸",
+      description: "International legal services and EU representation"
     }
   ];
 
   const businessHours = [
     { 
-      days: "Sunday - Thursday", 
+      days: "Monday - Thursday", 
       time: "9 AM - 6 PM", 
       status: "Regular Hours",
       icon: Clock,
       description: "Full consultation services available"
     },
     { 
-      days: "Friday", 
-      time: "2 PM - 6 PM", 
-      status: "Limited Hours",
-      icon: Clock,
-      description: "Reduced hours with priority cases"
-    },
-    { 
-      days: "Saturday", 
+      days: "Friday - Sunday", 
       time: "By Appointment", 
       status: "Appointment Only",
       icon: Clock,
@@ -376,6 +364,7 @@ export default function ContactUsPage() {
                   <div className="text-gray-700 leading-relaxed mb-6">
                     <p>Zone E, First Floor, Office # F13</p>
                     <p>Sharjah Book Authority Building</p>
+                    <p>Sharjah Publishing City Free Zone</p>
                     <p>Al Zahia, Sharjah, UAE</p>
                   </div>
                   
@@ -438,7 +427,7 @@ export default function ContactUsPage() {
             </div>
           </motion.div>
 
-          {/* Coverage Areas */}
+          {/* Coverage Areas - Updated for Jordan and Spain */}
           <motion.div variants={itemVariants} className="space-y-8">
             <div 
               className="p-8 rounded-2xl shadow-2xl"
@@ -490,7 +479,7 @@ export default function ContactUsPage() {
           </motion.div>
         </motion.div>
 
-        {/* Business Hours */}
+        {/* Business Hours - Updated for Jordan and Spain Times */}
         <motion.div 
           variants={containerVariants}
           className="mb-20"
@@ -504,7 +493,7 @@ export default function ContactUsPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {businessHours.map((schedule, index) => {
               const IconComponent = schedule.icon;
               return (
@@ -524,14 +513,18 @@ export default function ContactUsPage() {
                     borderColor: hoveredHour === index ? '#bda985' : 'rgba(189,169,133,0.2)'
                   }}
                 >
-                  <div 
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
-                    style={{ background: 'rgba(189,169,133,0.15)' }}
-                  >
-                    <IconComponent className="w-8 h-8" style={{color: '#bda985'}} />
+                  <div className="flex items-center justify-center mb-4">
+                    <span className="text-2xl mr-2">{schedule.flag}</span>
+                    <div 
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                      style={{ background: 'rgba(189,169,133,0.15)' }}
+                    >
+                      <IconComponent className="w-6 h-6" style={{color: '#bda985'}} />
+                    </div>
                   </div>
                   
-                  <h3 className="font-bold text-black mb-3 text-lg">{schedule.days}</h3>
+                  <h3 className="font-bold text-black mb-2 text-sm">{schedule.location}</h3>
+                  <h4 className="font-semibold text-black mb-3 text-base">{schedule.days}</h4>
                   <p className="text-2xl font-bold mb-3" style={{color: '#bda985'}}>{schedule.time}</p>
                   <p className="text-sm text-gray-600 mb-4">{schedule.description}</p>
                   <span 

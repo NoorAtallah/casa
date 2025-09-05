@@ -6,9 +6,8 @@ export default function Footer() {
 
   const countries = [
     "United Arab Emirates",
-    "Kingdom of Bahrain", 
-    "Arab Republic of Egypt",
-    "Republic of Iraq"
+    "Hashemite Kingdom of Jordan", 
+    "The Spanish Republic"
   ];
 
   const quickLinks = [
@@ -66,7 +65,7 @@ export default function Footer() {
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-black mb-1">Casa Di Consiglio</h3>
-                <p className="font-semibold" style={{color: '#bda985'}}>Legal & Financial Solutions</p>
+                <p className="font-semibold" style={{color: '#bda985'}}>Business Consultants & Legal Studies and Research</p>
               </div>
             </div>
             
@@ -121,6 +120,7 @@ export default function Footer() {
                 <span className="text-black font-medium leading-relaxed group-hover:text-[#bda985] transition-colors duration-300">
                   Zone E, First Floor, Office # F13<br />
                   Sharjah Book Authority Building<br />
+                  Sharjah Publishing City Free Zone<br />
                   Al Zahia, Sharjah, UAE
                 </span>
               </div>
@@ -180,17 +180,14 @@ export default function Footer() {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-gray-700">Sun - Thu:</span>
+                <span className="text-gray-700">Mon - Thu:</span>
                 <span className="font-semibold" style={{color: '#bda985'}}>9 AM - 6 PM</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-700">Friday:</span>
-                <span className="font-semibold" style={{color: '#bda985'}}>2 PM - 6 PM</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Saturday:</span>
+                <span className="text-gray-700">Friday - Sunday:</span>
                 <span className="font-semibold" style={{color: '#bda985'}}>By Appointment</span>
               </div>
+          
             </div>
           </div>
         </div>
