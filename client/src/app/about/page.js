@@ -278,11 +278,12 @@ export default function AboutUsPage() {
               <div className="text-gray-700 space-y-4 leading-relaxed">
                
                 <p>
+
 We specialise in providing professional personalised service
 to both companies and individuals by conducting thorough
-studies and reasearch unique to every client in order to provide
-a tailored innovative solution to enhance client's business, commercial and
-legal standing                </p>
+studies and research unique to every client in order to provide
+a tailored innovative solution to enhance client&apos;s business, commercial and
+legal standing</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
