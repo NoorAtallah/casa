@@ -7,14 +7,14 @@ export default function Footer() {
   const countries = [
     "United Arab Emirates",
     "Hashemite Kingdom of Jordan", 
-    "The Spanish Republic"
+    "Kingdom of Spain"
   ];
 
   const quickLinks = [
-    "About Us",
-    "Our Expertise", 
-    // "Company Profile",
-    "Contact Us"
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "KYC", href: "/kyc" },
+    { name: "Contact", href: "/contact" }
   ];
 
   const scrollToTop = () => {
@@ -140,9 +140,9 @@ export default function Footer() {
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
-                  <a href="#" className="group text-gray-700 hover:text-black transition-colors duration-300 flex items-center">
+                  <a href={link.href} className="group text-gray-700 hover:text-black transition-colors duration-300 flex items-center">
                     <div className="w-2 h-2 rounded-full mr-4 group-hover:scale-150 transition-transform duration-300" style={{background: '#bda985'}}></div>
-                    <span className="group-hover:text-[#bda985] transition-colors duration-300">{link}</span>
+                    <span className="group-hover:text-[#bda985] transition-colors duration-300">{link.name}</span>
                   </a>
                 </li>
               ))}
@@ -204,7 +204,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-600 text-sm mb-6 md:mb-0 text-center md:text-left">
-              © 2025 Casa Di Consiglio. All rights reserved. | Legal & Financial Consulting Services
+              © 2025 Casa Di Consiglio. All rights reserved. | Business Consultants & Legal Studies and Research
             </div>
             
             <div className="flex items-center space-x-8">

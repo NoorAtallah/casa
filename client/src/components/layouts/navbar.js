@@ -35,21 +35,25 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 max-w-[70%] sm:max-w-none">
             <Link href="/" className="flex items-center">
-              <div className="w-20 h-20 rounded-lg flex items-center justify-center overflow-hidden   p-1">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-lg flex items-center justify-center overflow-hidden p-1">
                 <Image
                   src="/images/1.png"
                   alt="Casa Di Consiglio Logo"
                   width={60}
                   height={60}
-                  className="object-contain"
+                  className="object-contain w-full h-full"
                   priority
                 />
               </div>
-              <div className="ml-3">
-                <h1 className="text-gray-900 font-bold text-xl">Casa Di Consiglio</h1>
-                <p className="text-[#BDA985] text-xs">Business Consultants & Legal Studies and Research</p>
+              <div className="ml-2 sm:ml-3 min-w-0 flex-1">
+                <h1 className="text-gray-900 font-bold text-sm sm:text-lg lg:text-xl leading-tight">
+                  Casa Di Consiglio
+                </h1>
+                <p className="text-[#BDA985] text-[10px] sm:text-xs leading-tight break-words hyphens-auto">
+                  Business Consultants &amp; Legal Studies and Research
+                </p>
               </div>
             </Link>
           </div>
@@ -73,7 +77,6 @@ export default function Navbar() {
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
               </Link>
 
-           
               <Link
                 href="/kyc"
                 className="text-gray-700 hover:text-[#BDA985] px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group"
@@ -81,16 +84,6 @@ export default function Navbar() {
                 KYC
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
               </Link>
-
-               
-              
-              {/* <Link
-                href="/kyc"
-                className="text-gray-700 hover:text-[#BDA985] px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group"
-              >
-               KYC
-               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
-              </Link> */}
 
               <Link
                 href="/contact"
@@ -102,10 +95,8 @@ export default function Navbar() {
             </div>
           </div>
 
-   
-
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex-shrink-0">
             <button
               onClick={toggleMenu}
               className="text-gray-700 hover:text-[#BDA985] inline-flex items-center justify-center p-2 rounded-md transition-colors duration-200"
@@ -140,22 +131,13 @@ export default function Navbar() {
               About
             </Link>
 
-     <Link
+            <Link
               href="/kyc"
               className="text-gray-700 hover:text-[#BDA985] hover:bg-[#BDA985]/5 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
               onClick={() => setIsMenuOpen(false)}
             >
               KYC
             </Link>
-     
-
-            {/* <Link
-              href="/kyc"
-              className="text-gray-700 hover:text-[#BDA985] hover:bg-[#BDA985]/5 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              KYC
-            </Link> */}
 
             <Link
               href="/contact"
@@ -164,8 +146,6 @@ export default function Navbar() {
             >
               Contact
             </Link>
-
-    
           </div>
         </div>
       )}
