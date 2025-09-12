@@ -108,7 +108,7 @@ export default function ScrollingArticlesBanner() {
         }
         
         .animate-scroll-left {
-          animation: scroll-left 2s linear infinite;
+          animation: scroll-left 5s linear infinite;
         }
         
         /* Pause animation on hover */

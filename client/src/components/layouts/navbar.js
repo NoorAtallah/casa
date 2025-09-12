@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Mail } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -34,8 +34,23 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 max-w-[70%] sm:max-w-none">
+          {/* Email Icon + Logo */}
+          <div className="flex-shrink-0 max-w-[70%] sm:max-w-none flex items-center">
+            {/* Email Icon - Desktop only */}
+            <div className="hidden md:block mr-8">
+              <a
+                href="https://162.254.37.113:2083/cpsess0633337760/frontend/jupiter/index.html?=undefined&login=1&post_login=50574527242595"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-[#BDA985] p-2 rounded-md transition-all duration-300 relative group"
+                title="Webmail"
+              >
+                <Mail className="w-5 h-5" />
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
+              </a>
+            </div>
+            
+            {/* Logo */}
             <Link href="/" className="flex items-center">
               <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-lg flex items-center justify-center overflow-hidden p-1">
                 <Image
@@ -115,6 +130,18 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gradient-to-r from-stone-100/95 to-stone-50/95 shadow-lg border-t border-stone-200/60 backdrop-blur-xl">
+            {/* Email link in mobile menu */}
+            <a
+              href="https://casadiconsiglio.com:2096/cpsess2612049706/webmail/jupiter/mail/manage_disk_usage/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-700 hover:text-[#BDA985] hover:bg-[#BDA985]/5 flex items-center px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Mail className="w-4 h-4 mr-2" />
+              Webmail
+            </a>
+
             <Link
               href="/"
               className="text-gray-700 hover:text-[#BDA985] hover:bg-[#BDA985]/5 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
