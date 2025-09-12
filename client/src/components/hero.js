@@ -4,7 +4,7 @@ import { Building, TrendingUp, Scale, Users, ArrowRight, Award, Shield } from 'l
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
-
+import ScrollingArticlesBanner from './ScrollingArticlesBanner';
 // Register ScrollTrigger plugin
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -273,7 +273,9 @@ const LawFirmHero = () => {
         <div ref={el => linesRef.current[2] = el} className="absolute bottom-16 right-4 sm:bottom-32 sm:right-16 w-12 sm:w-24 h-px bg-gradient-to-l from-[#8B7355]/50 to-transparent"></div>
         <div ref={el => linesRef.current[3] = el} className="absolute bottom-16 right-4 sm:bottom-32 sm:right-16 w-px h-12 sm:h-24 bg-gradient-to-t from-[#8B7355]/50 to-transparent"></div>
       </div>
-
+ <div className="mt-8 sm:mt-12 md:mt-16">
+            <ScrollingArticlesBanner />
+          </div>
       {/* Boutique credentials - Improved responsive design */}
       <div ref={credentialsRef} className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 z-20">
         <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-1 sm:space-y-0 sm:space-x-3 md:space-x-6">
@@ -368,6 +370,9 @@ const LawFirmHero = () => {
               })}
             </div>
           </div>
+
+          {/* Scrolling Articles Banner */}
+         
 
           {/* CTA Section - More responsive */}
           <div ref={ctaRef} className="text-center mt-8 sm:mt-12 md:mt-16 lg:mt-20 pb-8 sm:pb-12 md:pb-16 lg:pb-20">
