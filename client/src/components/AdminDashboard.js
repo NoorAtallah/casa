@@ -63,10 +63,10 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
     },
     {
       id: 2,
-      name: 'Webmail - d.abufannas',
+      name: 'Webmail - Dr.Dia',
       url: 'https://162.254.37.113:2096',
-      username: 'd.abufannas@casadiconsiglio.com',
-      password: '1975@Ddd',
+      username: 'dia@casadiconsiglio.com',
+      password: '$casa@1991',
       type: 'email',
       description: 'Email account for d.abufannas'
     },
