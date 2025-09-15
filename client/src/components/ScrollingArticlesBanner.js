@@ -33,35 +33,36 @@ export default function ScrollingArticlesBanner() {
 
   return (
     <div className="relative overflow-hidden bg-gradient-to-r from-[#8B7355]/10 via-[#BDA985]/5 to-[#8B7355]/10 border-y border-[#8B7355]/20 backdrop-blur-sm">
-      {/* Floating label */}
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10">
-        <span className="bg-[#8B7355] text-white px-3 py-1 rounded-full text-xs font-medium shadow-sm">
-          Latest Articles
+      {/* Floating label - responsive positioning */}
+      <div className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 z-10">
+        <span className="bg-[#8B7355] text-white px-2 sm:px-3 py-1 rounded-full text-xs font-medium shadow-sm">
+          <span className="hidden sm:inline">Latest Articles</span>
+          <span className="sm:hidden">Latest</span>
         </span>
       </div>
 
-      {/* Scrolling container */}
-      <div className="flex animate-scroll-left py-3 pl-32 pr-4">
-        {/* Duplicate articles for seamless scrolling */}
-        {[...articles, ...articles].map((article, index) => (
+      {/* Scrolling container - responsive padding */}
+      <div className="flex animate-scroll-left py-3 pl-16 sm:pl-32 pr-4">
+        {/* Triple articles for seamless scrolling on all screen sizes */}
+        {[...articles, ...articles, ...articles].map((article, index) => (
           <div
             key={`${article._id}-${index}`}
-            className="flex-shrink-0 mx-4 group"
+            className="flex-shrink-0 mx-2 sm:mx-4 group"
           >
             <Link href={`/articles/${article.slug}`}>
-              <div className="flex items-center space-x-3 bg-white/70 hover:bg-white/90 rounded-xl px-4 py-2 border border-gray-200/60 hover:border-[#8B7355]/30 transition-all duration-300 shadow-sm hover:shadow-md min-w-[300px] max-w-[400px]">
+              <div className="flex items-center space-x-2 sm:space-x-3 bg-white/70 hover:bg-white/90 rounded-xl px-3 sm:px-4 py-2 border border-gray-200/60 hover:border-[#8B7355]/30 transition-all duration-300 shadow-sm hover:shadow-md min-w-[250px] sm:min-w-[300px] max-w-[320px] sm:max-w-[400px]">
                 {/* Article image or icon */}
                 <div className="flex-shrink-0">
                   {article.featuredImage ? (
                     <img
                       src={article.featuredImage}
                       alt={article.title}
-                      className="w-10 h-10 rounded-lg object-cover"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover"
                     />
                   ) : (
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#BDA985]/30 to-[#8B7355]/20 rounded-lg flex items-center justify-center">
-                      <span className="text-[#8B7355] font-bold text-sm">
-                        {article.category.charAt(0)}
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#BDA985]/30 to-[#8B7355]/20 rounded-lg flex items-center justify-center">
+                      <span className="text-[#8B7355] font-bold text-xs sm:text-sm">
+                        {article.category?.charAt(0) || 'A'}
                       </span>
                     </div>
                   )}
@@ -69,19 +70,19 @@ export default function ScrollingArticlesBanner() {
 
                 {/* Article content */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-gray-900 text-sm truncate group-hover:text-[#6B5B47] transition-colors">
+                  <h4 className="font-semibold text-gray-900 text-xs sm:text-sm truncate group-hover:text-[#6B5B47] transition-colors">
                     {article.title}
                   </h4>
-                  <div className="flex items-center space-x-3 text-xs text-gray-600 mt-1">
+                  <div className="flex items-center space-x-2 sm:space-x-3 text-xs text-gray-600 mt-1">
                     <span className="flex items-center space-x-1">
                       <Clock className="w-3 h-3" />
-                      <span>{article.readingTime}min</span>
+                      <span>{article.readingTime || 5}min</span>
                     </span>
                     <span className="flex items-center space-x-1">
                       <Eye className="w-3 h-3" />
-                      <span>{article.views}</span>
+                      <span>{article.views || 0}</span>
                     </span>
-                    <span className="text-[#8B7355] font-medium">
+                    <span className="text-[#8B7355] font-medium hidden sm:inline">
                       {article.category}
                     </span>
                   </div>
@@ -89,7 +90,7 @@ export default function ScrollingArticlesBanner() {
 
                 {/* Arrow icon */}
                 <div className="flex-shrink-0">
-                  <ArrowRight className="w-4 h-4 text-[#8B7355] group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-[#8B7355] group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </div>
             </Link>
@@ -103,17 +104,24 @@ export default function ScrollingArticlesBanner() {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translateX(-33.333%);
           }
         }
         
         .animate-scroll-left {
-          animation: scroll-left 5s linear infinite;
+          animation: scroll-left 4s linear infinite;
         }
         
         /* Pause animation on hover */
         .animate-scroll-left:hover {
           animation-play-state: paused;
+        }
+        
+        /* Responsive animation speed */
+        @media (max-width: 640px) {
+          .animate-scroll-left {
+            animation: scroll-left 4s linear infinite;
+          }
         }
       `}</style>
     </div>
