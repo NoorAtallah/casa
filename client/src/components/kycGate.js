@@ -245,19 +245,7 @@ export default function KYCAdminGate({ onPasswordCorrect }) {
           </div>
         </motion.div>
 
-        {/* Demo Information */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-4 text-center"
-        >
-          <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-3">
-            <p className="text-xs text-blue-600">
-              <strong>Demo Password:</strong> kyc-admin-2025
-            </p>
-          </div>
-        </motion.div>
+    
       </motion.div>
     </div>
   );
