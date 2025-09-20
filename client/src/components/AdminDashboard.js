@@ -17,7 +17,7 @@ import {
   AtSign
 } from 'lucide-react';
 import ArticleManagement from './ArticleManagement';
-
+import KYCManagement from './kycManagement';
 export default function AdminDashboard({ onLogout = () => console.log('Logout clicked') }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [visiblePasswords, setVisiblePasswords] = useState({});
@@ -49,13 +49,15 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
     { id: 'overview', label: 'Overview', icon: Home },
     { id: 'accounts', label: 'Accounts', icon: Users },
     { id: 'articles', label: 'Articles', icon: FileText },
+    { id: 'kyc', label: 'KYC Forms', icon: FileText },
+
   ];
 
   const accounts = [
     {
       id: 1,
       name: 'cPanel',
-      url: 'https://162.254.37.113:2083',
+      url: 'https://cpanel.casadiconsiglio.com:2083',
       username: 'casa',
       password: 'C@5a1010Dia',
       type: 'server',
@@ -64,7 +66,7 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
     {
       id: 2,
       name: 'Webmail - Dr.Dia',
-      url: 'https://162.254.37.113:2096',
+      url: 'https://webmail.casadiconsiglio.com:2096',
       username: 'dia@casadiconsiglio.com',
       password: '$casa@1991',
       type: 'email',
@@ -73,7 +75,7 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
     {
       id: 3,
       name: 'Webmail - info',
-      url: 'https://162.254.37.113:2096',
+      url: 'https://webmail.casadiconsiglio.com:2096',
       username: 'info@casadiconsiglio.com',
       password: '$casa@1991',
       type: 'email',
@@ -82,7 +84,7 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
     {
       id: 4,
       name: 'Webmail - ar.abdelhamid',
-      url: 'https://162.254.37.113:2096',
+      url: 'https://webmail.casadiconsiglio.com:2096',
       username: 'ar.abdelhamid@casadiconsiglio.com',
       password: 'Yhy2ONsyHFA]',
       type: 'email',
@@ -324,6 +326,9 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
         );
       case 'articles':
         return <ArticleManagement />;
+     
+          case 'kyc':
+        return <KYCManagement />;
       default:
         return null;
     }

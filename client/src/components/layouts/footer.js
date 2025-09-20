@@ -118,7 +118,7 @@ export default function Footer() {
                   <MapPin className="w-5 h-5" style={{color: '#bda985'}} />
                 </div>
                 <span className="text-black font-medium leading-relaxed group-hover:text-[#bda985] transition-colors duration-300">
-                  Zone E, First Floor, Office # F13<br />
+                  Zone E, G Floor, Office # F13<br />
                   Sharjah Book Authority Building<br />
                   Sharjah Publishing City Free Zone<br />
                   Al Zahia, Sharjah, UAE

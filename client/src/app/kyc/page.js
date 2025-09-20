@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Building2, FileText, Phone, Mail, MapPin, CheckCircle, AlertCircle, User, DollarSign, ArrowRight, ArrowLeft } from 'lucide-react';
-
+import KYCAdminGate from '@/components/kycGate';
 export default function KYCForm() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [submissionId, setSubmissionId] = useState('');
   const [formData, setFormData] = useState({
     // Step 1 - Customer Information
     legalName: '',
@@ -30,10 +31,24 @@ export default function KYCForm() {
     // Step 4 - Beneficial Ownership
     realBeneficiary: ''
   });
-
+ const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+const [validationErrors, setValidationErrors] = useState([]);
+  // Check if user is already authenticated from sessionStorage
+  useEffect(() => {
+    const hasAccess = sessionStorage.getItem('kycAdminAccess');
+    if (hasAccess === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
+  // If not authenticated, show the gate
+  if (!isAuthenticated) {
+    return <KYCAdminGate onPasswordCorrect={() => setIsAuthenticated(true)} />;
+  }
+  
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     
@@ -66,38 +81,64 @@ export default function KYCForm() {
     }
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
+    setValidationErrors([]);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false);
-      setCurrentStep(1);
-      setFormData({
-        legalName: '',
-        legalStructure: [],
-        natureOfBusiness: '',
-        placeOfEstablishment: '',
-        dateOfEstablishment: '',
-        annualTurnover: [],
-        tradeLicenseNumber: '',
-        tradeLicenseExpiry: '',
-        taxRegistrationNumber: '',
-        businessAddress: '',
-        emirates: [],
-        country: 'United Arab Emirates',
-        emailAddress: '',
-        businessPhoneNumber: '',
-        realBeneficiary: ''
+    try {
+      const response = await fetch('/api/kyc/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    }, 3000);
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmissionId(result.data.id);
+        setSubmitted(true);
+        // Store submission ID for reference
+        sessionStorage.setItem('kycSubmissionId', result.data.id);
+        
+        // Reset form after 5 seconds
+        setTimeout(() => {
+          setSubmitted(false);
+          setCurrentStep(1);
+          setSubmissionId('');
+          setFormData({
+            legalName: '',
+            legalStructure: [],
+            natureOfBusiness: '',
+            placeOfEstablishment: '',
+            dateOfEstablishment: '',
+            annualTurnover: [],
+            tradeLicenseNumber: '',
+            tradeLicenseExpiry: '',
+            taxRegistrationNumber: '',
+            businessAddress: '',
+            emirates: [],
+            country: 'United Arab Emirates',
+            emailAddress: '',
+            businessPhoneNumber: '',
+            realBeneficiary: ''
+          });
+        }, 5000);
+      } else {
+        setSubmitError(result.message || 'Failed to submit KYC form');
+        if (result.errors && Array.isArray(result.errors)) {
+          setValidationErrors(result.errors);
+        }
+      }
+    } catch (error) {
+      console.error('KYC submission error:', error);
+      setSubmitError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Options from the PDF
