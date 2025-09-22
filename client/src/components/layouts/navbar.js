@@ -39,7 +39,7 @@ export default function Navbar() {
             {/* Email Icon - Desktop only */}
             <div className="hidden md:block mr-8">
               <a
-                href="https://162.254.37.113:2083/cpsess0633337760/frontend/jupiter/index.html?=undefined&login=1&post_login=50574527242595"
+                href="https://webmail.casadiconsiglio.com:2096"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-700 hover:text-[#BDA985] p-2 rounded-md transition-all duration-300 relative group"

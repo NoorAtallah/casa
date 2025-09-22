@@ -46,7 +46,7 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
   }, []);
 
   const menuItems = [
-    { id: 'overview', label: 'Overview', icon: Home },
+    // { id: 'overview', label: 'Overview', icon: Home },
     { id: 'accounts', label: 'Accounts', icon: Users },
     { id: 'articles', label: 'Articles', icon: FileText },
     { id: 'kyc', label: 'KYC Forms', icon: FileText },
@@ -68,16 +68,16 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
       name: 'Webmail - Dr.Dia',
       url: 'https://webmail.casadiconsiglio.com:2096',
       username: 'dia@casadiconsiglio.com',
-      password: 'Kali@if0',
+      password: '$casa@1991',
       type: 'email',
-      description: 'Email account for d.abufannas'
+      description: 'Email account for Dr.Dia'
     },
     {
       id: 3,
       name: 'Webmail - info',
       url: 'https://webmail.casadiconsiglio.com:2096',
       username: 'info@casadiconsiglio.com',
-      password: '$casa@1991',
+      password: 'Kali@if0',
       type: 'email',
       description: 'Main info email account'
     },
@@ -147,50 +147,7 @@ export default function AdminDashboard({ onLogout = () => console.log('Logout cl
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'overview':
-        return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-white">Dashboard Overview</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                <div className="flex items-center space-x-3">
-                  <Users className="w-8 h-8 text-blue-400" />
-                  <div>
-                    <p className="text-gray-400 text-sm">Total Users</p>
-                    <p className="text-2xl font-bold text-white">1,234</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                <div className="flex items-center space-x-3">
-                  <FileText className="w-8 h-8 text-green-400" />
-                  <div>
-                    <p className="text-gray-400 text-sm">Documents</p>
-                    <p className="text-2xl font-bold text-white">567</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                <div className="flex items-center space-x-3">
-                  <Mail className="w-8 h-8 text-yellow-400" />
-                  <div>
-                    <p className="text-gray-400 text-sm">Messages</p>
-                    <p className="text-2xl font-bold text-white">89</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                <div className="flex items-center space-x-3">
-                  <BarChart3 className="w-8 h-8 text-purple-400" />
-                  <div>
-                    <p className="text-gray-400 text-sm">Analytics</p>
-                    <p className="text-2xl font-bold text-white">+12%</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+
       case 'accounts':
         return (
           <div className="space-y-6">
