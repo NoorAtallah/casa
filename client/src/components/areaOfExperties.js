@@ -608,27 +608,7 @@ export default function ExpertiseSection() {
             {/* Bottom Statistics */}
   
 
-            {/* View All CTA */}
-            <button 
-              className="group/btn relative overflow-hidden px-8 py-4 rounded-xl font-bold text-lg uppercase tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-lg"
-              style={{
-                background: '#bda985',
-                color: '#000000'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = '#d4c4a0';
-                e.target.style.transform = 'scale(1.05) translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#bda985';
-                e.target.style.transform = 'scale(1) translateY(0)';
-              }}
-            >
-              <span className="flex items-center justify-center">
-                View All Our Services
-                <ArrowRight className="ml-3 w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" />
-              </span>
-            </button>
+
           </div>
         </div>
 
