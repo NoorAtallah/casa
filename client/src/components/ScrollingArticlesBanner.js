@@ -31,6 +31,14 @@ export default function ScrollingArticlesBanner() {
     return null; // Hide banner if no articles or still loading
   }
 
+  // Create enough duplicates to ensure seamless scrolling
+  const duplicatedArticles = [
+    ...articles,
+    ...articles,
+    ...articles,
+    ...articles
+  ];
+
   return (
     <div className="relative overflow-hidden bg-gradient-to-r from-[#8B7355]/10 via-[#BDA985]/5 to-[#8B7355]/10 border-y border-[#8B7355]/20 backdrop-blur-sm">
       {/* Floating label - responsive positioning */}
@@ -43,14 +51,13 @@ export default function ScrollingArticlesBanner() {
 
       {/* Scrolling container - responsive padding */}
       <div className="flex animate-scroll-left py-3 pl-16 sm:pl-32 pr-4">
-        {/* Triple articles for seamless scrolling on all screen sizes */}
-        {[...articles, ...articles, ...articles].map((article, index) => (
+        {duplicatedArticles.map((article, index) => (
           <div
-            key={`${article._id}-${index}`}
+            key={`${article._id}-${Math.floor(index / articles.length)}-${index % articles.length}`}
             className="flex-shrink-0 mx-2 sm:mx-4 group"
           >
             <Link href={`/articles/${article.slug}`}>
-              <div className="flex items-center space-x-2 sm:space-x-3 bg-white/70 hover:bg-white/90 rounded-xl px-3 sm:px-4 py-2 border border-gray-200/60 hover:border-[#8B7355]/30 transition-all duration-300 shadow-sm hover:shadow-md min-w-[250px] sm:min-w-[300px] max-w-[320px] sm:max-w-[400px]">
+              <div className="flex items-center space-x-2 sm:space-x-3 bg-white/70 hover:bg-white/90 rounded-xl px-3 sm:px-4 py-2 border border-gray-200/60 hover:border-[#8B7355]/30 transition-all duration-300 shadow-sm hover:shadow-md w-[240px] sm:w-[300px]">
                 {/* Article image or icon */}
                 <div className="flex-shrink-0">
                   {article.featuredImage ? (
@@ -104,12 +111,13 @@ export default function ScrollingArticlesBanner() {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-33.333%);
+            transform: translateX(-50%);
           }
         }
         
         .animate-scroll-left {
           animation: scroll-left 4s linear infinite;
+          will-change: transform;
         }
         
         /* Pause animation on hover */
@@ -117,10 +125,10 @@ export default function ScrollingArticlesBanner() {
           animation-play-state: paused;
         }
         
-        /* Responsive animation speed */
+        /* Responsive animation speed for mobile */
         @media (max-width: 640px) {
           .animate-scroll-left {
-            animation: scroll-left 4s linear infinite;
+            animation: scroll-left 20s linear infinite;
           }
         }
       `}</style>
