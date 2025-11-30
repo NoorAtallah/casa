@@ -118,7 +118,7 @@ export default function FlowSpanishPopup() {
                     className="text-sm text-gray-700 mb-6 leading-relaxed"
                   >
                     Casa di Consiglio proudly presents our exclusive partnership with 
-                    <span className="font-bold" style={{ color: '#bda985' }}> Cynthia Habib</span> — 
+                    <span className="font-bold" style={{ color: '#bda985' }}> Cynthia Habib</span> &mdash; 
                     the first comprehensive Spanish program designed for Arabic speakers.
                   </motion.p>
 
@@ -166,7 +166,7 @@ export default function FlowSpanishPopup() {
                     className="space-y-3"
                   >
                     <motion.a
-                      href="/flow"
+                      href="/flow-spanish"
                       className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-bold text-sm text-white shadow-lg"
                       style={{
                         background: 'linear-gradient(135deg, #bda985, #d4c4a0)'

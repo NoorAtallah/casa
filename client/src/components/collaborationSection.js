@@ -212,7 +212,7 @@ export default function CollaborationSection() {
                 Transform Your Spanish Journey
               </h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                We're proud to partner with <span className="font-bold" style={{ color: '#bda985' }}>Cynthia Habib</span>, 
+                We are proud to partner with <span className="font-bold" style={{ color: '#bda985' }}>Cynthia Habib</span>, 
                 the first Arabic-speaking Spanish trainer, to bring you Flow Spanish—a revolutionary program 
                 that combines modern learning methods with proven results.
               </p>
@@ -323,8 +323,8 @@ export default function CollaborationSection() {
             
             <div className="relative z-10 max-w-4xl mx-auto text-center">
               <p className="text-xl md:text-2xl text-gray-700 leading-relaxed font-light italic mb-6">
-                "No more getting lost among resources, no more memorizing without results. 
-                Just a clear plan and practical steps that lead you to real Spanish fluency."
+                &ldquo; "No more getting lost among resources, no more memorizing without results. 
+                Just a clear plan and practical steps that lead you to real Spanish fluency." &ldquo;
               </p>
               <div className="flex items-center justify-center gap-4">
                 <div className="w-12 h-0.5" style={{ background: '#bda985' }} />
