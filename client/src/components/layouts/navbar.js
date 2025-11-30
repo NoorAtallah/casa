@@ -99,13 +99,7 @@ export default function Navbar() {
                 KYC
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
               </Link>
-     <Link
-                href="/flow"
-                className="text-gray-700 hover:text-[#BDA985] px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group"
-              >
-                Flow
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
-              </Link>
+   
               <Link
                 href="/contact"
                 className="text-gray-700 hover:text-[#BDA985] px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group"
@@ -171,13 +165,7 @@ export default function Navbar() {
             >
               KYC
             </Link>
-    <Link
-              href="/flow"
-              className="text-gray-700 hover:text-[#BDA985] hover:bg-[#BDA985]/5 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Flow
-            </Link>
+  
             <Link
               href="/contact"
               className="text-gray-700 hover:text-[#BDA985] hover:bg-[#BDA985]/5 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
