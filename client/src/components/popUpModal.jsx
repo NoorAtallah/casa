@@ -166,7 +166,7 @@ export default function FlowSpanishPopup() {
                     className="space-y-3"
                   >
                     <motion.a
-                      href="/flow-spanish"
+                      href="/flow"
                       className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-bold text-sm text-white shadow-lg"
                       style={{
                         background: 'linear-gradient(135deg, #bda985, #d4c4a0)'
