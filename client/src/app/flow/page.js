@@ -13,7 +13,8 @@ import {
   Award,
   Headphones,
   Send,
-  ArrowRight
+  ArrowRight,
+  Instagram
 } from 'lucide-react';
 
 export default function FlowSpanishProgram() {
@@ -598,10 +599,15 @@ export default function FlowSpanishProgram() {
             className="px-6 py-3 rounded-full backdrop-blur-sm"
             style={{ background: 'rgba(189,169,133,0.9)' }}
           >
-            <p className="text-white font-bold flex items-center">
-              <Star className="w-5 h-5 mr-2" />
-              @cynthiaa.habib
-            </p>
+          <a 
+  href="https://www.instagram.com/cynthiaa.habib/" 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  className="text-white font-bold flex items-center"
+>  
+  <Instagram className="w-5 h-5 mr-2" />
+  @cynthiaa.habib
+</a>
           </div>
         </div>
       </div>
@@ -676,6 +682,7 @@ export default function FlowSpanishProgram() {
 </motion.div>
 
           {/* Call to Action */}
+{/* Call to Action */}
           <motion.div 
             variants={itemVariants}
             className="text-center"
@@ -694,18 +701,27 @@ export default function FlowSpanishProgram() {
                 No more getting lost among resources, no more memorizing without results, and no more 
                 boredom. Just a clear plan and practical steps that lead you to success.
               </p>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center px-8 py-4 rounded-full font-bold text-white text-lg shadow-lg cursor-pointer"
-                style={{
-                  background: 'linear-gradient(135deg, #bda985, #d4c4a0)'
-                }}
-              >
-                <span>Transform Spanish into Your Lifestyle</span>
-                <ArrowRight className="w-6 h-6 ml-3" />
-              </motion.div>
+<motion.a
+  href="https://flowlanguagescenter.youcanbook.me"
+  data-ycbm-link="true"
+  className="inline-flex items-center px-8 py-4 rounded-full font-bold text-white text-lg shadow-lg cursor-pointer"
+  style={{
+    background: 'linear-gradient(135deg, #bda985, #d4c4a0)'
+  }}
+  whileHover={{ scale: 1.05 }}
+>
+  <span>Transform Spanish into Your Lifestyle</span>
+  <ArrowRight className="w-6 h-6 ml-3" />
+</motion.a>
             </div>
           </motion.div>
+
+       <script src="https://embed.ycb.me"
+      async="true"
+      data-domain="flowlanguagescenter"
+      data-type="button-link"
+      data-buttoncolor="#D4C4A0"
+      data-displaymode="popup"></script>
         </div>
       </motion.section>
     </div>
