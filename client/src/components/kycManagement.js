@@ -17,7 +17,11 @@ import {
   Download,
   Mail,
   Phone,
-  MapPin
+  MapPin,
+  Upload,
+  File,
+  Image as ImageIcon,
+  ExternalLink
 } from 'lucide-react';
 
 export default function KYCManagement() {
@@ -43,39 +47,120 @@ export default function KYCManagement() {
     reviewNotes: ''
   });
 
+  const getFileIcon = (mimeType) => {
+    if (mimeType?.startsWith('image/')) {
+      return <ImageIcon className="w-5 h-5 text-blue-400" />;
+    }
+    if (mimeType === 'application/pdf') {
+      return <FileText className="w-5 h-5 text-red-400" />;
+    }
+    return <File className="w-5 h-5 text-gray-400" />;
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const DocumentCard = ({ document, title, required = false }) => {
+    if (!document?.uploaded) {
+      return (
+        <div className="bg-slate-700/30 rounded-lg p-4 border-2 border-dashed border-slate-600">
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-sm font-medium text-gray-300">{title}</h4>
+            {required && (
+              <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">Required</span>
+            )}
+          </div>
+          <div className="flex items-center justify-center py-6">
+            <div className="text-center">
+              <XCircle className="w-8 h-8 text-gray-500 mx-auto mb-2" />
+              <p className="text-sm text-gray-500">No document uploaded</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600 hover:border-blue-500 transition-colors">
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="text-sm font-medium text-white">{title}</h4>
+          {required && (
+            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">✓ Uploaded</span>
+          )}
+        </div>
+        
+        <div className="space-y-3">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0 mt-1">
+              {getFileIcon(document.mimeType)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-white font-medium truncate">{document.filename}</p>
+              <div className="flex items-center space-x-2 mt-1">
+                <span className="text-xs text-gray-400">{document.sizeFormatted}</span>
+                <span className="text-gray-600">•</span>
+                <span className="text-xs text-gray-400">
+                  {formatDate(document.uploadedAt)}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {document.url && (
+            <a
+              href={document.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center space-x-2 w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>View Document</span>
+            </a>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   useEffect(() => {
     fetchKycForms();
   }, [currentPage, statusFilter, emirateFilter, searchTerm]);
-const handleExport = () => {
-  const token = sessionStorage.getItem('adminToken');
-  const kycAuth = sessionStorage.getItem('kycAdminAccess');
-  
-  const params = new URLSearchParams({
-    ...(statusFilter !== 'all' && { status: statusFilter }),
-    ...(emirateFilter !== 'all' && { emirate: emirateFilter }),
-    format: 'csv'
-  });
 
-  // Create a fetch request instead of window.open to include headers
-  const headers = {
-    ...(token && { 'Authorization': `Bearer ${token}` }),
-    ...(kycAuth && { 'x-kyc-auth': 'authorized' })
+  const handleExport = () => {
+    const token = sessionStorage.getItem('adminToken');
+    const kycAuth = sessionStorage.getItem('kycAdminAccess');
+    
+    const params = new URLSearchParams({
+      ...(statusFilter !== 'all' && { status: statusFilter }),
+      ...(emirateFilter !== 'all' && { emirate: emirateFilter }),
+      format: 'csv'
+    });
+
+    const headers = {
+      ...(token && { 'Authorization': `Bearer ${token}` }),
+      ...(kycAuth && { 'x-kyc-auth': 'authorized' })
+    };
+
+    fetch(`/api/admin/kyc/export?${params}`, { headers })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `kyc_export_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      })
+      .catch(error => console.error('Export failed:', error));
   };
 
-  fetch(`/api/admin/kyc/export?${params}`, { headers })
-    .then(response => response.blob())
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `kyc_export_${new Date().toISOString().split('T')[0]}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    })
-    .catch(error => console.error('Export failed:', error));
-};
   const fetchKycForms = async () => {
     try {
       setLoading(true);
@@ -194,14 +279,6 @@ const handleExport = () => {
       requires_update: <AlertTriangle className="w-4 h-4" />
     };
     return icons[status] || icons.pending;
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
   };
 
   if (showDetails && selectedKyc) {
@@ -395,6 +472,62 @@ const handleExport = () => {
                 </div>
               </div>
             </div>
+
+            {/* Documents Section */}
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-white flex items-center">
+                  <Upload className="w-5 h-5 mr-2" />
+                  Uploaded Documents
+                </h3>
+                {selectedKyc.documentsSummary && (
+                  <div className="flex items-center space-x-4 text-sm">
+                    <span className="text-gray-400">
+                      {selectedKyc.documentsSummary.totalDocuments} / 3 documents
+                    </span>
+                    <span className="text-gray-400">•</span>
+                    <span className="text-gray-400">
+                      Total: {selectedKyc.documentsSummary.totalSizeFormatted}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {selectedKyc.documentsSummary && (
+                <div className="mb-6">
+                  <div className="flex items-center justify-between text-sm mb-2">
+                    <span className="text-gray-400">Document Completion</span>
+                    <span className="text-white font-medium">
+                      {selectedKyc.documentsSummary.completionPercentage}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-700 rounded-full h-2">
+                    <div
+                      className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-500"
+                      style={{ width: `${selectedKyc.documentsSummary.completionPercentage}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <DocumentCard 
+                  document={selectedKyc.documents?.passport} 
+                  title="Passport Information Page"
+                  required={true}
+                />
+                <DocumentCard 
+                  document={selectedKyc.documents?.tradeLicense} 
+                  title="Trade License Document"
+                  required={false}
+                />
+                <DocumentCard 
+                  document={selectedKyc.documents?.emiratesId} 
+                  title="Emirates ID"
+                  required={false}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Status & Review Panel */}
@@ -465,14 +598,13 @@ const handleExport = () => {
           <p className="text-gray-400 text-sm mt-1">Manage customer KYC forms and compliance</p>
         </div>
         <div className="flex space-x-2">
-        <button
-  onClick={handleExport}
-  className="flex items-center space-x-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
->
-  <Download className="w-4 h-4" />
-  <span>Export</span>
-</button>
-
+          <button
+            onClick={handleExport}
+            className="flex items-center space-x-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            <span>Export</span>
+          </button>
         </div>
       </div>
 
@@ -553,6 +685,7 @@ const handleExport = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Company</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">License</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Documents</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Emirates</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Submitted</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
@@ -580,6 +713,21 @@ const handleExport = () => {
                           {kyc.reviewStatus?.replace('_', ' ')}
                         </span>
                       </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      {kyc.documentsSummary && (
+                        <div className="flex items-center space-x-2">
+                          <Upload className="w-4 h-4 text-gray-400" />
+                          <span className="text-sm text-gray-300">
+                            {kyc.documentsSummary.totalDocuments} / 3
+                          </span>
+                          {kyc.documentsSummary.requiredUploaded ? (
+                            <Check className="w-4 h-4 text-green-400" />
+                          ) : (
+                            <XCircle className="w-4 h-4 text-red-400" />
+                          )}
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-300">
                       {kyc.emirates?.join(', ')}

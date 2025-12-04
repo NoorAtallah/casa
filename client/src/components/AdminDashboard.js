@@ -19,7 +19,7 @@ import {
 import ArticleManagement from './ArticleManagement';
 import KYCManagement from './kycManagement';
 export default function AdminDashboard({ onLogout = () => console.log('Logout clicked') }) {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('accounts');
   const [visiblePasswords, setVisiblePasswords] = useState({});
   const [copyFeedback, setCopyFeedback] = useState({});
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);

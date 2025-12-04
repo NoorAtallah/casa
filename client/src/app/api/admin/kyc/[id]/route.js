@@ -2,6 +2,14 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import KYCForm from '@/models/kyc';
+import { v2 as cloudinary } from 'cloudinary';
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Database connection helper
 async function connectToDatabase() {
@@ -109,6 +117,75 @@ export async function GET(request, { params }) {
       enrichedForm.daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
     }
     
+    // Add document information with full details
+    enrichedForm.documents = {
+      passport: kycForm.passportInfoPage ? {
+        uploaded: true,
+        filename: kycForm.passportInfoPage.originalName,
+        storedFilename: kycForm.passportInfoPage.filename,
+        url: kycForm.passportInfoPage.url,
+        cloudinaryId: kycForm.passportInfoPage.cloudinaryId,
+        mimeType: kycForm.passportInfoPage.mimeType,
+        size: kycForm.passportInfoPage.size,
+        sizeFormatted: formatFileSize(kycForm.passportInfoPage.size),
+        uploadedAt: kycForm.passportInfoPage.uploadedAt,
+        required: true
+      } : {
+        uploaded: false,
+        required: true,
+        error: 'Required document not uploaded'
+      },
+      
+      tradeLicense: kycForm.tradeLicenseDocument ? {
+        uploaded: true,
+        filename: kycForm.tradeLicenseDocument.originalName,
+        storedFilename: kycForm.tradeLicenseDocument.filename,
+        url: kycForm.tradeLicenseDocument.url,
+        cloudinaryId: kycForm.tradeLicenseDocument.cloudinaryId,
+        mimeType: kycForm.tradeLicenseDocument.mimeType,
+        size: kycForm.tradeLicenseDocument.size,
+        sizeFormatted: formatFileSize(kycForm.tradeLicenseDocument.size),
+        uploadedAt: kycForm.tradeLicenseDocument.uploadedAt,
+        required: false
+      } : {
+        uploaded: false,
+        required: false
+      },
+      
+      emiratesId: kycForm.emiratesId ? {
+        uploaded: true,
+        filename: kycForm.emiratesId.originalName,
+        storedFilename: kycForm.emiratesId.filename,
+        url: kycForm.emiratesId.url,
+        cloudinaryId: kycForm.emiratesId.cloudinaryId,
+        mimeType: kycForm.emiratesId.mimeType,
+        size: kycForm.emiratesId.size,
+        sizeFormatted: formatFileSize(kycForm.emiratesId.size),
+        uploadedAt: kycForm.emiratesId.uploadedAt,
+        isResident: kycForm.emiratesId.isResident || false,
+        required: false
+      } : {
+        uploaded: false,
+        required: false
+      }
+    };
+    
+    // Add documents summary
+    enrichedForm.documentsSummary = {
+      totalDocuments: [
+        kycForm.passportInfoPage,
+        kycForm.tradeLicenseDocument,
+        kycForm.emiratesId
+      ].filter(Boolean).length,
+      requiredDocuments: 1,
+      requiredUploaded: !!kycForm.passportInfoPage,
+      optionalDocuments: 2,
+      optionalUploaded: [kycForm.tradeLicenseDocument, kycForm.emiratesId].filter(Boolean).length,
+      completionPercentage: calculateDocumentCompletion(kycForm),
+      totalSize: calculateTotalSize(kycForm),
+      totalSizeFormatted: formatFileSize(calculateTotalSize(kycForm))
+    };
+    
     return NextResponse.json({
       success: true,
       data: enrichedForm
@@ -122,6 +199,48 @@ export async function GET(request, { params }) {
       message: error.message
     }, { status: 500 });
   }
+}
+
+// Helper function to format file size
+function formatFileSize(bytes) {
+  if (!bytes) return '0 Bytes';
+  
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+}
+
+// Helper function to calculate document completion percentage
+function calculateDocumentCompletion(kycForm) {
+  const requiredDocs = 1; // passport
+  const optionalDocs = 2; // trade license + emirates id
+  const totalPossibleDocs = requiredDocs + optionalDocs;
+  
+  let uploadedCount = 0;
+  if (kycForm.passportInfoPage) uploadedCount++;
+  if (kycForm.tradeLicenseDocument) uploadedCount++;
+  if (kycForm.emiratesId) uploadedCount++;
+  
+  return Math.round((uploadedCount / totalPossibleDocs) * 100);
+}
+
+// Helper function to calculate total file size
+function calculateTotalSize(kycForm) {
+  let totalSize = 0;
+  
+  if (kycForm.passportInfoPage?.size) {
+    totalSize += kycForm.passportInfoPage.size;
+  }
+  if (kycForm.tradeLicenseDocument?.size) {
+    totalSize += kycForm.tradeLicenseDocument.size;
+  }
+  if (kycForm.emiratesId?.size) {
+    totalSize += kycForm.emiratesId.size;
+  }
+  
+  return totalSize;
 }
 
 // PUT - Update KYC form (for admin reviews)
@@ -205,19 +324,49 @@ export async function DELETE(request, { params }) {
       }, { status: 400 });
     }
     
-    const deletedForm = await KYCForm.findByIdAndDelete(id);
+    const kycForm = await KYCForm.findById(id);
     
-    if (!deletedForm) {
+    if (!kycForm) {
       return NextResponse.json({
         success: false,
         error: 'KYC form not found'
       }, { status: 404 });
     }
     
+    // Delete files from Cloudinary
+    const filesToDelete = [];
+    if (kycForm.passportInfoPage?.cloudinaryId) {
+      filesToDelete.push(kycForm.passportInfoPage.cloudinaryId);
+    }
+    if (kycForm.tradeLicenseDocument?.cloudinaryId) {
+      filesToDelete.push(kycForm.tradeLicenseDocument.cloudinaryId);
+    }
+    if (kycForm.emiratesId?.cloudinaryId) {
+      filesToDelete.push(kycForm.emiratesId.cloudinaryId);
+    }
+    
+    if (filesToDelete.length > 0) {
+      try {
+        await cloudinary.api.delete_resources(filesToDelete);
+        // Also delete the folder
+        await cloudinary.api.delete_folder(`kyc/${id}`);
+      } catch (cloudinaryError) {
+        console.error('Cloudinary deletion error:', cloudinaryError);
+        // Continue with database deletion even if Cloudinary fails
+      }
+    }
+    
+    // Delete from database
+    await KYCForm.findByIdAndDelete(id);
+    
     return NextResponse.json({
       success: true,
-      message: 'KYC form deleted successfully',
-      data: { id: deletedForm._id, legalName: deletedForm.legalName }
+      message: 'KYC form and associated documents deleted successfully',
+      data: { 
+        id: kycForm._id, 
+        legalName: kycForm.legalName,
+        deletedDocuments: filesToDelete.length
+      }
     });
     
   } catch (error) {

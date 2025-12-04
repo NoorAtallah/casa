@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, FileText, Phone, Mail, MapPin, CheckCircle, AlertCircle, User, DollarSign, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Building2, FileText, Phone, Mail, MapPin, CheckCircle, AlertCircle, User, DollarSign, ArrowRight, ArrowLeft, Upload, File } from 'lucide-react';
 import KYCAdminGate from '@/components/kycGate';
+
 export default function KYCForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [submissionId, setSubmissionId] = useState('');
@@ -29,13 +30,27 @@ export default function KYCForm() {
     businessPhoneNumber: '',
     
     // Step 4 - Beneficial Ownership
-    realBeneficiary: ''
+    realBeneficiary: '',
+    
+    // Step 5 - Document Uploads
+    passportInfoPage: null,
+    tradeLicenseDocument: null,
+    emiratesId: null,
+    isResident: false
   });
- const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const [uploadedFiles, setUploadedFiles] = useState({
+    passportInfoPage: null,
+    tradeLicenseDocument: null,
+    emiratesId: null
+  });
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState('');
-const [validationErrors, setValidationErrors] = useState([]);
+  const [validationErrors, setValidationErrors] = useState([]);
+
   // Check if user is already authenticated from sessionStorage
   useEffect(() => {
     const hasAccess = sessionStorage.getItem('kycAdminAccess');
@@ -53,14 +68,21 @@ const [validationErrors, setValidationErrors] = useState([]);
     const { name, value, type, checked } = e.target;
     
     if (type === 'checkbox') {
-      setFormData(prev => {
-        const currentArray = prev[name] || [];
-        if (checked) {
-          return { ...prev, [name]: [...currentArray, value] };
-        } else {
-          return { ...prev, [name]: currentArray.filter(item => item !== value) };
-        }
-      });
+      if (name === 'isResident') {
+        setFormData(prev => ({
+          ...prev,
+          isResident: checked
+        }));
+      } else {
+        setFormData(prev => {
+          const currentArray = prev[name] || [];
+          if (checked) {
+            return { ...prev, [name]: [...currentArray, value] };
+          } else {
+            return { ...prev, [name]: currentArray.filter(item => item !== value) };
+          }
+        });
+      }
     } else {
       setFormData(prev => ({
         ...prev,
@@ -69,8 +91,48 @@ const [validationErrors, setValidationErrors] = useState([]);
     }
   };
 
+  const handleFileChange = (e, fieldName) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+      if (!validTypes.includes(file.type)) {
+        alert('Please upload only JPG, PNG, or PDF files');
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+
+      setUploadedFiles(prev => ({
+        ...prev,
+        [fieldName]: file
+      }));
+
+      setFormData(prev => ({
+        ...prev,
+        [fieldName]: file
+      }));
+    }
+  };
+
+  const removeFile = (fieldName) => {
+    setUploadedFiles(prev => ({
+      ...prev,
+      [fieldName]: null
+    }));
+    
+    setFormData(prev => ({
+      ...prev,
+      [fieldName]: null
+    }));
+  };
+
   const nextStep = () => {
-    if (currentStep < 4) {
+    if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -81,19 +143,32 @@ const [validationErrors, setValidationErrors] = useState([]);
     }
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError('');
     setValidationErrors([]);
     
     try {
+      // Create FormData for file uploads
+      const submitData = new FormData();
+      
+      // Append all form fields
+      Object.keys(formData).forEach(key => {
+        if (key === 'legalStructure' || key === 'annualTurnover' || key === 'emirates') {
+          submitData.append(key, JSON.stringify(formData[key]));
+        } else if (key === 'passportInfoPage' || key === 'tradeLicenseDocument' || key === 'emiratesId') {
+          if (formData[key]) {
+            submitData.append(key, formData[key]);
+          }
+        } else {
+          submitData.append(key, formData[key]);
+        }
+      });
+
       const response = await fetch('/api/kyc/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: submitData,
       });
 
       const result = await response.json();
@@ -101,7 +176,6 @@ const handleSubmit = async (e) => {
       if (result.success) {
         setSubmissionId(result.data.id);
         setSubmitted(true);
-        // Store submission ID for reference
         sessionStorage.setItem('kycSubmissionId', result.data.id);
         
         // Reset form after 5 seconds
@@ -109,6 +183,11 @@ const handleSubmit = async (e) => {
           setSubmitted(false);
           setCurrentStep(1);
           setSubmissionId('');
+          setUploadedFiles({
+            passportInfoPage: null,
+            tradeLicenseDocument: null,
+            emiratesId: null
+          });
           setFormData({
             legalName: '',
             legalStructure: [],
@@ -124,7 +203,11 @@ const handleSubmit = async (e) => {
             country: 'United Arab Emirates',
             emailAddress: '',
             businessPhoneNumber: '',
-            realBeneficiary: ''
+            realBeneficiary: '',
+            passportInfoPage: null,
+            tradeLicenseDocument: null,
+            emiratesId: null,
+            isResident: false
           });
         }, 5000);
       } else {
@@ -218,7 +301,8 @@ const handleSubmit = async (e) => {
     { number: 1, title: 'Customer Information', icon: User },
     { number: 2, title: 'Financial & License Info', icon: DollarSign },
     { number: 3, title: 'Address & Contact', icon: MapPin },
-    { number: 4, title: 'Beneficial Ownership', icon: AlertCircle }
+    { number: 4, title: 'Beneficial Ownership', icon: AlertCircle },
+    { number: 5, title: 'Document Upload', icon: Upload }
   ];
 
   // Validation functions for each step
@@ -248,12 +332,18 @@ const handleSubmit = async (e) => {
     return formData.realBeneficiary;
   };
 
+  const validateStep5 = () => {
+    // Passport info page is required
+    return uploadedFiles.passportInfoPage !== null;
+  };
+
   const canProceed = () => {
     switch(currentStep) {
       case 1: return validateStep1();
       case 2: return validateStep2();
       case 3: return validateStep3();
       case 4: return validateStep4();
+      case 5: return validateStep5();
       default: return false;
     }
   };
@@ -353,8 +443,8 @@ const handleSubmit = async (e) => {
           </div>
 
           {/* Progress Steps */}
-          <div className="flex justify-center mb-8">
-            <div className="flex items-center space-x-4">
+          <div className="flex justify-center mb-8 overflow-x-auto">
+            <div className="flex items-center space-x-2 md:space-x-4">
               {steps.map((step, index) => {
                 const IconComponent = step.icon;
                 const isActive = currentStep === step.number;
@@ -381,7 +471,7 @@ const handleSubmit = async (e) => {
                           <IconComponent className="w-6 h-6" />
                         )}
                       </div>
-                      <span className={`text-xs mt-2 font-medium ${
+                      <span className={`text-xs mt-2 font-medium hidden md:block ${
                         isActive ? 'text-[#bda985]' : isCompleted ? 'text-green-600' : 'text-gray-400'
                       }`}>
                         {step.title}
@@ -390,7 +480,7 @@ const handleSubmit = async (e) => {
                     
                     {index < steps.length - 1 && (
                       <div 
-                        className={`w-8 h-0.5 mx-2 transition-all duration-300 ${
+                        className={`w-4 md:w-8 h-0.5 mx-1 md:mx-2 transition-all duration-300 ${
                           currentStep > step.number ? 'bg-green-500' : 'bg-gray-300'
                         }`} 
                       />
@@ -405,7 +495,7 @@ const handleSubmit = async (e) => {
         {/* Form */}
         <motion.form 
           variants={itemVariants}
-          onSubmit={currentStep === 4 ? handleSubmit : (e) => { e.preventDefault(); nextStep(); }}
+          onSubmit={currentStep === 5 ? handleSubmit : (e) => { e.preventDefault(); nextStep(); }}
           className="rounded-3xl shadow-2xl overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(189,169,133,0.05))',
@@ -751,6 +841,185 @@ const handleSubmit = async (e) => {
               </motion.div>
             )}
 
+            {/* Step 5: Document Upload */}
+            {currentStep === 5 && (
+              <motion.div
+                key="step5"
+                variants={stepVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <div className="flex items-center mb-8">
+                  <Upload className="w-6 h-6 mr-3" style={{ color: '#bda985' }} />
+                  <h2 className="text-2xl font-bold text-black">Required Documents</h2>
+                </div>
+                
+                <div className="space-y-6">
+                  <p className="text-sm text-gray-600 mb-6">
+                    Please upload clear, legible copies of the required documents. Accepted formats: JPG, PNG, or PDF (max 5MB per file)
+                  </p>
+
+                  {/* Passport Info Page - Required */}
+                  <div 
+                    className="p-6 rounded-xl border-2 border-gray-200 hover:border-[#bda985] transition-colors"
+                    style={{ background: 'rgba(189,169,133,0.05)' }}
+                  >
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Passport Information Page * <span className="text-red-500">(Required)</span>
+                    </label>
+                    <p className="text-xs text-gray-600 mb-4">
+                      Upload a clear photo of the passport information page showing personal details
+                    </p>
+                    
+                    {!uploadedFiles.passportInfoPage ? (
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#bda985] transition-colors">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <Upload className="w-8 h-8 mb-2 text-gray-400" />
+                          <p className="text-sm text-gray-600">Click to upload passport info page</p>
+                        </div>
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/jpeg,image/jpg,image/png,application/pdf"
+                          onChange={(e) => handleFileChange(e, 'passportInfoPage')}
+                        />
+                      </label>
+                    ) : (
+                      <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+                        <div className="flex items-center">
+                          <File className="w-5 h-5 mr-3 text-green-600" />
+                          <span className="text-sm font-medium text-gray-700">{uploadedFiles.passportInfoPage.name}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile('passportInfoPage')}
+                          className="text-red-500 hover:text-red-700 font-medium text-sm"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Trade License Document - Optional */}
+                  <div 
+                    className="p-6 rounded-xl border-2 border-gray-200 hover:border-[#bda985] transition-colors"
+                    style={{ background: 'rgba(189,169,133,0.05)' }}
+                  >
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Trade License Document <span className="text-gray-500">(Optional)</span>
+                    </label>
+                    <p className="text-xs text-gray-600 mb-4">
+                      Upload a copy of your company's trade license if available
+                    </p>
+                    
+                    {!uploadedFiles.tradeLicenseDocument ? (
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#bda985] transition-colors">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <Upload className="w-8 h-8 mb-2 text-gray-400" />
+                          <p className="text-sm text-gray-600">Click to upload trade license</p>
+                        </div>
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/jpeg,image/jpg,image/png,application/pdf"
+                          onChange={(e) => handleFileChange(e, 'tradeLicenseDocument')}
+                        />
+                      </label>
+                    ) : (
+                      <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+                        <div className="flex items-center">
+                          <File className="w-5 h-5 mr-3 text-green-600" />
+                          <span className="text-sm font-medium text-gray-700">{uploadedFiles.tradeLicenseDocument.name}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile('tradeLicenseDocument')}
+                          className="text-red-500 hover:text-red-700 font-medium text-sm"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Emirates ID - Optional for Residents */}
+                  <div 
+                    className="p-6 rounded-xl border-2 border-gray-200 hover:border-[#bda985] transition-colors"
+                    style={{ background: 'rgba(189,169,133,0.05)' }}
+                  >
+                    <label className="flex items-center mb-4">
+                      <input
+                        type="checkbox"
+                        name="isResident"
+                        checked={formData.isResident}
+                        onChange={handleInputChange}
+                        className="mr-3 w-5 h-5 text-[#bda985] border-2 border-gray-300 rounded focus:ring-[#bda985]"
+                      />
+                      <span className="text-sm font-semibold text-gray-700">
+                        I am a UAE Resident
+                      </span>
+                    </label>
+
+                    {formData.isResident && (
+                      <>
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                          Emirates ID <span className="text-gray-500">(For UAE Residents)</span>
+                        </label>
+                        <p className="text-xs text-gray-600 mb-4">
+                          Upload a clear photo of both sides of your Emirates ID
+                        </p>
+                        
+                        {!uploadedFiles.emiratesId ? (
+                          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#bda985] transition-colors">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                              <Upload className="w-8 h-8 mb-2 text-gray-400" />
+                              <p className="text-sm text-gray-600">Click to upload Emirates ID</p>
+                            </div>
+                            <input
+                              type="file"
+                              className="hidden"
+                              accept="image/jpeg,image/jpg,image/png,application/pdf"
+                              onChange={(e) => handleFileChange(e, 'emiratesId')}
+                            />
+                          </label>
+                        ) : (
+                          <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+                            <div className="flex items-center">
+                              <File className="w-5 h-5 mr-3 text-green-600" />
+                              <span className="text-sm font-medium text-gray-700">{uploadedFiles.emiratesId.name}</span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeFile('emiratesId')}
+                              className="text-red-500 hover:text-red-700 font-medium text-sm"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Error Messages */}
+            {submitError && (
+              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-red-700 text-sm font-medium">{submitError}</p>
+                {validationErrors.length > 0 && (
+                  <ul className="mt-2 list-disc list-inside text-red-600 text-sm">
+                    {validationErrors.map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+
             {/* Navigation Buttons */}
             <div className="flex justify-between mt-12">
               {/* Previous Button */}
@@ -788,7 +1057,7 @@ const handleSubmit = async (e) => {
                     <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin mr-2"></div>
                     Submitting...
                   </div>
-                ) : currentStep === 4 ? (
+                ) : currentStep === 5 ? (
                   'Submit KYC Form'
                 ) : (
                   <>

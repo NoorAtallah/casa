@@ -98,6 +98,53 @@ export async function GET(request) {
       .select('-submissionMetadata.ipAddress -submissionMetadata.userAgent') // Hide sensitive data
       .lean();
     
+    // Enrich data with document information
+    const enrichedForms = kycForms.map(form => ({
+      ...form,
+      documents: {
+        passport: form.passportInfoPage ? {
+          uploaded: true,
+          filename: form.passportInfoPage.originalName,
+          url: form.passportInfoPage.url,
+          mimeType: form.passportInfoPage.mimeType,
+          size: form.passportInfoPage.size,
+          uploadedAt: form.passportInfoPage.uploadedAt
+        } : {
+          uploaded: false
+        },
+        tradeLicense: form.tradeLicenseDocument ? {
+          uploaded: true,
+          filename: form.tradeLicenseDocument.originalName,
+          url: form.tradeLicenseDocument.url,
+          mimeType: form.tradeLicenseDocument.mimeType,
+          size: form.tradeLicenseDocument.size,
+          uploadedAt: form.tradeLicenseDocument.uploadedAt
+        } : {
+          uploaded: false
+        },
+        emiratesId: form.emiratesId ? {
+          uploaded: true,
+          filename: form.emiratesId.originalName,
+          url: form.emiratesId.url,
+          mimeType: form.emiratesId.mimeType,
+          size: form.emiratesId.size,
+          uploadedAt: form.emiratesId.uploadedAt,
+          isResident: form.emiratesId.isResident || false
+        } : {
+          uploaded: false
+        }
+      },
+      documentsSummary: {
+        totalDocuments: [
+          form.passportInfoPage,
+          form.tradeLicenseDocument,
+          form.emiratesId
+        ].filter(Boolean).length,
+        requiredUploaded: !!form.passportInfoPage,
+        allOptionalUploaded: !!(form.tradeLicenseDocument && form.emiratesId)
+      }
+    }));
+    
     const total = await KYCForm.countDocuments(query);
     
     // Get status counts for dashboard
@@ -113,7 +160,7 @@ export async function GET(request) {
     return NextResponse.json({
       success: true,
       data: {
-        kycForms,
+        kycForms: enrichedForms,
         pagination: {
           current: page,
           pages: Math.ceil(total / limit),

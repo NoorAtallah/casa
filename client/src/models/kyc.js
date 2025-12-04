@@ -77,6 +77,59 @@ const kycFormSchema = new mongoose.Schema({
     type: String
   },
 
+  // Step 5 - Required Documents Upload
+  passportInfoPage: {
+    filename: String,
+    originalName: String,
+    mimeType: String,
+    size: Number,
+    uploadedAt: {
+      type: Date,
+      default: Date.now
+    },
+    url: String,
+    required: {
+      type: Boolean,
+      default: true
+    }
+  },
+
+  tradeLicenseDocument: {
+    filename: String,
+    originalName: String,
+    mimeType: String,
+    size: Number,
+    uploadedAt: {
+      type: Date,
+      default: Date.now
+    },
+    url: String,
+    required: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  emiratesId: {
+    filename: String,
+    originalName: String,
+    mimeType: String,
+    size: Number,
+    uploadedAt: {
+      type: Date,
+      default: Date.now
+    },
+    url: String,
+    required: {
+      type: Boolean,
+      default: false
+    },
+    isResident: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   // Additional metadata
   submissionMetadata: {
     submittedAt: {
@@ -139,7 +192,7 @@ const kycFormSchema = new mongoose.Schema({
     }
   }],
 
-  // Document attachments
+  // Document attachments (additional documents)
   attachments: [{
     filename: String,
     originalName: String,
@@ -200,6 +253,10 @@ kycFormSchema.methods.toPublicJSON = function() {
   return obj;
 };
 
+kycFormSchema.methods.hasRequiredDocuments = function() {
+  return !!(this.passportInfoPage && this.passportInfoPage.filename);
+};
+
 // Static methods
 kycFormSchema.statics.findByStatus = function(status) {
   return this.find({ reviewStatus: status });
@@ -213,6 +270,16 @@ kycFormSchema.virtual('companyInfo').get(function() {
     emirate: this.emirates ? this.emirates.join(', ') : '',
     country: this.country,
     license: this.tradeLicenseNumber
+  };
+});
+
+// Virtual for document completion status
+kycFormSchema.virtual('documentsStatus').get(function() {
+  return {
+    passportInfoPage: !!(this.passportInfoPage && this.passportInfoPage.filename),
+    tradeLicenseDocument: !!(this.tradeLicenseDocument && this.tradeLicenseDocument.filename),
+    emiratesId: !!(this.emiratesId && this.emiratesId.filename),
+    allRequiredUploaded: !!(this.passportInfoPage && this.passportInfoPage.filename)
   };
 });
 
