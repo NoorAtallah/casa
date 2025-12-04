@@ -910,9 +910,10 @@ export default function KYCForm() {
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Trade License Document <span className="text-gray-500">(Optional)</span>
                     </label>
-                    <p className="text-xs text-gray-600 mb-4">
-                      Upload a copy of your company's trade license if available
-                    </p>
+                   <p className="text-xs text-gray-600 mb-4">
+                   Upload a copy of your company&#39;s trade license if available
+                  </p>
+
                     
                     {!uploadedFiles.tradeLicenseDocument ? (
                       <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#bda985] transition-colors">
