@@ -37,7 +37,7 @@ export default function Navbar() {
           {/* Email Icon + Logo */}
           <div className="flex-shrink-0 max-w-[70%] sm:max-w-none flex items-center">
             {/* Email Icon - Desktop only */}
-            <div className="hidden md:block mr-8">
+            {/* <div className="hidden md:block mr-8">
               <a
                 href="https://webmail.casadiconsiglio.com:2096"
                 target="_blank"
@@ -48,7 +48,7 @@ export default function Navbar() {
                 <Mail className="w-5 h-5" />
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
               </a>
-            </div>
+            </div> */}
             
             {/* Logo */}
             <Link href="/" className="flex items-center">
@@ -89,6 +89,14 @@ export default function Navbar() {
                 className="text-gray-700 hover:text-[#BDA985] px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group"
               >
                 About
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
+              </Link>
+
+              <Link
+                href="/services"
+                className="text-gray-700 hover:text-[#BDA985] px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 relative group"
+              >
+                Services
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#BDA985] group-hover:w-full transition-all duration-300"></div>
               </Link>
 
@@ -156,6 +164,14 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               About
+            </Link>
+
+            <Link
+              href="/services"
+              className="text-gray-700 hover:text-[#BDA985] hover:bg-[#BDA985]/5 block px-3 py-2 rounded-md text-base font-medium transition-all duration-200"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Services
             </Link>
 
             <Link

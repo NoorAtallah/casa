@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Globe, Clock, Building2, Star, ArrowRight, ExternalLink, Users, Shield, Award, CheckCircle } from 'lucide-react';
+import ContactIntro from '@/components/contact/contactIntro';
+import ContactForm from '@/components/contact/contactForm';
+import WhyContact from '@/components/contact/whyContact';
 
 export default function ContactUsPage() {
   const [hoveredContact, setHoveredContact] = useState(null);
@@ -138,7 +141,10 @@ export default function ContactUsPage() {
   };
 
   return (
-    <motion.section 
+    <>
+    <ContactIntro />
+
+    <motion.section
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -544,5 +550,9 @@ export default function ContactUsPage() {
 
       </div>
     </motion.section>
+
+    <ContactForm />
+    <WhyContact />
+    </>
   );
 }

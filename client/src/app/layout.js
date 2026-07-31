@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navbar />  
-        <FlowSpanishBanner sticky={true} closeable={true} />
+        {/* <FlowSpanishBanner sticky={true} closeable={true} /> */}
         {/* <FlowSpanishPopup /> */}
         <WhatsAppFloatingButton />
         {children}

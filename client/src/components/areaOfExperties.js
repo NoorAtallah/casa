@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { Scale, TrendingUp, Smartphone, ArrowRight, MapPin, Users, Shield, Star, Award, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Scale, TrendingUp, Smartphone, GraduationCap, ArrowRight, MapPin, Users, Shield, Star, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 export default function ExpertiseSection() {
   const sectionRef = useRef(null);
@@ -14,35 +14,65 @@ export default function ExpertiseSection() {
 
   const expertiseAreas = [
     {
-      icon: TrendingUp,
-      title: "Financial Institutions",
-      description: "Comprehensive legal services for banks, investment firms, and financial institutions. We provide regulatory compliance, risk management, and strategic advisory services to navigate complex financial regulations and market dynamics.",
-      features: ["Banking Regulations", "Investment Compliance", "Risk Management", "Financial Structuring"],
-      image: "https://www.24forextrading.com/wp-content/uploads/2024/06/Settlement-Funding-and-Lawsuit-Loans.jpg",
-      stats: { value: "$2B+", label: "Assets Advised" }
-    },
-    {
       icon: Scale,
-      title: "Oil & Gas",
-      description: "Specialized legal counsel for the energy sector including upstream, midstream, and downstream operations. From exploration agreements to international joint ventures, we handle complex energy transactions and regulatory matters.",
-      features: ["Exploration Rights", "Joint Ventures", "Regulatory Compliance", "International Trade"],
+      title: "Legal Advisory",
+      description: "Providing practical legal solutions that protect businesses, reduce risk, and support sustainable growth.",
+      features: [
+        "Corporate & Commercial Law",
+        "Commercial Contracts & Agreements",
+        "Corporate Governance",
+        "Regulatory & Compliance Advisory",
+        "Business Structuring",
+        "Shareholder Agreements",
+        "Legal Due Diligence"
+      ],
       image: "https://www.akmanlegal.com/assets/oil-img1.png",
-      stats: { value: "150+", label: "Energy Deals" }
+      href: "/services/legal-advisory",
+      stats: { value: "07", label: "Advisory Services" }
     },
     {
-      icon: Smartphone,
-      title: "Real Estate",
-      description: "Full-spectrum real estate legal services covering commercial and residential transactions, development projects, and property investments. We ensure seamless property transfers and protect your real estate investments.",
-      features: ["Property Transactions", "Development Projects", "Investment Advisory", "Due Diligence"],
-      image: "https://cdn-res.keymedia.com/cms/images/ca/119/0422_638628674961501400.jpg",
-      stats: { value: "500+", label: "Properties Handled" }
+      icon: TrendingUp,
+      title: "Business & Financial Advisory",
+      description: "Helping businesses improve performance, strengthen financial management, and make strategic decisions with confidence.",
+      features: [
+        "Business Strategy & Growth Advisory",
+        "Financial Planning & Analysis",
+        "Business Valuation",
+        "Financial Modelling",
+        "Corporate Finance",
+        "Investment Advisory",
+        "Strategic Partnerships",
+        "Business Performance Improvement"
+      ],
+      image: "https://www.24forextrading.com/wp-content/uploads/2024/06/Settlement-Funding-and-Lawsuit-Loans.jpg",
+      href: "/services/business-financial-advisory",
+      stats: { value: "08", label: "Advisory Services" }
+    },
+    {
+      icon: GraduationCap,
+      title: "Casa Academy",
+      description: "Supporting professionals, organisations, and individuals through practical learning and international communication.",
+      features: [
+        "Spanish Language Programmes",
+        "Business Spanish",
+        "Corporate Language Training",
+        "Executive Learning Workshops",
+        "Professional Development Programmes"
+      ],
+      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&h=800&fit=crop&auto=format",
+      href: "/services/spanish-language-programmes",
+      stats: { value: "05", label: "Programmes" }
     }
   ];
 
   const allSectors = [
-    "Construction & Contractors", "Consumer Goods & Retail", "Energy", "Financial Institutions",
-    "Health Care", "Individuals", "Legal Firms", "Logistics & Transport", "Marine", "Medical",
-    "Oil & Gas", "Pharmaceuticals", "Real Estate", "Shipping", "Trade"
+    "Corporate & Commercial Law", "Commercial Contracts & Agreements", "Corporate Governance",
+    "Regulatory & Compliance Advisory", "Business Structuring", "Shareholder Agreements",
+    "Legal Due Diligence", "Business Strategy & Growth Advisory", "Financial Planning & Analysis",
+    "Business Valuation", "Financial Modelling", "Corporate Finance", "Investment Advisory",
+    "Strategic Partnerships", "Business Performance Improvement", "Spanish Language Programmes",
+    "Business Spanish", "Corporate Language Training", "Executive Learning Workshops",
+    "Professional Development Programmes"
   ];
 
   // Debounce function for performance
@@ -275,8 +305,9 @@ export default function ExpertiseSection() {
   }, [isAnimationEnabled]);
 
   return (
-    <section 
+    <section
       ref={sectionRef}
+      id="practice-areas"
       className="relative py-32 bg-gray-50 overflow-hidden"
     >
       {/* Simplified Background Elements */}
@@ -328,25 +359,25 @@ export default function ExpertiseSection() {
               boxShadow: '0 8px 25px rgba(189,169,133,0.15)'
             }}
           >
-            Professional Excellence
+            Our Practice Areas
           </div>
-          
+
           <h2 className="mb-8">
-            <div className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.9] mb-4">
-              <span className="block text-black">SECTORS</span>
-              <span className="block" style={{ color: '#bda985' }}>COVERED</span>
+            <div className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] mb-4 max-w-5xl mx-auto">
+              <span className="block text-black">Integrated Advisory Solutions</span>
+              <span className="block" style={{ color: '#bda985' }}>Designed Around Better Decisions</span>
             </div>
           </h2>
-          
-          <div 
+
+          <div
             className="w-32 h-1 rounded-full mx-auto mb-8"
             style={{
               background: 'linear-gradient(90deg, #bda985 0%, transparent 100%)',
             }}
           />
-          
-          <p className="text-xl md:text-2xl text-gray-700 font-light leading-relaxed max-w-3xl mx-auto">
-            Industries We <span style={{ color: '#bda985' }}>Serve</span> & Strategic Excellence
+
+          <p className="text-lg md:text-xl text-gray-700 font-light leading-relaxed max-w-3xl mx-auto">
+            Modern businesses require advisors who understand the complete picture. Our practice areas work together to help clients make confident decisions at every stage of their business journey.
           </p>
         </div>
 
@@ -422,7 +453,7 @@ export default function ExpertiseSection() {
                             {area.title}
                           </h3>
                           <p className="text-base font-medium mb-6 opacity-90" style={{color: '#bda985'}}>
-                            {area.description.substring(0, 120)}...
+                            {area.description}
                           </p>
 
                           {/* Features */}
@@ -436,8 +467,8 @@ export default function ExpertiseSection() {
                           </div>
 
                           {/* Connect Button */}
-                           <Link href={"/contact"}>
-                          <button 
+                           <Link href={area.href}>
+                          <button
                             className="group/btn relative overflow-hidden w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-lg"
                             style={{
                               background: '#bda985',
@@ -452,7 +483,7 @@ export default function ExpertiseSection() {
                           >
                            
                             <span className="flex items-center justify-center">
-                              Connect to me
+                              Learn More
                               <ArrowRight className="ml-3 w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" />
                             </span>
                            
@@ -494,7 +525,7 @@ export default function ExpertiseSection() {
               boxShadow: '0 8px 25px rgba(189,169,133,0.15)'
             }}
           >
-            <h3 className="text-2xl font-bold text-black mb-8">Complete Sector Coverage</h3>
+            <h3 className="text-2xl font-bold text-black mb-8">Complete Advisory Coverage</h3>
             
             {/* Scrolling Container */}
             <div className="relative overflow-hidden mb-8">
