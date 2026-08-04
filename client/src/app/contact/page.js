@@ -14,9 +14,9 @@ export default function ContactUsPage() {
     {
       icon: Phone,
       title: "Call Us Directly",
-      primary: "+971 56 385 8532",
+      primary: "+971568474217",
       description: "Speak with our legal experts for immediate consultation and professional guidance",
-      action: "tel:+971563858532",
+      action: "tel:+971568474217",
       actionText: "Call Now",
       color: "#bda985",
       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTjet5BT4TWsObBvaRtaBH9ZHUmezEPdnp4g&s"
@@ -34,7 +34,7 @@ export default function ContactUsPage() {
     {
       icon: ExternalLink,
       title: "WhatsApp Direct",
-      primary: "+971 56 385 8532",
+      primary: "+971563858532",
       description: "Quick consultations and immediate responses for urgent legal matters",
       action: "https://wa.me/971563858532",
       actionText: "Message Us",
@@ -421,15 +421,15 @@ export default function ContactUsPage() {
             {/* Embedded Map */}
             <div className="h-64">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3609.7234567890123!2d55.5234567890123!3d25.3234567890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDE5JzI0LjQiTiA1NcKwMzEnMjQuNCJF!5e0!3m2!1sen!2sae!4v1234567890123!5m2!1sen!2sae"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Casa Di Consiglio Office Location"
-              ></iframe>
+  src="https://maps.google.com/maps?q=Sharjah%20Publishing%20City%20Free%20Zone%2C%20Al%20Zahia%2C%20Sharjah&t=&z=14&ie=UTF8&iwloc=&output=embed"
+  width="100%"
+  height="100%"
+  style={{ border: 0 }}
+  allowFullScreen
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+  title="Casa Di Consiglio Office Location"
+/>
             </div>
           </motion.div>
 
