@@ -13,9 +13,10 @@ const locations = [
   {
     country: 'United Arab Emirates',
     flag: '🇦🇪',
-    city: 'Dubai',
-    lat: 25.2,
-    lon: 55.3,
+    city: 'Sharjah',
+    lat: 25.35,
+    lon: 55.42,
+    color: '#e11d48',
   },
   {
     country: 'Hashemite Kingdom of Jordan',
@@ -23,6 +24,7 @@ const locations = [
     city: 'Amman',
     lat: 31.95,
     lon: 35.93,
+    color: '#bda985',
   },
   {
     country: 'Kingdom of Spain',
@@ -30,6 +32,7 @@ const locations = [
     city: 'Madrid',
     lat: 40.42,
     lon: -3.7,
+    color: '#bda985',
   },
 ];
 
@@ -133,7 +136,8 @@ export default function WhyContact() {
                 >
                   {/* Pulse */}
                   <motion.span
-                    className="absolute inset-0 -m-4 rounded-full bg-[#BDA985]/30"
+                    className="absolute inset-0 -m-4 rounded-full"
+                    style={{ background: `${location.color}4d` }}
                     animate={{ scale: [1, 2.2, 1], opacity: [0.6, 0, 0.6] }}
                     transition={{
                       duration: 3,
@@ -146,7 +150,7 @@ export default function WhyContact() {
                   <motion.div
                     whileHover={{ scale: 1.3 }}
                     className="relative w-4 h-4 rounded-full border-2 border-white shadow-lg cursor-pointer"
-                    style={{ background: '#bda985' }}
+                    style={{ background: location.color }}
                   />
 
                   {/* Label */}
@@ -175,7 +179,10 @@ export default function WhyContact() {
                 <span className="text-3xl">{location.flag}</span>
                 <div>
                   <p className="text-white font-bold leading-snug">{location.country}</p>
-                  <p className="flex items-center text-xs text-[#BDA985] font-semibold mt-1">
+                  <p
+                    className="flex items-center text-xs font-semibold mt-1"
+                    style={{ color: location.color }}
+                  >
                     <MapPin className="w-3 h-3 mr-1" />
                     {location.city}
                   </p>
