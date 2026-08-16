@@ -126,7 +126,7 @@ export default function AcademyHero() {
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="text-base md:text-lg text-zinc-300 leading-relaxed max-w-2xl mb-10"
             >
-              Through Casa Academy, Casa Di Consiglio provides Spanish language programmes in Dubai
+              Through Casa Academy, Casa Di Consiglio provides Spanish language programmes in Sharjah, UAE,
               designed for individuals, professionals, and organisations seeking to develop practical
               Spanish communication skills.
             </motion.p>
