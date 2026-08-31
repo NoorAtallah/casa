@@ -466,12 +466,12 @@ export default function AboutUsPage() {
               >
                 <img
                   src="/images/6.jpeg"
-                  alt="Dr. Dia Jawad, Founder of Casa Di Consiglio"
+                  alt="Dia Jawad, Founder of Casa Di Consiglio"
                   className="w-full h-[380px] sm:h-[460px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <h3 className="text-2xl font-bold mb-1">Dr. Dia Jawad</h3>
+                  <h3 className="text-2xl font-bold mb-1">Dia Jawad</h3>
                   <p className="text-sm font-semibold" style={{ color: '#bda985' }}>Founder</p>
                   <p className="text-sm opacity-80">Casa Di Consiglio</p>
                 </div>
@@ -499,7 +499,7 @@ export default function AboutUsPage() {
               </div>
 
               <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(189,169,133,0.3)' }}>
-                <p className="text-xl font-bold text-black">Dr. Dia Jawad</p>
+                <p className="text-xl font-bold text-black">Dia Jawad</p>
                 <p className="font-semibold" style={{ color: '#bda985' }}>Founder</p>
                 <p className="text-gray-600">Casa Di Consiglio</p>
               </div>
