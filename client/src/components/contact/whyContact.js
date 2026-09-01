@@ -34,6 +34,22 @@ const locations = [
     lon: -3.7,
     color: '#bda985',
   },
+  {
+    country: 'Kingdom of Spain',
+    flag: '🇪🇸',
+    city: 'Barcelona',
+    lat: 41.39,
+    lon: 2.17,
+    color: '#bda985',
+  },
+  {
+    country: 'India',
+    flag: '🇮🇳',
+    city: 'Thane',
+    lat: 19.22,
+    lon: 72.98,
+    color: '#bda985',
+  },
 ];
 
 const toPercent = ({ lat, lon }) => ({
@@ -130,7 +146,7 @@ export default function WhyContact() {
               const position = toPercent(location);
               return (
                 <div
-                  key={location.country}
+                  key={`${location.country}-${location.city}`}
                   className="absolute -translate-x-1/2 -translate-y-1/2 group"
                   style={position}
                 >
@@ -165,10 +181,10 @@ export default function WhyContact() {
           </div>
 
           {/* Legend */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
             {locations.map((location, index) => (
               <motion.div
-                key={location.country}
+                key={`${location.country}-${location.city}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

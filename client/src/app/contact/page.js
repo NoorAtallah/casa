@@ -22,6 +22,7 @@ import WhyContact from "@/components/contact/whyContact";
 
 export default function ContactUsPage() {
   const [hoveredContact, setHoveredContact] = useState(null);
+  const [activeOffice, setActiveOffice] = useState(0);
   const [hoveredHour, setHoveredHour] = useState(null);
 
   const contactMethods = [
@@ -63,21 +64,52 @@ export default function ContactUsPage() {
     },
   ];
 
-  const coverageAreas = [
+  const offices = [
     {
-      country: "United Arab Emirates",
-      flag: "🇦🇪",
-      description: "Primary headquarters and operations",
+      country: "Head Quarter - United Arab Emirates",
+      city: "Sharjah",
+      lines: [
+        "Zone E, First Floor, Office # F13",
+        "Sharjah Book Authority Building",
+        "Sharjah Publishing City Free Zone",
+        "Al Zahia, Sharjah, UAE",
+      ],
+      note: "Reg. No. 4202724.01 SPC",
+      mapQuery: "Sharjah Publishing City Free Zone, Al Zahia, Sharjah, UAE",
     },
     {
-      country: "Hashemite Kingdom of Jordan",
-      flag: "🇯🇴",
-      description: "Primary operations and regional headquarters",
+      country: "Jordan",
+      city: "Amman",
+      lines: [
+        "3rd Floor, Yousef Center Building (1)",
+        "Al-Mdina Al-Monawara Street",
+        "Amman, Jordan",
+      ],
+      mapQuery:
+        "Yousef Center Building 1, Al Madina Al Munawara Street, Amman, Jordan",
     },
     {
-      country: "Kingdom of Spain",
-      flag: "🇪🇸",
-      description: "International legal services and EU representation",
+      country: "Spain",
+      city: "Madrid",
+      lines: ["Calle Monte Esquinza 30", "N.I.F. No. B06978951", "Madrid, Spain"],
+      mapQuery: "Calle Monte Esquinza 30, Madrid, Spain",
+    },
+    {
+      country: "Spain",
+      city: "Barcelona",
+      lines: ["Carrer Del Rossello, 188, 4 A", "08008 Barcelona, Spain"],
+      mapQuery: "Carrer del Rossello 188, 08008 Barcelona, Spain",
+    },
+    {
+      country: "India",
+      city: "Thane",
+      lines: [
+        "Unit No.109, Fenkin9",
+        "Near Satkar Garden Hotel",
+        "Wagle Estate, Thane (W), Thane 400604",
+      ],
+      mapQuery:
+        "Fenkin9, Wagle Estate, Thane West, Thane 400604, Maharashtra, India",
     },
   ];
 
@@ -96,13 +128,6 @@ export default function ContactUsPage() {
       icon: Clock,
       description: "Emergency consultations available",
     },
-  ];
-
-  const officeFeatures = [
-    "Modern legal facilities",
-    "Private consultation rooms",
-    "Digital documentation systems",
-    "Multilingual support services",
   ];
 
   // Animation variants
@@ -367,177 +392,105 @@ export default function ContactUsPage() {
             </div>
           </motion.div>
 
-          {/* Office Location & Coverage */}
-          <motion.div
-            variants={containerVariants}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24"
-          >
-            {/* Office Location */}
-            <motion.div
-              variants={itemVariants}
-              className="rounded-2xl overflow-hidden shadow-2xl"
-              style={{
-                background: "rgba(255,255,255,0.95)",
-                border: "1px solid rgba(189,169,133,0.2)",
-              }}
-            >
-              <div className="p-8">
-                <div className="flex items-center mb-6">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
-                    style={{ background: "rgba(189,169,133,0.15)" }}
-                  >
-                    <MapPin className="w-6 h-6" style={{ color: "#bda985" }} />
-                  </div>
-                  <h2 className="text-2xl font-bold text-black">Our Office</h2>
-                </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="font-bold text-lg text-black mb-3">
-                      Casa Di Consiglio FZC-LLC
-                    </h3>
-                    <div className="text-gray-700 leading-relaxed mb-6">
-                      <p>Zone E, First Floor, Office # F13</p>
-                      <p>Sharjah Book Authority Building</p>
-                      <p>Sharjah Publishing City Free Zone</p>
-                      <p>Al Zahia, Sharjah, UAE</p>
-                    </div>
-
-                    <div
-                      className="p-4 rounded-lg mb-6"
-                      style={{ background: "rgba(189,169,133,0.1)" }}
-                    >
-                      <div className="flex items-center mb-2">
-                        <Building2
-                          className="w-4 h-4 mr-2"
-                          style={{ color: "#bda985" }}
-                        />
-                        <span
-                          className="font-semibold text-sm"
-                          style={{ color: "#bda985" }}
-                        >
-                          Registration Details
-                        </span>
-                      </div>
-                      <p className="text-gray-700 text-sm">
-                        Reg. No. 4202724.01 SPC
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3 mb-6">
-                      {officeFeatures.map((feature, index) => (
-                        <motion.div
-                          key={index}
-                          className="flex items-center"
-                          whileHover={{ x: 4 }}
-                        >
-                          <CheckCircle
-                            className="w-3 h-3 mr-2 flex-shrink-0"
-                            style={{ color: "#bda985" }}
-                          />
-                          <span className="text-xs text-gray-700">
-                            {feature}
-                          </span>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    <motion.a
-                      href="https://goo.gl/maps/u8XdabiXNPMapq3L7?g_st=aw"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="inline-flex items-center px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 shadow-lg"
-                      style={{
-                        background: "linear-gradient(135deg, #bda985, #d4c4a0)",
-                        color: "#000000",
-                      }}
-                    >
-                      <MapPin className="w-4 h-4 mr-2" />
-                      View on Google Maps
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </motion.a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Embedded Map */}
-              <div className="h-64">
-               <iframe
-  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3606.5246876225115!2d55.458062399999996!3d25.320168799999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f004abf0ebf%3A0xbbce34d7cec171d6!2sSharjah%20Publishing%20City%20Free%20Zone!5e0!3m2!1sen!2sjo!4v1786022058316!5m2!1sen!2sjo"
-  width="100%"
-  height="100%"
-  style={{ border: 0 }}
-  allowFullScreen
-  loading="lazy"
-  referrerPolicy="no-referrer-when-downgrade"
-  title="Casa Di Consiglio Office Location"
-/>
-              </div>
+          {/* Our Offices */}
+          <motion.div variants={containerVariants} className="mb-24">
+            <motion.div variants={itemVariants} className="mb-10">
+              <h2 className="text-3xl md:text-4xl font-black text-black">
+                OUR <span style={{ color: "#bda985" }}>OFFICES</span>
+              </h2>
+              <div
+                className="h-px w-24 mt-4"
+                style={{ background: "#bda985" }}
+              />
             </motion.div>
 
-            {/* Coverage Areas - Updated for Jordan and Spain */}
-            <motion.div variants={itemVariants} className="space-y-8">
-              <div
-                className="p-8 rounded-2xl shadow-2xl"
-                style={{
-                  background: "rgba(255,255,255,0.95)",
-                  border: "1px solid rgba(189,169,133,0.2)",
-                }}
-              >
-                <div className="flex items-center mb-8">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
-                    style={{ background: "rgba(189,169,133,0.15)" }}
-                  >
-                    <Globe className="w-6 h-6" style={{ color: "#bda985" }} />
-                  </div>
-                  <h2 className="text-2xl font-bold text-black">
-                    Coverage Areas
-                  </h2>
-                </div>
-
-                <div className="space-y-4">
-                  {coverageAreas.map((area, index) => (
-                    <motion.div
+            <motion.div
+              variants={itemVariants}
+              className="grid grid-cols-1 lg:grid-cols-[minmax(0,380px)_1fr] gap-10 items-start"
+            >
+              {/* Office list */}
+              <div className="divide-y divide-gray-200 border-t border-gray-200">
+                {offices.map((office, index) => {
+                  const isActive = activeOffice === index;
+                  return (
+                    <button
                       key={index}
-                      className="group p-4 rounded-xl transition-all duration-300"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, rgba(189,169,133,0.1), rgba(255,255,255,0.5))",
-                        border: "1px solid rgba(189,169,133,0.2)",
-                      }}
-                      whileHover={{
-                        scale: 1.02,
-                        boxShadow: "0 8px 25px rgba(189,169,133,0.15)",
-                      }}
+                      type="button"
+                      onClick={() => setActiveOffice(index)}
+                      className="w-full text-left py-5 group focus:outline-none"
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <span className="text-2xl mr-3">{area.flag}</span>
-                          <div>
-                            <h3 className="font-bold text-black group-hover:text-[#bda985] transition-colors duration-300">
-                              {area.country}
-                            </h3>
-                            <p className="text-sm text-gray-600">
-                              {area.description}
-                            </p>
-                          </div>
-                        </div>
-                        <div
-                          className="w-3 h-3 rounded-full"
+                      <div className="flex items-start gap-4">
+                        <motion.div
+                          animate={{ opacity: isActive ? 1 : 0.25 }}
+                          transition={{ duration: 0.25 }}
+                          className="w-1 self-stretch rounded-full flex-shrink-0"
                           style={{ background: "#bda985" }}
                         />
+                        <div className="flex-1">
+                          <div className="flex items-baseline justify-between gap-3">
+                            <h3
+                              className="text-base font-bold tracking-wide transition-colors duration-300"
+                              style={{ color: isActive ? "#bda985" : "#000000" }}
+                            >
+                              {office.country}
+                            </h3>
+                            <span className="text-xs uppercase tracking-widest text-gray-400">
+                              {office.city}
+                            </span>
+                          </div>
+                          <div className="mt-2 text-sm text-gray-600 leading-relaxed">
+                            {office.lines.map((line, i) => (
+                              <p key={i}>{line}</p>
+                            ))}
+                          </div>
+                          {office.note && (
+                            <p className="mt-2 text-xs text-gray-400">
+                              {office.note}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </motion.div>
-                  ))}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Map */}
+              <div className="relative">
+                <div className="h-[420px] lg:h-[560px] w-full overflow-hidden rounded-sm bg-gray-100">
+                  <motion.iframe
+                    key={activeOffice}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.4 }}
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(
+                      offices[activeOffice].mapQuery
+                    )}&output=embed`}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`Casa Di Consiglio - ${offices[activeOffice].city}`}
+                  />
                 </div>
+
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    offices[activeOffice].mapQuery
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center text-sm font-medium text-black hover:opacity-70 transition-opacity duration-300"
+                >
+                  <MapPin className="w-4 h-4 mr-2" style={{ color: "#bda985" }} />
+                  Get directions to {offices[activeOffice].city}
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </a>
               </div>
             </motion.div>
           </motion.div>
-
           {/* Business Hours - Updated for Jordan and Spain Times */}
           <motion.div variants={containerVariants} className="mb-20">
             <motion.div variants={itemVariants} className="text-center mb-16">
