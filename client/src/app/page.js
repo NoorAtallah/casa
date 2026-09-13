@@ -2,6 +2,7 @@ import Hero from "@/components/hero";
 import WelcomeSection from "@/components/welcomeSection";
 import ExpertiseSection from "@/components/areaOfExperties";
 import WhyChooseUs from "@/components/whyChooseUs";
+import ClientsMarquee from "@/components/clientsMarquee";
 import FlowSpanishAnnouncementSection from "@/components/collaborationSection";
 
 export const metadata = {
@@ -39,6 +40,7 @@ export default function Home() {
       <WelcomeSection />
       <ExpertiseSection />
       <WhyChooseUs />
+      <ClientsMarquee />
       {/* <FlowSpanishAnnouncementSection /> */}
     </div>
   );
