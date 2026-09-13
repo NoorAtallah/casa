@@ -8,9 +8,14 @@ export async function GET(request, { params }) {
   try {
     await dbConnect();
     
-    const article = await Article.findOne({ 
-      slug: params.slug, 
-      status: 'published' 
+    const { slug } = await params;
+
+    // Scheduled publishing: a future-dated article is not public yet, so a
+    // direct URL to it returns 404 until its publishedAt arrives.
+    const article = await Article.findOne({
+      slug,
+      status: 'published',
+      publishedAt: { $ne: null, $lte: new Date() }
     });
     
     if (!article) {

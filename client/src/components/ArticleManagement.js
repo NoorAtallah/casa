@@ -29,15 +29,36 @@ export default function ArticleManagement() {
   const [totalPages, setTotalPages] = useState(1);
 
   const categories = [
-    'Corporate Law', 
-    'Banking & Finance', 
-    'Private Client', 
-    'Family Law', 
-    'Tax Law', 
-    'Healthcare Law', 
-    'Legal Updates', 
+    'Corporate Law',
+    'Banking & Finance',
+    'Business Advisory',
+    'Language Programmes',
+    'Private Client',
+    'Family Law',
+    'Tax Law',
+    'Healthcare Law',
+    'Legal Updates',
     'News'
   ];
+
+  // Only these fields are ever sent to the API. The article document also
+  // carries _id, __v, createdAt, views and friends — Mongo rejects an update
+  // that tries to write those, which is what a 400 on save means.
+  const EDITABLE_FIELDS = [
+    'title',
+    'excerpt',
+    'content',
+    'author',
+    'category',
+    'tags',
+    'featuredImage',
+    'status',
+    'metaTitle',
+    'metaDescription',
+    'featured'
+  ];
+
+  const [saveError, setSaveError] = useState(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -89,14 +110,20 @@ export default function ArticleManagement() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSaveError(null);
     try {
       const token = sessionStorage.getItem('adminToken');
-      const tagsArray = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
-      
-      const submitData = {
-        ...formData,
-        tags: tagsArray
-      };
+      const rawTags = formData.tags;
+      const tagsArray = (Array.isArray(rawTags) ? rawTags.join(',') : rawTags || '')
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag);
+
+      // Send only editable fields — never _id, __v, createdAt, views, etc.
+      const submitData = EDITABLE_FIELDS.reduce((acc, key) => {
+        acc[key] = key === 'tags' ? tagsArray : formData[key];
+        return acc;
+      }, {});
 
       const url = editingArticle 
         ? `/api/admin/articles/${editingArticle._id}`
@@ -118,18 +145,33 @@ export default function ArticleManagement() {
         setEditingArticle(null);
         resetForm();
         fetchArticles();
+      } else {
+        const data = await response.json().catch(() => ({}));
+        const detail = data.fields
+          ? Object.entries(data.fields).map(([f, m]) => `${f}: ${m}`).join(' · ')
+          : '';
+        setSaveError(detail || data.error || `Save failed (${response.status})`);
+        console.error('Error saving article:', data);
       }
     } catch (error) {
+      setSaveError(error.message);
       console.error('Error saving article:', error);
     }
   };
 
   const handleEdit = (article) => {
     setEditingArticle(article);
-    setFormData({
-      ...article,
-      tags: article.tags.join(', ')
-    });
+    setSaveError(null);
+    // Load only the editable fields into the form, so nothing immutable
+    // (_id, __v, createdAt, views…) can ride along on save.
+    setFormData(
+      EDITABLE_FIELDS.reduce((acc, key) => {
+        if (key === 'tags') acc.tags = (article.tags || []).join(', ');
+        else if (key === 'featured') acc.featured = !!article.featured;
+        else acc[key] = article[key] ?? '';
+        return acc;
+      }, {})
+    );
     setShowForm(true);
   };
 
@@ -207,6 +249,12 @@ export default function ArticleManagement() {
         </div>
 
         <form onSubmit={handleSubmit} className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 space-y-6">
+          {saveError && (
+            <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+              {saveError}
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Title</label>

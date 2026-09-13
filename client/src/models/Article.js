@@ -33,7 +33,7 @@ const ArticleSchema = new mongoose.Schema({
   category: {
     type: String,
     required: [true, 'Category is required'],
-    enum: ['Corporate Law', 'Banking & Finance', 'Private Client', 'Family Law', 'Tax Law', 'Healthcare Law', 'Legal Updates', 'News'],
+    enum: ['Corporate Law', 'Banking & Finance', 'Business Advisory', 'Private Client', 'Family Law', 'Tax Law', 'Healthcare Law', 'Language Programmes', 'Legal Updates', 'News'],
     default: 'Legal Updates'
   },
   tags: [{

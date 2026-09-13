@@ -1,18 +1,57 @@
 'use client';
 
-import { MapPin, Phone, Mail, Globe, Scale, TrendingUp, Users, Building2, Clock, ArrowUp, ExternalLink, Star, Sparkles } from 'lucide-react';
+import { MapPin, Phone, Mail, Building2, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
 
-  const countries = [
-    "United Arab Emirates",
-    "Hashemite Kingdom of Jordan", 
-    "Kingdom of Spain"
+  const offices = [
+    {
+      country: "United Arab Emirates",
+      city: "Sharjah",
+      hq: true,
+      lines: [
+        "Zone E, First Floor, Office # F13",
+        "Sharjah Book Authority Building",
+        "Sharjah Publishing City Free Zone",
+        "Al Zahia, Sharjah, UAE",
+      ],
+      note: "Reg. No. 4202724.01 SPC",
+    },
+    {
+      country: "Jordan",
+      city: "Amman",
+      lines: [
+        "3rd Floor, Yousef Center Building (1)",
+        "Al-Mdina Al-Monawara Street",
+        "Amman, Jordan",
+      ],
+    },
+    {
+      country: "Spain",
+      city: "Madrid",
+      lines: ["Calle Monte Esquinza 30", "N.I.F. No. B06978951", "Madrid, Spain"],
+    },
+    {
+      country: "Spain",
+      city: "Barcelona",
+      lines: ["Carrer Del Rossello, 188, 4 A", "08008 Barcelona, Spain"],
+    },
+    {
+      country: "India",
+      city: "Thane",
+      lines: [
+        "Unit No.109, Fenkin9",
+        "Near Satkar Garden Hotel",
+        "Wagle Estate, Thane (W), Thane 400604",
+      ],
+    },
   ];
 
   const quickLinks = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
+    { name: "Services", href: "/services" },
+    { name: "Articles", href: "/articles" },
     { name: "KYC", href: "/kyc" },
     { name: "Contact", href: "/contact" }
   ];
@@ -45,10 +84,10 @@ export default function Footer() {
 
       {/* Main Footer Content */}
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+
           {/* Company Info */}
-          <div className="lg:col-span-1">
+          <div className="md:col-span-2">
             <div className="flex items-center mb-8">
               <div className="relative w-16 h-16 backdrop-blur-sm border rounded-2xl flex items-center justify-center mr-4 p-1" style={{
                 background: 'rgba(255,255,255,0.6)',
@@ -104,26 +143,6 @@ export default function Footer() {
                 </div>
                 <span className="text-black font-medium group-hover:text-[#bda985] transition-colors duration-300">info@casadiconsiglio.com</span>
               </div>
-              
-              <div className="group flex items-start">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mr-4 mt-1 transition-all duration-300" style={{
-                  background: 'rgba(189,169,133,0.15)'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = 'rgba(189,169,133,0.25)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'rgba(189,169,133,0.15)';
-                }}>
-                  <MapPin className="w-5 h-5" style={{color: '#bda985'}} />
-                </div>
-                <span className="text-black font-medium leading-relaxed group-hover:text-[#bda985] transition-colors duration-300">
-                  Zone E, G Floor, Office # F13<br />
-                  Sharjah Book Authority Building<br />
-                  Sharjah Publishing City Free Zone<br />
-                  Al Zahia, Sharjah, UAE
-                </span>
-              </div>
             </div>
           </div>
 
@@ -149,51 +168,45 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Countries & Business Hours */}
-          <div>
-            <div className="flex items-center mb-8">
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4" style={{
-                background: 'rgba(189,169,133,0.15)'
-              }}>
-                <Globe className="w-6 h-6" style={{color: '#bda985'}} />
-              </div>
-              <h4 className="text-2xl font-bold text-black">Coverage Areas</h4>
-            </div>
-            <ul className="space-y-3 mb-10">
-              {countries.map((country, index) => (
-                <li key={index} className="group">
-                  <span className="text-gray-700 flex items-center group-hover:text-[#bda985] transition-colors duration-300">
-                    <div className="w-2 h-2 rounded-full mr-4 group-hover:scale-150 transition-transform duration-300" style={{background: '#bda985'}}></div>
-                    {country}
-                  </span>
-                </li>
-              ))}
-            </ul>
+        </div>
 
-            <div className="flex items-center mb-6">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mr-3" style={{
-                background: 'rgba(189,169,133,0.15)'
-              }}>
-                <Clock className="w-5 h-5" style={{color: '#bda985'}} />
+        {/* Offices */}
+        <div className="mt-16 pt-12 border-t" style={{borderColor: 'rgba(189,169,133,0.2)'}}>
+          <div className="flex items-center gap-4 mb-10">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] whitespace-nowrap" style={{color: '#bda985'}}>
+              Offices
+            </span>
+            <span className="h-px flex-1" style={{background: 'rgba(189,169,133,0.3)'}}></span>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-10 gap-y-10">
+            {offices.map((office, index) => (
+              <div key={index} className="group">
+                <div className="flex items-baseline gap-2 mb-1">
+                  <span className="text-sm font-semibold text-black tracking-wide group-hover:text-[#bda985] transition-colors duration-300">
+                    {office.city}
+                  </span>
+                  {office.hq && (
+                    <span className="text-[10px] uppercase tracking-wider" style={{color: '#bda985'}}>
+                      HQ
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 mb-3">{office.country}</p>
+                <span className="block w-6 h-px mb-3" style={{background: 'rgba(189,169,133,0.5)'}}></span>
+                <address className="not-italic text-[13px] text-gray-600 leading-relaxed">
+                  {office.lines.map((line, i) => (
+                    <span key={i} className="block">{line}</span>
+                  ))}
+                  {office.note && (
+                    <span className="block mt-2 text-[11px] text-gray-400">{office.note}</span>
+                  )}
+                </address>
               </div>
-              <h5 className="text-xl font-bold text-black">Business Hours</h5>
-            </div>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Mon - Thu:</span>
-                <span className="font-semibold" style={{color: '#bda985'}}>9 AM - 6 PM</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Friday - Sunday:</span>
-                <span className="font-semibold" style={{color: '#bda985'}}>By Appointment</span>
-              </div>
-          
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Newsletter/CTA Section */}
-  
       </div>
 
       {/* Bottom Bar */}

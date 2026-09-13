@@ -14,8 +14,13 @@ export async function GET(request) {
     const featured = searchParams.get('featured') === 'true';
     const search = searchParams.get('search');
     
-    let query = { status: 'published' };
-    
+    // Scheduled publishing: an article is only public once its publishedAt
+    // has actually arrived. Future-dated articles stay hidden until their day.
+    let query = {
+      status: 'published',
+      publishedAt: { $ne: null, $lte: new Date() }
+    };
+
     if (category) query.category = category;
     if (featured) query.featured = true;
     if (search) {

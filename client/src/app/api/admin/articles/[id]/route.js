@@ -24,8 +24,9 @@ export async function GET(request, { params }) {
     }
 
     await dbConnect();
-    
-    const article = await Article.findById(params.id);
+
+    const { id } = await params;
+    const article = await Article.findById(id);
     if (!article) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
     }
@@ -45,20 +46,46 @@ export async function PUT(request, { params }) {
 
     await dbConnect();
     
-    const updateData = await request.json();
-    const article = await Article.findByIdAndUpdate(
-      params.id,
-      updateData,
-      { new: true, runValidators: true }
-    );
-    
+    const { id } = await params;
+    const body = await request.json();
+
+    // The admin form sends the whole article document back, which includes
+    // fields Mongo refuses to update. Strip them before writing.
+    const {
+      _id,
+      __v,
+      createdAt,
+      updatedAt,
+      views,
+      readingTime,
+      ...updateData
+    } = body;
+
+    const article = await Article.findById(id);
     if (!article) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
     }
-    
+
+    // Assign + save (rather than findByIdAndUpdate) so the model's pre-save
+    // hooks still run: slug regeneration, reading time, publishedAt.
+    Object.assign(article, updateData);
+    await article.save();
+
     return NextResponse.json({ article });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    console.error('Article update failed:', error);
+    return NextResponse.json(
+      {
+        error: error.message,
+        // Surface per-field validation messages so the admin UI can show them
+        fields: error.errors
+          ? Object.fromEntries(
+              Object.entries(error.errors).map(([k, v]) => [k, v.message])
+            )
+          : undefined,
+      },
+      { status: 400 }
+    );
   }
 }
 
@@ -71,7 +98,8 @@ export async function DELETE(request, { params }) {
 
     await dbConnect();
     
-    const article = await Article.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const article = await Article.findByIdAndDelete(id);
     if (!article) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
     }
